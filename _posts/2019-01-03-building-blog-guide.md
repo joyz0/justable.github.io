@@ -45,9 +45,10 @@ gem sources list查看是否替换成功。
 我暂没这需求，可以参考[自定义域名][1]
 
 ### 参考
-[官方教程][2]
+[官方教程][2]&#160;&#160;[jekyll教程][3]
 
 [1]: https://help.github.com/articles/using-a-custom-domain-with-github-pages/
 [2]: https://pages.github.com/
+[3]: https://jekyllrb.com/docs/installation/macos/
 
 
