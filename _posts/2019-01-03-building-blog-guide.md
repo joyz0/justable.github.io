@@ -15,8 +15,8 @@ tags: [guide]
 ![](/images/2019-01-03-building-blog-guide/1.png)
 3. 选择一个喜欢的主题，也就是去找一个博客网站的模版，这样不用自己从头写页面，只需要发发文章，改改细节样式就行了，
 可以在以下网站中找到一款适合自己的主题  
-<a href="jekyllthemes.org" target="_blank">jekyllthemes.org</a>  
-<a href="jekyllthemes.io" target="_blank">jekyllthemes.io</a>
+<a href="http://jekyllthemes.org" target="_blank">jekyllthemes.org</a>  
+<a href="https://jekyllthemes.io" target="_blank">jekyllthemes.io</a>
 4. git clone [主题的github地址]
 5. 这些主题是基于jekyll的，jekyll又是基于ruby的，ruby使用gem install指令安装外部包，如果电脑无法识别gem指令，
 先执行xcode-select --install，它会安装一些系统命令扩展
