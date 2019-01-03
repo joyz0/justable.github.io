@@ -4,7 +4,7 @@ date:   2018-01-03 14:24:00
 categories: [blog]
 tags: [guide]
 ---
-> 第一次搭建个人博客，记录一下。
+> 第一次搭建个人博客，记录一下，Windows整体流程应该是一样的，就是一些命令不同。
 
 ### 引言
 &#160; &#160; &#160; &#160;一直想搭建一个博客来着，最近闲来无事，就网上搜了一波搭建流程，基于github-pages最为简单，零成本，只需要注册一个github账号即可。
@@ -41,5 +41,13 @@ gem sources list查看是否替换成功。
 比如我打算把个人博客分成文章和demos两个部分，在https://[name].github.io中放文章，
 在https://[name].github.io/demos中放demo，只需再新建一个名为demos的项目，然后再在settings中设置即可。
 ![](/images/2019-01-03-building-blog-guide/2.png)
+3. 怎么自定义域名呀？  
+我暂没这需求，可以参考[自定义域名][1]
+
+### 参考
+[官方教程][2]
+
+[1]: https://help.github.com/articles/using-a-custom-domain-with-github-pages/
+[2]: https://pages.github.com/
 
 
