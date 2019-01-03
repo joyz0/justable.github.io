@@ -12,7 +12,7 @@ tags: [guide]
 ### 整体流程
 1. 创建一个项目，命名成[name].github.io，这个项目作为博客的总入口
 2. 在项目settings中设置github pages的相关设置，如图
-![](/2019-01-03-building-blog-guide/1.png)
+![](/images/2019-01-03-building-blog-guide/1.png)
 3. 选择一个喜欢的主题，也就是去找一个博客网站的模版，这样不用自己从头写页面，只需要发发文章，改改细节样式就行了，
 可以在以下网站中找到一款适合自己的主题
 jekyllthemes.org
@@ -40,6 +40,6 @@ gem sources list查看是否替换成功。
 &#160; &#160; &#160; &#160;不是的，每个github项目都可以设成github pages，但要有个总入口，也就是[name].github.io项目，
 比如我打算把个人博客分成文章和demos两个部分，在https://[name].github.io中放文章，
 在https://[name].github.io/demos中放demo，只需再新建一个名为demos的项目，然后再在settings中设置即可。
-![](/2019-01-03-building-blog-guide/2.png)
+![](/images/2019-01-03-building-blog-guide/2.png)
 
 
