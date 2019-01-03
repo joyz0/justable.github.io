@@ -22,8 +22,8 @@ jekyllthemes.io
 先执行xcode-select --install，它会安装一些系统命令扩展
 6. 执行gem install --user-install bundler jekyll指令，--user-install是为了把外部包安装到用户home目录，
 这是为了避免macOS的一些权限问题，macOS的很多目录文件需要超级管理员权限，但在用户自己的home目录下就不会有问题
-7. 把下面两行指令加到~/.bash_profile中
-export GEM_HOME=$HOME/gems
+7. 把下面两行指令加到~/.bash_profile中  
+export GEM_HOME=$HOME/gems  
 export PATH=$HOME/gems/bin:$PATH
 8. 进入到刚刚clone下来的目录中，执行bundle install安装依赖，之后执行
 bundle exec jekyll serve --watch指令启动本地服务器预览博客
@@ -32,9 +32,9 @@ bundle exec jekyll serve --watch指令启动本地服务器预览博客
 ### FAQ
 1. gem install没有反应怎么办？  
 &#160; &#160; &#160; &#160;可以执行gem sources -h查看管理下载源的常用操作指令，一般默认会去http://rubygems.org下载，
-我们把它替换成https://gems.ruby-china.com，也就是执行
-gem sources --remove http://rubygems.org
-gem sources --add https://gems.ruby-china.com
+我们把它替换成https://gems.ruby-china.com，也就是执行  
+gem sources --remove http://rubygems.org  
+gem sources --add https://gems.ruby-china.com  
 gem sources list查看是否替换成功。
 2. github pages只能在刚刚新建的[name].github.io项目中吗？  
 &#160; &#160; &#160; &#160;不是的，每个github项目都可以设成github pages，但要有个总入口，也就是[name].github.io项目，
