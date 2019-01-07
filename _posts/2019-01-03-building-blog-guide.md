@@ -42,7 +42,7 @@ gem sources list查看是否替换成功。
 在https://[name].github.io/demos中放demo，只需再新建一个名为demos的项目，然后再在settings中设置即可。
 ![](/images/2019-01-03-building-blog-guide/2.png)
 3. 怎么自定义域名呀？  
-我暂没这需求，可以参考[自定义域名][1]
+可以参考[自定义域名][1]
 
 ### 参考
 [官方教程][2]&#160;&#160;[jekyll教程][3]
