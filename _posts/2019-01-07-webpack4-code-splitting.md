@@ -9,13 +9,13 @@ tags: [webpack4]
 ### 引言
 &#160; &#160; &#160; &#160;Code Splitting是webpack的重要特性之一，它允许我们把code分离到各个bundles中，好好的设计分离策略，可以提高项目对代码的利用效率，优化web项目在浏览器中的表现时显得尤为重要。
 
-### chunk VS bundle
+### chunk VS bundle(我的观点有待商榷)
 &#160; &#160; &#160; &#160;在webpack官方文档或是第三方文档都会频繁出现这两个词汇，其中的区别困惑了我很久，到现在还没有完全无死角的理清其区别。  
-&#160; &#160; &#160; &#160;我的理解是：chunk代表代码块，在codeSplitting中更侧重逻辑上被共用的代码块，bundle代表output的文件。它们都是代码的集合，这个共同点可能是困惑我区别它们的原因之一。chunk的生成可以通过optimization.splitChunks.cacheGroups配置，bundle生成自output选项。官方解释可以参考<a href="https://webpack.js.org/glossary/" target="_blank">官方glossary</a>和<a href="https://github.com/webpack/webpack.js.org/issues/970" target="_blank">github issue</a>  
+&#160; &#160; &#160; &#160;我的理解是：chunk代表代码块，在codeSplitting中更侧重逻辑上被共用并被分离的代码块，bundle代表output的文件。它们都是代码的集合，这个共同点可能是困惑我区别它们的原因之一。chunk的生成可以通过optimization.splitChunks.cacheGroups配置，bundle生成自output选项。官方解释可以参考<a href="https://webpack.js.org/glossary/" target="_blank">官方glossary</a>和<a href="https://github.com/webpack/webpack.js.org/issues/970" target="_blank">github issue</a>  
 
 ### 分离方法
 1. 入口起点：使用 entry 配置手动地分离代码。
-2. 防止重复：使用CommonsChunkPlugin去重和分离chunk。
+2. 防止重复：使用<a href="https://webpack.js.org/plugins/split-chunks-plugin/" target="_blank">SplitChunksPlugin</a>。
 3. 动态导入：通过模块的内联函数调用来分离代码，比如import()。
 
 #### 入口起点
@@ -84,7 +84,7 @@ hello.bundle.js  551 KiB   hello  [emitted]  hello
 index.bundle.js  552 KiB   index  [emitted]  index
 ```
 &#160; &#160; &#160; &#160;经过分离，hello功能放到了单独的文件中，但是两个文件都引用了lodash，导致最终生成的2个bundle都包含了lodash的代码。反映了此方法的2个问题：
-1. 如果入口chunks之间包含重复的modules，那些modules都会被引入到各个bundle中。
+1. 如果入口chunks中包含重复的modules，那些modules都会被引入到各个bundle中。
 2. 这种方法不够灵活，并且不能依据程序逻辑进行动态拆分代码。
 
 #### 防止重复
@@ -124,8 +124,8 @@ vendors~hello~index.bundle.js   547 KiB  vendors~hello~index  [emitted]  vendors
     index: './src/index.js'
   },
   output: {
-    filename: '[name].bundle.js', // 入口的文件名名称
-    chunkFilename: '[name].bundle.js', // 非入口的chunk文件名称，这儿[name]取的时chunkId
+    filename: '[name].bundle.js', // 入口的文件名称
+    chunkFilename: '[name].bundle.js', // 非入口的chunk文件名称，这儿[name]取的是chunkId
     path: path.resolve(__dirname, 'dist')
   }
 }
@@ -147,14 +147,14 @@ getHello().then(() => {
          index.bundle.js  8.55 KiB           index  [emitted]  index
 vendors~lodash.bundle.js   547 KiB  vendors~lodash  [emitted]  vendors~lodash
 ```
-&#160; &#160; &#160; &#160;可能有人注意到了上面的<a herf="https://webpack.js.org/api/module-methods/#import-" target="_blank">webpackChunkName</a>注释，它的目的是修改chunk name，这里说下打包结果中各个title的含义，Asset：bundle名称，Size：bundle大小，Chunks：chunkId，Chunk Names：chunk name。再说下webpack.config.js中的chunkFilename，它规定非入口的chunk文件名称。
+&#160; &#160; &#160; &#160;可能有人注意到了上面的<a herf="https://webpack.js.org/api/module-methods/#import-" target="_blank">webpackChunkName</a>注释，它的目的是修改chunk name，这里说下打包结果中各个title的含义，Asset：bundle名称，Size：bundle大小，Chunks：chunkId，Chunk Names：chunk name，这儿是困惑我区别bundle和chunk的原因之二。再说下webpack.config.js中的chunkFilename，它规定非入口的chunk文件名称。
 
 ### Prefetching/Preloading modules(4.6.0+)
 - prefetch: resource is probably needed for some navigation in the future。
 - preload: resource might be needed during the current navigation  
 
 #### 一个prefetch例子
-比如有3个文件，分别是index.html，index.js和modal.js，index.js中有个button，点击后弹框，也就是要去加载modal.js
+比如有3个文件，分别是index.html，index.js和modal.js，index.html中有个button，点击后弹框，也就是要去加载modal.js
 ##### index.js
 ```javascript
 async showModal () {
@@ -164,7 +164,7 @@ async showModal () {
 const $btn = document.getElementById('button')
 $btn.addEventListener('click', () => showModal())
 ```
-webpack检测到webpackPrefetch: true时，会在index.html的head中append<link rel="prefetch" href="modal.js">，来告知浏览器去prefetch modal.js。
+webpack检测到webpackPrefetch: true时，会在index.html的head中append&lt;link rel="prefetch" href="modal.js"&gt;，来告知浏览器去prefetch modal.js。
 
 #### 一个preload例子
 想象一个场景，有一个图标可视化组件ChartComponent，它依赖了ECharts库
