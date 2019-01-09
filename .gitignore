@@ -1,6 +1,6 @@
 _site
 .sass-cache
-.code
+.vscode
 .jekyll-metadata
 *.sublime-project
 *.sublime-workspace

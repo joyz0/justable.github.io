@@ -1,7 +1,7 @@
 ---
 title:  "Flex布局使用总结"
 date:   2018-12-08 15:04:23
-categories: [css]
+categories: [blog]
 tags: [flex]
 ---
 > 所有内容均源自阮一峰老师的文章[Flex 布局教程：语法篇][1]，不过此总结都是结合平时使用的自我表述。
