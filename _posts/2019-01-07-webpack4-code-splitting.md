@@ -184,7 +184,7 @@ function pageInit () {
   initChart()
 }
 ```
-webpack识别到webpackPreload: true时，会在index.html的head中append<link rel="preload">，浏览器就会在渲染index.html时并行的去加载ECharts库，如果不是preload的情况，浏览器要执行到loadingIndicator()时才会去加载ECharts库。
+webpack识别到webpackPreload: true时，会在index.html的head中append&lt;link rel="preload"&gt;，浏览器就会在渲染index.html时并发的去加载ECharts库，如果不是preload的情况，浏览器要执行到loadingIndicator()时才会去加载ECharts库。
 
 #### preload和prefetch的区别
 1. A preloaded chunk starts loading in parallel to the parent chunk. A prefetched chunk starts after the parent chunk finishes loading.
