@@ -10,7 +10,7 @@ tags: [webpack4]
 &#160; &#160; &#160; &#160;Code Splitting是webpack的重要特性之一，它允许我们把code分离到各个bundles中，好好的设计分离策略，可以提高项目对代码的利用效率，优化web项目在浏览器中的表现时显得尤为重要。
 
 ### chunk VS bundle
-&#160; &#160; &#160; &#160;在webpack官方文档或是第三方文档都会频繁出现这两个词汇，一定有其他小伙伴和我有同样的困惑，就是它们有什么区别。官方说明可以参考<a href="https://webpack.js.org/glossary/" target="_blank">官方glossary</a>和<a href="https://github.com/webpack/webpack.js.org/issues/970" target="_blank">github issue</a>，不过我看完后还是一脸懵比。
+&#160; &#160; &#160; &#160;在webpack官方文档或是第三方文档都会频繁出现这两个词汇，一定有其他小伙伴和我有同样的困惑，就是它们有什么区别。官方说明可以参考<a href="https://webpack.js.org/glossary/" target="_blank">官方glossary</a>和<a href="https://github.com/webpack/webpack.js.org/issues/970" target="_blank">github issue</a>，不过我看完后还是一脸懵比。  
 &#160; &#160; &#160; &#160;我的理解是：它们都是代码的集合，多数情况下能互相替换，只不过侧重点有着细微区别，chunk往往在一段描述中侧重逻辑上的代码集合，bundle侧重物理代码集合，比如“我把sourceA.js和sourceB.js两个文件中的公共chuck提取到了bundle C中”这句话，我们还是能从中体会到那点区别的，又比如“该项目有三个entry chuck(bundle)”这句话，它们互相替换貌似没啥问题，不过文档中此时都会用chuck。
 
 ### 分离方法
