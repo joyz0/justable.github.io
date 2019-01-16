@@ -2,7 +2,7 @@
 title:  "ESLint配置"
 date:   2019-01-06 14:10:00
 categories: [blog]
-tags: [ESLint]
+tags: [eslint]
 ---
 > ESLint所有配置项汇总
 
