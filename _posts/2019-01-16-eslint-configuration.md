@@ -16,27 +16,27 @@ tags: [eslint]
   // 告知eslint是否要继续从父目录寻找配置文件，true表示停止在父级目录中寻找
   "root": true,
   // 指定解析器
-	"parser": "esprima",
-	// 解析器选项，所有语言选项默认都是 false
-	"parserOptions": {
-		// 想要使用的 ECMAScript 版本
+  "parser": "esprima",
+  // 解析器选项，所有语言选项默认都是 false
+  "parserOptions": {
+    // 想要使用的 ECMAScript 版本
     "ecmaVersion": 6,
     // script(default)/module
     "sourceType": "module",
     // 想使用的额外的语言特性
     "ecmaFeatures": {
-    	// 允许在全局作用域下使用 return 语句
-    	"globalReturn": true,
-    	// 启用全局 strict mode
-    	"impliedStrict": true,
-    	// 启用 JSX
+      // 允许在全局作用域下使用 return 语句
+      "globalReturn": true,
+      // 启用全局 strict mode
+      "impliedStrict": true,
+      // 启用 JSX
       "jsx": true,
       // 启用实验性的 object rest/spread properties 支持({...rest})，该选项在未来将被移除
       "experimentalObjectRestSpread": true
     }
 	},
-	// 环境定义了一组预定义的全局变量
-	"env": {
+  // 环境定义了一组预定义的全局变量
+  "env": {
     "browser": true,
     "node": true,
     "es6": true
