@@ -13,9 +13,9 @@ tags: [eslint]
 ### 完整的配置选项(.eslintrc.json)
 ``` javascript
 {
-	// 告知eslint是否要继续从父目录寻找配置文件，true表示停止在父级目录中寻找
-	"root": true,
-	// 指定解析器
+  // 告知eslint是否要继续从父目录寻找配置文件，true表示停止在父级目录中寻找
+  "root": true,
+  // 指定解析器
 	"parser": "esprima",
 	// 解析器选项，所有语言选项默认都是 false
 	"parserOptions": {
@@ -43,7 +43,7 @@ tags: [eslint]
   },
   // 指定全局变量，应对no-undef 规则的警告
   "globals": {
-  	// 可重写
+    // 可重写
     "var1": true,
     // 只读
     "var2": false
@@ -53,7 +53,6 @@ tags: [eslint]
     "plugin1",
     "eslint-plugin-plugin2"
   ],
-  // 
   "rules": {
     "eqeqeq": "off",
     "curly": "error",
@@ -142,18 +141,18 @@ your-project
 &#160; &#160; &#160; &#160;lib/ 下面的所有文件将使用项目根目录里的 .eslintrc 文件作为它的配置文件。当 ESLint 遍历到 test/ 目录，your-project/.eslintrc 之外，它还会用到 your-project/tests/.eslintrc。所以 your-project/tests/test.js 是基于它的目录层次结构中的两个.eslintrc 文件的组合，并且离的最近的一个优先。通过这种方式，你可以有项目级 ESLint 设置，也有覆盖特定目录的 ESLint 设置。如果同一目录下 .eslintrc 和 package.json 同时存在，.eslintrc 优先级高会被使用，package.json 文件将不会被使用
 &#160; &#160; &#160; &#160;优先级从高到低
 1. 内联配置
-  1. /*eslint-disable*/ and /*eslint-enable*/
-  2. /*global*/
-  3. /*eslint*/
-  4. /*eslint-env*/
+    1. /*eslint-disable*/ and /*eslint-enable*/
+    2. /*global*/
+    3. /*eslint*/
+    4. /*eslint-env*/
 2. 命令行选项
-  1. --global
-  2. --rule
-  3. --env
-  4. -c, --config
+    1. --global
+    2. --rule
+    3. --env
+    4. -c, --config
 3. 项目级配置
-  1. 和linted文件同目录的.eslintrc.* 或 package.json 文件
-  2. 继续在父级目录寻找 .eslintrc 或 package.json文件，直到根目录（包括根目录）或直到发现一个有"root": true的配置
+    1. 和linted文件同目录的.eslintrc.* 或 package.json 文件
+    2. 继续在父级目录寻找 .eslintrc 或 package.json文件，直到根目录（包括根目录）或直到发现一个有"root": true的配置
 4. 如果不是1，3中的任何一种情况，退回到 ~/.eslintrc 中自定义的默认配置
 
 ### eslintignore
