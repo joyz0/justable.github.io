@@ -1,6 +1,6 @@
 ---
 title:  "ESLint配置"
-date:   2019-01-06 14:10:00
+date:   2019-01-06 14:20:00
 categories: [blog]
 tags: [eslint]
 ---
