@@ -4,10 +4,10 @@ date:   2018-01-03 14:24:00
 categories: [blog]
 tags: [typescript]
 ---
-> Typescript知识点汇总，阅读前必须掌握ECMAScript6
+> 对于想要快速上手Typescript的小伙伴来说，官方文档太长了，因此我把重要知识点做了汇总，每个知识点配合一个例子和辅助性文字，尽可能缩减描述篇幅，所以此文不会去穷举各种应用场景，只会介绍基本用法。
 
-### 引言
-&#160; &#160; &#160; &#160;Typescript热度越来越高，最近刚把官方文档看了，对于想要快速上手TS的伙伴来说，官方文档太长了，因此我把重要知识点做了汇总，每个知识点用概括性的文字描述，然后配合一个例子，最大限度缩减每个知识点的篇幅。
+### Typescript简介
+&#160; &#160; &#160; &#160;大家应该都听说过Typescript是Javascript的超集。总的来说，它是一个框架，一个编译期框架，而非运行时框架，也就是说不管平时写法变了多少，最终输出的依然是标准js，它主要是给js提供了类型系统，为JS注入了很多面向对象的思想，顺带把转译ECMAScript 6+的事也做了。
 
 ### 知识点汇总
 #### 基础类型
@@ -23,12 +23,12 @@ function v (): void {
   console.log('void')
 }
 function error (message: string): never {
-    throw new Error(message);
+  throw new Error(message);
 }
 
 let n: number = '1' // Type '"1"' is not assignable to type 'number'.
 ```
-&#160; &#160; &#160; &#160;赋值时必须符合:右边指定的类型，默认情况下undefined和null是任意类型的子类型，实际项目中建议在tsconfig中设置strictNullChecks: true
+&#160; &#160; &#160; &#160;赋值时必须符合:右边指定的类型，默认情况下undefined和null是任意类型的子类型，实际项目中建议在tsconfig中设置strictNullChecks: true，或strict: true
 <a href="http://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">->详细文档</a>
 
 #### 类型推论
@@ -56,6 +56,7 @@ interface Person {
   [propName: string]: any // 任意属性
 }
 ```
+&#160; &#160; &#160; &#160;对象字面量的特别处理
 ``` typescript
 interface Person {
   name: string,
@@ -69,7 +70,7 @@ let jay = {
 function printPerson (p: Person): void {
   console.log(p)
 }
-printPerson(jay) // ok
+printPerson(jay) // OK
 printPerson({
   name: 'Jay',
   age: 40,
@@ -78,10 +79,10 @@ printPerson({
 // Argument of type '{ name: string; age: number; major: string; }' is not assignable to parameter of type 'Person'.
 // Object literal may only specify known properties, and 'major' does not exist in type 'Person'.
 ```
-&#160; &#160; &#160; &#160;ts中的接口有多种功能，对象类型是其中之一，用来规定对象的成员结构必须是接口的超集。但是对待Object literal(对象字面量)时，必须严格保证成员结构完全相同。
+&#160; &#160; &#160; &#160;ts中的接口有多种功能，对象类型是其中之一，用来规定对象的成员结构必须是接口的超集。但是对待Object literal（对象字面量）时，必须严格保证成员结构完全相同。
 > &#160; &#160; &#160; &#160;Object literals get special treatment and undergo excess property checking when assigning them to other variables, or passing them as arguments. If an object literal has any properties that the “target type” doesn’t have, you’ll get an error.
 
-#### 数组(三种方式)
+#### 数组（三种方式）
 ``` typescript
 // 数组 type[]
 let arr1: number[]
@@ -91,10 +92,10 @@ let arr2: Array<number>
 interface NumberArray {
   [index: number]: number
 }
-let arr = [0, 1, 2]
+let arr: NumberArray = [0, 1, 2]
 ```
 
-#### 函数(三种方式)
+#### 函数（三种方式）
 ``` typescript
 // 函数声明
 function sum1 (x: number, y: number): number {
@@ -112,7 +113,7 @@ let sum3: Sum = function (x: number, y?: number): number {
   return x + (y || 0)
 }
 ```
-#### 类型断言(两种方式)
+#### 类型断言（两种方式）
 ``` typescript
 let sth: any = "this is a string"
 let strLength: number = (sth as string).length
@@ -120,6 +121,98 @@ let strLength: number = (sth as string).length
 let sth: any = "this is a string"
 let strLength: number = (<string>sth).length
 ```
+
+#### 元组
+``` typescript
+let a: [string, number]
+a = ['type', 10] // OK
+a = [10, "type"] // Error
+
+// 超出元组范围时，相当于联合类型a[3]: string | number
+a[3] = 'script' // OK
+a[3] = true // Error
+```
+
+#### 枚举
+``` typescript
+enum Color {Red, Green, Blue} // 默认从0自增
+// 转译后
+var Color;
+(function (Color) {
+    Color[Color["Red"] = 0] = "Red"
+    Color[Color["Green"] = 1] = "Green"
+    Color[Color["Blue"] = 2] = "Blue"
+})(Color || (Color = {}))
+
+enum Color {Red = 1, Green, Blue = 5, Black} // 自动在自定义赋值后自增
+// 转译后
+var Color
+(function (Color) {
+    Color[Color["Red"] = 1] = "Red"
+    Color[Color["Green"] = 2] = "Green"
+    Color[Color["Blue"] = 5] = "Blue"
+    Color[Color["Black"] = 6] = "Black"
+})(Color || (Color = {}))
+```
+
+#### 类
+&#160; &#160; &#160; &#160;TS为类增加了public(default)，protected，private，readonly修饰，其他和<a href="http://es6.ruanyifeng.com/#docs/class" target="blank">->ES6+</a>中没有差异。对象类型中也可以指定类。
+``` typescript
+class Octopus {
+  readonly name: string
+  readonly numberOfLegs: number = 8
+  constructor (theName: string) {
+      this.name = theName
+  }
+}
+// 等价于
+class Octopus {
+  readonly numberOfLegs: number = 8
+  constructor(readonly name: string) { // 会自动赋值
+  }
+}
+```
+``` typescript
+class Greeter {
+  static standardGreeting = "Hello, there"
+  greeting: string
+  greet() {
+    if (this.greeting) {
+        return "Hello, " + this.greeting
+    }
+    else {
+        return Greeter.standardGreeting
+    }
+  }
+}
+let greeter1: Greeter
+greeter1 = new Greeter() // OK
+let greeterMaker: typeof Greeter = Greeter
+greeterMaker.standardGreeting = "Hey there!" // OK
+
+let greeter2: Greeter = new greeterMaker() // OK
+```
+
+#### 抽象类
+
+#### 类与接口
+
+#### 泛型
+
+#### modules
+
+#### Namespaces
+
+#### Decorators
+
+#### tsconfig配置
+strictPropertyInitialization strict
+
+#### JSX
+
+#### 声明文件
+
+#### 三斜杠指令
 
 ### 参考
 [官方教程][1]
