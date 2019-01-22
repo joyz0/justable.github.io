@@ -142,19 +142,19 @@ enum Color {Red, Green, Blue} // 默认从0自增
 // 转译后
 var Color;
 (function (Color) {
-    Color[Color["Red"] = 0] = "Red"
-    Color[Color["Green"] = 1] = "Green"
-    Color[Color["Blue"] = 2] = "Blue"
+  Color[Color["Red"] = 0] = "Red"
+  Color[Color["Green"] = 1] = "Green"
+  Color[Color["Blue"] = 2] = "Blue"
 })(Color || (Color = {}))
 
 enum Color {Red = 1, Green, Blue = 5, Black} // 自动在自定义赋值后自增
 // 转译后
 var Color
 (function (Color) {
-    Color[Color["Red"] = 1] = "Red"
-    Color[Color["Green"] = 2] = "Green"
-    Color[Color["Blue"] = 5] = "Blue"
-    Color[Color["Black"] = 6] = "Black"
+  Color[Color["Red"] = 1] = "Red"
+  Color[Color["Green"] = 2] = "Green"
+  Color[Color["Blue"] = 5] = "Blue"
+  Color[Color["Black"] = 6] = "Black"
 })(Color || (Color = {}))
 ```
 
@@ -165,7 +165,7 @@ class Octopus {
   readonly name: string
   readonly numberOfLegs: number = 8
   constructor (theName: string) {
-      this.name = theName
+    this.name = theName
   }
 }
 // 等价于
@@ -181,10 +181,10 @@ class Greeter {
   greeting: string
   greet () {
     if (this.greeting) {
-        return "Hello, " + this.greeting
+      return "Hello, " + this.greeting
     }
     else {
-        return Greeter.standardGreeting
+      return Greeter.standardGreeting
     }
   }
 }
