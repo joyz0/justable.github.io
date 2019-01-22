@@ -10,7 +10,7 @@ tags: [typescript]
 &#160; &#160; &#160; &#160;大家应该都听说过Typescript是Javascript的超集。总的来说，它是一个框架，一个编译期框架，而非运行时框架，也就是说不管平时写法变了多少，最终输出的依然是标准js，它主要是给js提供了类型系统，为JS注入了很多面向对象的思想，顺带把转译ECMAScript 6+的事也做了。
 
 ### 知识点汇总
-#### 基础类型
+#### 常用类型
 ``` typescript
 let n: number = 1
 let b: boolean = false
@@ -47,7 +47,7 @@ n = '1'
 ```
 &#160; &#160; &#160; &#160;当没有明确指定类型时，会按照声明变量时的赋值推测
 
-#### 接口(对象类型)
+#### 接口（对象类型）
 ``` typescript
 interface Person {
   readonly id: number // 只能在变量声明时赋值
@@ -86,8 +86,10 @@ printPerson({
 ``` typescript
 // 数组 type[]
 let arr1: number[]
+let arr1: { n: number }[]
 // 数组泛型 Array<elemType>
 let arr2: Array<number>
+let arr2: Array<{ n: number }>
 // 数组接口
 interface NumberArray {
   [index: number]: number
@@ -113,6 +115,7 @@ let sum3: Sum = function (x: number, y?: number): number {
   return x + (y || 0)
 }
 ```
+
 #### 类型断言（两种方式）
 ``` typescript
 let sth: any = "this is a string"
@@ -128,7 +131,7 @@ let a: [string, number]
 a = ['type', 10] // OK
 a = [10, "type"] // Error
 
-// 超出元组范围时，相当于联合类型a[3]: string | number
+// 超出元组范围时，相当于联合类型a[3]: string|number
 a[3] = 'script' // OK
 a[3] = true // Error
 ```
@@ -156,7 +159,7 @@ var Color
 ```
 
 #### 类
-&#160; &#160; &#160; &#160;TS为类增加了public(default)，protected，private，readonly修饰，其他和<a href="http://es6.ruanyifeng.com/#docs/class" target="blank">->ES6+</a>中没有差异。对象类型中也可以指定类。
+&#160; &#160; &#160; &#160;TS为类增加了public(default)，protected，private，readonly修饰，其他和<a href="http://es6.ruanyifeng.com/#docs/class" target="blank">->ES6+</a>中没有差异。
 ``` typescript
 class Octopus {
   readonly name: string
@@ -168,7 +171,7 @@ class Octopus {
 // 等价于
 class Octopus {
   readonly numberOfLegs: number = 8
-  constructor(readonly name: string) { // 会自动赋值
+  constructor (readonly name: string) { // 构造函数的形参前如果有public，protected，private，readonly则会自动赋值
   }
 }
 ```
@@ -176,7 +179,7 @@ class Octopus {
 class Greeter {
   static standardGreeting = "Hello, there"
   greeting: string
-  greet() {
+  greet () {
     if (this.greeting) {
         return "Hello, " + this.greeting
     }
@@ -185,7 +188,7 @@ class Greeter {
     }
   }
 }
-let greeter1: Greeter
+let greeter1: Greeter // 类也可以被指定为一个类型
 greeter1 = new Greeter() // OK
 let greeterMaker: typeof Greeter = Greeter
 greeterMaker.standardGreeting = "Hey there!" // OK
@@ -194,16 +197,75 @@ let greeter2: Greeter = new greeterMaker() // OK
 ```
 
 #### 抽象类
+&#160; &#160; &#160; &#160;abstract只能修饰类，方法，setter&getter，变量声明，且在某抽象类的衍生类中必须实现被abstract修饰的成员，行为与java类似。
+``` typescript
+abstract class Animal {
+  abstract a: string
+  abstract makeSound(): void
+  move(): void {
+    console.log("roaming the earth...")
+  }
+}
+```
 
-#### 类与接口
+#### 类&接口&继承
 
 #### 泛型
+&#160; &#160; &#160; &#160;泛型作用是可以用来动态规定类型  
+<a href="http://www.typescriptlang.org/docs/handbook/generics.html" target="_blank">->详细说明</a>  
 
-#### modules
+``` typescript
+function identity<T> (arg: T): T {
+  return arg;
+}
+```
+
+#### Modules
 
 #### Namespaces
 
 #### Decorators
+
+#### 方法重载&类型合并
+&#160; &#160; &#160; &#160;TS的强类型的初衷是提高代码可读性，减少代码风险。(2)比(1)多了2行代码，却提高了代码可读性
+``` typescript
+// (1)
+function parse (x: any): any {
+  if (typeof x === 'string') {
+    return JSON.parse(x)
+  } else if (typeof x === 'object') {
+    return JSON.stringify(x)
+  }
+}
+// (2)
+function parse (x: string): object
+function parse (x: object): string
+function parse (x: any): any {
+  if (typeof x === 'string') {
+    return JSON.parse(x)
+  } else if (typeof x === 'object') {
+    return JSON.stringify(x)
+  }
+}
+```
+``` typescript
+interface Person {
+  name: string
+  say (x: string): string
+}
+interface Person {
+  // name: number => Error
+  age: number
+  say (x: string, y: string): string
+}
+// 相当于
+interface Person {
+  name: string
+  age: number
+  say (x: string): string
+  say (x: string, y: string): string
+}
+```
 
 #### tsconfig配置
 strictPropertyInitialization strict
@@ -213,6 +275,11 @@ strictPropertyInitialization strict
 #### 声明文件
 
 #### 三斜杠指令
+
+#### 全局类型
+
+#### 类型兼容
+<a href="http://www.typescriptlang.org/docs/handbook/type-compatibility.html" target="_blank">->详细说明</a>
 
 ### 参考
 [官方教程][1]
