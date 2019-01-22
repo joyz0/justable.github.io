@@ -7,10 +7,10 @@ tags: [typescript]
 > 对于想要快速上手Typescript的小伙伴来说，官方文档太长了，因此我把重要知识点做了汇总，每个知识点配合一个例子和辅助性文字，尽可能缩减描述篇幅，所以此文不会去穷举各种应用场景，只会介绍基本用法。
 
 ### Typescript简介
-&#160; &#160; &#160; &#160;大家应该都听说过Typescript是Javascript的超集。总的来说，它是一个框架，一个编译期框架，而非运行时框架，也就是说不管平时写法变了多少，最终输出的依然是标准js，它主要是给js提供了类型系统，为JS注入了很多面向对象的思想，顺带把转译ECMAScript 6+的事也做了。
+&#160; &#160; &#160; &#160;大家应该都听说过Typescript是Javascript的超集。总的来说呢，它是一个框架，一个编译期框架，而非运行时框架，也就是说不管平时写法变了多少，最终输出的依然是标准js，它主要是给JS提供了类型系统，为JS注入了很多面向对象的思想，顺带把转译ECMAScript 6+的事也做了。
 
 ### 知识点汇总
-#### 常用类型
+#### 基础类型
 ``` typescript
 let n: number = 1
 let b: boolean = false
@@ -31,6 +31,9 @@ let n: number = '1' // Type '"1"' is not assignable to type 'number'.
 &#160; &#160; &#160; &#160;赋值时必须符合:右边指定的类型，默认情况下undefined和null是任意类型的子类型，实际项目中建议在tsconfig中设置strictNullChecks: true，或strict: true
 <a href="http://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">->详细文档</a>
 
+#### 高级类型
+<a href="http://www.typescriptlang.org/docs/handbook/advanced-types.html" target="_blank">->详细文档</a>
+
 #### 类型推论
 ``` typescript
 let n = 1
@@ -47,7 +50,8 @@ n = '1'
 ```
 &#160; &#160; &#160; &#160;当没有明确指定类型时，会按照声明变量时的赋值推测
 
-#### 接口（对象类型）
+#### 接口
+&#160; &#160; &#160; &#160;接口可以作为对象类型
 ``` typescript
 interface Person {
   readonly id: number // 只能在变量声明时赋值
@@ -79,7 +83,27 @@ printPerson({
 // Argument of type '{ name: string; age: number; major: string; }' is not assignable to parameter of type 'Person'.
 // Object literal may only specify known properties, and 'major' does not exist in type 'Person'.
 ```
-&#160; &#160; &#160; &#160;ts中的接口有多种功能，对象类型是其中之一，用来规定对象的成员结构必须是接口的超集。但是对待Object literal（对象字面量）时，必须严格保证成员结构完全相同。
+&#160; &#160; &#160; &#160;接口可以被class实现
+``` typescript
+interface Alarm {
+  alert ()
+}
+interface Light {
+  lightOn ()
+  lightOff ()
+}
+class Car implements Alarm, Light {
+  alert () {
+    console.log('Car alert')
+  }
+  lightOn () {
+    console.log('Car light on')
+  }
+  lightOff () {
+    console.log('Car light off')
+  }
+}
+```
 > &#160; &#160; &#160; &#160;Object literals get special treatment and undergo excess property checking when assigning them to other variables, or passing them as arguments. If an object literal has any properties that the “target type” doesn’t have, you’ll get an error.
 
 #### 数组（三种方式）
@@ -208,8 +232,6 @@ abstract class Animal {
 }
 ```
 
-#### 类&接口&继承
-
 #### 泛型
 &#160; &#160; &#160; &#160;泛型作用是可以用来动态规定类型  
 <a href="http://www.typescriptlang.org/docs/handbook/generics.html" target="_blank">->详细说明</a>  
@@ -219,12 +241,6 @@ function identity<T> (arg: T): T {
   return arg;
 }
 ```
-
-#### Modules
-
-#### Namespaces
-
-#### Decorators
 
 #### 方法重载&类型合并
 &#160; &#160; &#160; &#160;TS的强类型的初衷是提高代码可读性，减少代码风险。(2)比(1)多了2行代码，却提高了代码可读性
@@ -268,7 +284,34 @@ interface Person {
 ```
 
 #### tsconfig配置
+主要讲一下strict相关配置
 strictPropertyInitialization strict
+``` typescript
+{
+  "compilerOptions": {
+    "strict": true
+  }
+}
+// 相当于
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "strictBindCallApply": true,
+    "strictNullChecks": true, // 决定null和undefined是否是其他类型的子类型
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true // 决定class中的变量必须初始化赋值或在构造函数中赋值
+  }
+}
+```
+<a href="http://www.typescriptlang.org/docs/handbook/tsconfig-json.html" target="_blank">->详细文档</a>
+
+#### Modules
+
+#### Namespaces
+
+#### Decorators
 
 #### JSX
 
@@ -277,6 +320,7 @@ strictPropertyInitialization strict
 #### 三斜杠指令
 
 #### 全局类型
+TS声明了JS的内置对象，DOM和BOM的内置对象作为全局类型，可以直接使用。<a href="https://github.com/Microsoft/TypeScript/tree/master/src/lib" target="_blank">定义文件</a>
 
 #### 类型兼容
 <a href="http://www.typescriptlang.org/docs/handbook/type-compatibility.html" target="_blank">->详细说明</a>
