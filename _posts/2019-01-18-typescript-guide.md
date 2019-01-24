@@ -14,6 +14,7 @@ tags: [typescript]
 > [基本类型](http://www.typescriptlang.org/docs/handbook/basic-types.html)
 [进阶类型](http://www.typescriptlang.org/docs/handbook/advanced-types.html)  
 默认情况下undefined和null是任意类型的子类型，实际项目中建议在tsconfig中设置strictNullChecks: true或strict: true  
+
 ``` typescript
 let n: number = 1
 let b: boolean = false
