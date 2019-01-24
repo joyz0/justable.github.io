@@ -149,6 +149,7 @@ type T11 = Foo<{ a: string, b: number }> // string | number
 
 #### 类型推论
 > 当没有明确指定类型时，会按照声明变量时的赋值推测
+
 ``` typescript
 let n = 1
 n = '1'
@@ -293,6 +294,7 @@ var Color
 
 #### 类
 > TS为类增加了public(default)，protected，private，readonly修饰，其他和[ES6+](http://es6.ruanyifeng.com/#docs/class)中没有差异。
+
 ``` typescript
 class Octopus {
   readonly name: string
@@ -331,6 +333,7 @@ let greeter2: Greeter = new greeterMaker() // OK
 
 #### 抽象类
 > abstract只能修饰类，方法，setter&getter，变量声明，且在某抽象类的衍生类中必须实现被abstract修饰的成员，行为与java类似。
+
 ``` typescript
 abstract class Animal {
   abstract a: string
@@ -352,6 +355,7 @@ function identity<T> (arg: T): T {
 
 #### 方法重载&类型合并
 > TS的强类型的初衷是提高代码可读性，减少代码风险。(2)比(1)多了2行代码，却提高了代码可读性
+
 ``` typescript
 // (1)
 function parse (x: any): any {
@@ -393,6 +397,7 @@ interface Person {
 
 #### tsconfig配置
 > [详细文档](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html)，这里主要讲一下strict相关配置
+
 ``` typescript
 {
   "compilerOptions": {
@@ -415,6 +420,7 @@ interface Person {
 
 #### 声明文件
 > 当引用第三方库时，比如jQuery，它暴露了全局变量$，我们要TS规范$方法，这时需要引用jQuery.d.ts文件，此外TS提供了一系列浏览器环境的全局对象（JS的内置对象，DOM和BOM等）[声明文件](https://github.com/Microsoft/TypeScript/tree/master/src/lib)
+
 ``` ts
 declare function $ (str: string): object
 ```
