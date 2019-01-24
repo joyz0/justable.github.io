@@ -10,7 +10,10 @@ tags: [typescript]
 &#160; &#160; &#160; &#160;大家应该都听说过Typescript是Javascript的超集。总的来说呢，它是一个框架，一个编译期框架，而非运行时框架，也就是说不管平时写法变了多少，最终输出的依然是标准js，它主要是给JS提供了类型系统，为JS注入了很多面向对象的思想，顺带把转译ECMAScript 6+的事也做了。
 
 ### 知识点汇总
-#### 基础类型
+#### 类型系统
+> [基本类型](http://www.typescriptlang.org/docs/handbook/basic-types.html)
+[进阶类型](http://www.typescriptlang.org/docs/handbook/advanced-types.html)  
+默认情况下undefined和null是任意类型的子类型，实际项目中建议在tsconfig中设置strictNullChecks: true或strict: true  
 ``` typescript
 let n: number = 1
 let b: boolean = false
@@ -19,22 +22,132 @@ let undef: undefined = undefined
 let nul: null = null
 let any: any = 'any' // 任意类型
 let union: string | number // 联合类型
+let easing: 'ease-in' | 'ease-out' | 'ease-in-out'
 function v (): void {
   console.log('void')
 }
 function error (message: string): never {
   throw new Error(message);
 }
+// (K extends keyof T)表示K必须是T的keys中的一员
+function getProperty<T, K extends keyof T> (o: T, name: K): T[K] {
+    return o[name]; // o[name] is of type T[K]
+}
 
 let n: number = '1' // Type '"1"' is not assignable to type 'number'.
 ```
-&#160; &#160; &#160; &#160;赋值时必须符合:右边指定的类型，默认情况下undefined和null是任意类型的子类型，实际项目中建议在tsconfig中设置strictNullChecks: true，或strict: true
-<a href="http://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">->详细文档</a>
-
-#### 高级类型
-<a href="http://www.typescriptlang.org/docs/handbook/advanced-types.html" target="_blank">->详细文档</a>
+``` ts
+interface Point {
+  x: number
+  y: number
+}
+interface Point3d extends Point {
+  z: number
+}
+interface NamedPoint extends Point {
+  name: string
+}
+// 交叉类型
+let p: Point3d & NamedPoint = {
+  x: 1,
+  y: 1,
+  z: 1,
+  name: 'pt'
+}
+```
+``` ts
+// 类型别名
+type Name = string
+type NameObj = { name: string }
+// 具体值
+type Easing = 'ease-in' | 'ease-out' | 'ease-in-out' | 1
+type NameResolver = () => string
+type NameOrResolver = Name | NameResolver
+function getName (n: NameOrResolver): Name {
+  if (typeof n === "string") {
+    return n
+  } else {
+    return n()
+  }
+}
+```
+``` ts
+interface Maper<T> {
+  [key: string]: T
+}
+let obj: Maper<number>
+obj = { 'age': 1 }
+let keys: keyof Maper<number> // 相当于keys: string
+keys = 'age'
+let value: Maper<number>['foo']// 相当于value: number
+value = 1
+```
+``` ts
+interface Person {
+  name: string,
+  age: number
+}
+type Readonlyer<T> = {
+    readonly [P in keyof T]: T[P]
+}
+type Partialer<T> = {
+    [P in keyof T]?: T[P]
+}
+type PersonPartial = Partialer<Person>
+// 相当于
+type PersonPartial = {
+  name?: string,
+  age?: number
+}
+type ReadonlyPerson = Readonlyer<Person>
+// 相当于
+type ReadonlyPerson = {
+  readonly name: string,
+  readonly age: number
+}
+```
+``` ts
+// extends表示K继承T，类继承大家都能理解
+type Picker<T, K extends keyof T> = {
+    [P in K]: T[P];
+}
+// (K extends string)表示K继承string，也就是说最终值满足K就一定满足string，满足string却不一定满足K
+type Recorder<K extends string, T> = {
+    [P in K]: T;
+}
+type ThreeStringProps = Recorder<'prop1' | 'prop2' | 'prop3', string>
+let three: ThreeStringProps = {
+  prop1: 'a',
+  prop2: 'b',
+  prop3: 'c'
+}
+```
+``` ts
+// 条件类型(T extends U ? X : Y)
+// 条件类型(T extends U ? X : Y)和联合类型(X | Y)的最终结果都是X和Y的其中之一
+type TypeName<T> =
+    T extends string ? "string" :
+    T extends number ? "number" :
+    T extends boolean ? "boolean" :
+    T extends undefined ? "undefined" :
+    T extends Function ? "function" :
+    "object";
+type T0 = TypeName<string>;  // "string"
+type T1 = TypeName<"a">;  // "string"
+type T2 = TypeName<true>;  // "boolean"
+type T3 = TypeName<() => void>;  // "function"
+type T4 = TypeName<string[]>;  // "object"
+```
+``` ts
+// 推断infer
+// 不管怎么推断U的类型都不能满足(T extends { a: infer U, b: infer U })时走never路线
+type Foo<T> = T extends { a: infer U, b: infer U } ? U : never
+type T10 = Foo<{ a: string, b: string }> // string
+type T11 = Foo<{ a: string, b: number }> // string | number
+```
 
 #### 类型推论
+> 当没有明确指定类型时，会按照声明变量时的赋值推测
 ``` typescript
 let n = 1
 n = '1'
@@ -48,11 +161,10 @@ n = '1'
 let n: any
 n = '1'
 ```
-&#160; &#160; &#160; &#160;当没有明确指定类型时，会按照声明变量时的赋值推测
 
 #### 接口
-&#160; &#160; &#160; &#160;接口可以作为对象类型
 ``` typescript
+// 接口可以作为对象类型
 interface Person {
   readonly id: number // 只能在变量声明时赋值
   name: string
@@ -75,15 +187,12 @@ function printPerson (p: Person): void {
   console.log(p)
 }
 printPerson(jay) // OK
-printPerson({
+printPerson({ // Error 对象字面量必须保证变量完全一致
   name: 'Jay',
   age: 40,
   major: 'music'
-}) // error
-// Argument of type '{ name: string; age: number; major: string; }' is not assignable to parameter of type 'Person'.
-// Object literal may only specify known properties, and 'major' does not exist in type 'Person'.
+})
 ```
-&#160; &#160; &#160; &#160;接口可以被class实现
 ``` typescript
 interface Alarm {
   alert ()
@@ -92,6 +201,7 @@ interface Light {
   lightOn ()
   lightOff ()
 }
+// 接口可以被class实现
 class Car implements Alarm, Light {
   alert () {
     console.log('Car alert')
@@ -104,7 +214,6 @@ class Car implements Alarm, Light {
   }
 }
 ```
-> &#160; &#160; &#160; &#160;Object literals get special treatment and undergo excess property checking when assigning them to other variables, or passing them as arguments. If an object literal has any properties that the “target type” doesn’t have, you’ll get an error.
 
 #### 数组（三种方式）
 ``` typescript
@@ -183,7 +292,7 @@ var Color
 ```
 
 #### 类
-&#160; &#160; &#160; &#160;TS为类增加了public(default)，protected，private，readonly修饰，其他和<a href="http://es6.ruanyifeng.com/#docs/class" target="blank">->ES6+</a>中没有差异。
+> TS为类增加了public(default)，protected，private，readonly修饰，其他和[ES6+](http://es6.ruanyifeng.com/#docs/class)中没有差异。
 ``` typescript
 class Octopus {
   readonly name: string
@@ -221,7 +330,7 @@ let greeter2: Greeter = new greeterMaker() // OK
 ```
 
 #### 抽象类
-&#160; &#160; &#160; &#160;abstract只能修饰类，方法，setter&getter，变量声明，且在某抽象类的衍生类中必须实现被abstract修饰的成员，行为与java类似。
+> abstract只能修饰类，方法，setter&getter，变量声明，且在某抽象类的衍生类中必须实现被abstract修饰的成员，行为与java类似。
 ``` typescript
 abstract class Animal {
   abstract a: string
@@ -233,8 +342,7 @@ abstract class Animal {
 ```
 
 #### 泛型
-&#160; &#160; &#160; &#160;泛型作用是可以用来动态规定类型  
-<a href="http://www.typescriptlang.org/docs/handbook/generics.html" target="_blank">->详细说明</a>  
+> 泛型作用是可以用来动态规定类型，[详细文档](http://www.typescriptlang.org/docs/handbook/generics.html)
 
 ``` typescript
 function identity<T> (arg: T): T {
@@ -243,7 +351,7 @@ function identity<T> (arg: T): T {
 ```
 
 #### 方法重载&类型合并
-&#160; &#160; &#160; &#160;TS的强类型的初衷是提高代码可读性，减少代码风险。(2)比(1)多了2行代码，却提高了代码可读性
+> TS的强类型的初衷是提高代码可读性，减少代码风险。(2)比(1)多了2行代码，却提高了代码可读性
 ``` typescript
 // (1)
 function parse (x: any): any {
@@ -270,7 +378,7 @@ interface Person {
   say (x: string): string
 }
 interface Person {
-  // name: number => Error
+  // name: number 这里会Error，重名变量必须保证类型一致
   age: number
   say (x: string, y: string): string
 }
@@ -284,8 +392,7 @@ interface Person {
 ```
 
 #### tsconfig配置
-主要讲一下strict相关配置
-strictPropertyInitialization strict
+> [详细文档](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html)，这里主要讲一下strict相关配置
 ``` typescript
 {
   "compilerOptions": {
@@ -305,7 +412,14 @@ strictPropertyInitialization strict
   }
 }
 ```
-<a href="http://www.typescriptlang.org/docs/handbook/tsconfig-json.html" target="_blank">->详细文档</a>
+
+#### 声明文件
+> 当引用第三方库时，比如jQuery，它暴露了全局变量$，我们要TS规范$方法，这时需要引用jQuery.d.ts文件，此外TS提供了一系列浏览器环境的全局对象（JS的内置对象，DOM和BOM等）[声明文件](https://github.com/Microsoft/TypeScript/tree/master/src/lib)
+``` ts
+declare function $ (str: string): object
+```
+
+#### 三斜杠指令
 
 #### Modules
 
@@ -315,19 +429,8 @@ strictPropertyInitialization strict
 
 #### JSX
 
-#### 声明文件
-
-#### 三斜杠指令
-
-#### 全局类型
-TS声明了JS的内置对象，DOM和BOM的内置对象作为全局类型，可以直接使用。<a href="https://github.com/Microsoft/TypeScript/tree/master/src/lib" target="_blank">定义文件</a>
-
 #### 类型兼容
-<a href="http://www.typescriptlang.org/docs/handbook/type-compatibility.html" target="_blank">->详细说明</a>
+> [详细文档](http://www.typescriptlang.org/docs/handbook/type-compatibility.html)
 
 ### 参考
-[官方教程][1]
-
-[1]: https://www.tslang.cn/docs/home.html
-
-
+[官方教程](https://www.tslang.cn/docs/home.html)
