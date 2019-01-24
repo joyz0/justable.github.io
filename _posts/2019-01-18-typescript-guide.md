@@ -7,7 +7,7 @@ tags: [typescript]
 > 对于想要快速上手Typescript的小伙伴来说，官方文档太长了，因此我把重要知识点做了汇总，每个知识点配合一个例子和辅助性文字，尽可能缩减描述篇幅，所以此文不会去穷举各种应用场景，只会介绍基本用法。
 
 ### Typescript简介
-&#160; &#160; &#160; &#160;大家应该都听说过Typescript是Javascript的超集。总的来说呢，它是一个框架，一个编译期框架，而非运行时框架，也就是说不管平时写法变了多少，最终输出的依然是标准js，它主要是给JS提供了类型系统，为JS注入了很多面向对象的思想，顺带把转译ECMAScript 6+的事也做了。
+> 大家应该都听说过Typescript是Javascript的超集。总的来说呢，它是一个框架，一个编译期框架，而非运行时框架，也就是说不管平时写法变了多少，最终输出的依然是标准js，它主要是给JS提供了类型系统，为JS注入了很多面向对象的思想，顺带把转译ECMAScript 6+的事也做了。
 
 ### 知识点汇总
 #### 类型系统
@@ -27,11 +27,11 @@ function v (): void {
   console.log('void')
 }
 function error (message: string): never {
-  throw new Error(message);
+  throw new Error(message)
 }
 // (K extends keyof T)表示K必须是T的keys中的一员
 function getProperty<T, K extends keyof T> (o: T, name: K): T[K] {
-    return o[name]; // o[name] is of type T[K]
+    return o[name] // o[name] is of type T[K]
 }
 
 let n: number = '1' // Type '"1"' is not assignable to type 'number'.
@@ -109,11 +109,11 @@ type ReadonlyPerson = {
 ``` ts
 // extends表示K继承T，类继承大家都能理解
 type Picker<T, K extends keyof T> = {
-    [P in K]: T[P];
+    [P in K]: T[P]
 }
 // (K extends string)表示K继承string，也就是说最终值满足K就一定满足string，满足string却不一定满足K
 type Recorder<K extends string, T> = {
-    [P in K]: T;
+    [P in K]: T
 }
 type ThreeStringProps = Recorder<'prop1' | 'prop2' | 'prop3', string>
 let three: ThreeStringProps = {
@@ -131,12 +131,12 @@ type TypeName<T> =
     T extends boolean ? "boolean" :
     T extends undefined ? "undefined" :
     T extends Function ? "function" :
-    "object";
-type T0 = TypeName<string>;  // "string"
-type T1 = TypeName<"a">;  // "string"
-type T2 = TypeName<true>;  // "boolean"
-type T3 = TypeName<() => void>;  // "function"
-type T4 = TypeName<string[]>;  // "object"
+    "object"
+type T0 = TypeName<string>  // "string"
+type T1 = TypeName<"a">  // "string"
+type T2 = TypeName<true>  // "boolean"
+type T3 = TypeName<() => void>  // "function"
+type T4 = TypeName<string[]>  // "object"
 ```
 ``` ts
 // 推断infer
@@ -172,7 +172,6 @@ interface Person {
   [propName: string]: any // 任意属性
 }
 ```
-&#160; &#160; &#160; &#160;对象字面量的特别处理
 ``` typescript
 interface Person {
   name: string,
@@ -273,7 +272,7 @@ a[3] = true // Error
 ``` typescript
 enum Color {Red, Green, Blue} // 默认从0自增
 // 转译后
-var Color;
+var Color
 (function (Color) {
   Color[Color["Red"] = 0] = "Red"
   Color[Color["Green"] = 1] = "Green"
@@ -346,7 +345,7 @@ abstract class Animal {
 
 ``` typescript
 function identity<T> (arg: T): T {
-  return arg;
+  return arg
 }
 ```
 
