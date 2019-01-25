@@ -4,7 +4,6 @@ date:   2018-01-03 14:24:00
 categories: [blog]
 tags: [typescript]
 ---
-> 对于想要快速上手Typescript的小伙伴来说，官方文档太长了，因此我把重要知识点做了汇总，每个知识点配合一个例子和辅助性文字，尽可能缩减描述篇幅，所以此文不会去穷举各种应用场景，只会介绍基本用法。
 
 ### Typescript简介
 > 大家应该都听说过Typescript是Javascript的超集。总的来说呢，它是一个框架，一个编译期框架，而非运行时框架，也就是说不管平时写法变了多少，最终输出的依然是标准js，它主要是给JS提供了类型系统，为JS注入了很多面向对象的思想，顺带把转译ECMAScript 6+的事也做了。
@@ -354,7 +353,7 @@ function identity<T> (arg: T): T {
 ```
 
 #### 方法重载&类型合并
-> TS的强类型的初衷是提高代码可读性，减少代码风险。(2)比(1)多了2行代码，却提高了代码可读性
+> TS的强类型的初衷是提高代码可读性，减少代码风险。(2)比(1)多了2行代码，却提高了代码可读性。关于TS的声明合并策略，可以参考[详细文档](https://www.tslang.cn/docs/handbook/declaration-merging.html)
 
 ``` typescript
 // (1)
@@ -419,24 +418,226 @@ interface Person {
 ```
 
 #### 声明文件
-> 当引用第三方库时，比如jQuery，它暴露了全局变量$，我们要TS规范$方法，这时需要引用jQuery.d.ts文件，此外TS提供了一系列浏览器环境的全局对象（JS的内置对象，DOM和BOM等）[声明文件](https://github.com/Microsoft/TypeScript/tree/master/src/lib)
+> 当引用第三方库时，比如jQuery，它暴露了全局变量$，我们要TS规范$方法，这时需要引用jQuery的声明文件，此外TS提供了一系列浏览器环境的全局对象（JS的内置对象，DOM和BOM等）[声明文件](https://github.com/Microsoft/TypeScript/tree/master/src/lib)
+
+##### 全局变量声明
+``` ts
+// jQuery.d.ts
+declare function $ (str: string): object
+```
+``` ts
+/// <reference path='jQuery.d.ts'/>
+// 如果不先declare，TS会提示(Cannot find name '$'.)
+let $title = $('#title')
+```
+##### 模块声明
+> 上面举了jQuery全局变量$的例子，再来想象另一种场景，我们需要引入node的path模块，并且要规范其类型
 
 ``` ts
-declare function $ (str: string): object
+// node.d.ts
+// 简写模式，此时所以类型都为any
+declare module 'path'
+// 手写模式
+declare module 'path' {
+  export function normalize (p: string): string
+  export function join (...paths: any[]): string
+  export let sep: string
+}
+/// <reference path='node.d.ts'/>
+// 如果不先declare，TS会提示(Cannot find module 'path'.)
+import * as PATH from 'path'
+let dist = PATH.join(__dirname, '/dist')
+```
+> 当外部模块为non-javascript时
+``` ts
+declare module '*.text' {
+  const content: string
+  export default content
+}
+declare module 'json!*' {
+  const value: any
+  export default value
+}
+declare module '*.vue' {
+  import Vue from 'vue'
+  export default Vue
+}
+import fileContent from 't.text'
+import data from 'json!http://example.com/data.json'
+import component from 'c.vue'
+```
+> UMD模块
+``` ts
+// math-lib.d.ts
+export function isPrime (x: number): boolean
+export as namespace mathLib // 暴露global var，但是只能在非模块文件(没有import和export)中使用，否则会报错
+
+// index.js
+import { isPrime } from "math-lib";
+isPrime(2)
+mathLib.isPrime(2) // Error: 'mathLib' refers to a UMD global, but the current file is a module.
 ```
 
 #### 三斜杠指令
+> 用来引入声明文件[详细文档](https://www.tslang.cn/docs/handbook/triple-slash-directives.html)
+
+``` ts
+/// <reference path="node.d.ts"/>
+```
 
 #### Modules
+> module代表外部模块，TS支持ES6+和(commonjs/amd)两种导入导出方式，扩展阅读[TS的模块解析](https://www.tslang.cn/docs/handbook/module-resolution.html)，讲述模块路径解析机制，与node类似。
+
+``` ts
+// (1)ES6+
+export {}
+import * from 'module'
+// (2)commonjs/amd
+export = {}
+import module = require('module')
+```
 
 #### Namespaces
+> namespace代表内部模块，平时开发时，如果把所有变量都定义在根级，第一可阅读行差，第二会出现变量重名。这时就需要命名空间，TS中的namespace就是来解决这问题。
+
+``` ts
+interface StringValidator {
+  regExp: RegExp
+  resolve (str: string): boolean
+}
+class EmailValidator implements StringValidator {
+  regExp: RegExp = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+  resolve (str: string): boolean {
+    return this.regExp.test(str)
+  }
+}
+class HanValidator implements StringValidator {
+  regExp: RegExp = /^[\u4e00-\u9fa5]{0,}/
+  resolve (str: string): boolean {
+    return this.regExp.test(str)
+  }
+}
+// 当验证类型越来越多时，用namespace优化为
+namespace Validator {
+  export interface StringValidator {
+    regExp: RegExp
+    resolve (str: string): boolean
+  }
+  export class EmailValidator implements StringValidator {
+    regExp: RegExp = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+    resolve (str: string): boolean {
+      return this.regExp.test(str)
+    }
+  }
+  export class HanValidator implements StringValidator {
+    regExp: RegExp = /^[\u4e00-\u9fa5]{0,}/
+    resolve (str: string): boolean {
+      return this.regExp.test(str)
+    }
+  }
+}
+// 或者分离到多个文件中
+// StringValidator.d.ts
+namespace Validator {
+  export interface StringValidator {
+    regExp: RegExp
+    resolve (str: string): boolean
+  }
+}
+// EmailValidator.d.ts
+/// <reference path='StringValidator.d.ts' />
+namespace Validator {
+  export class EmailValidator implements StringValidator {
+    regExp: RegExp = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+    resolve (str: string): boolean {
+      return this.regExp.test(str)
+    }
+  }
+}
+// HanValidator.d.ts
+/// <reference path='StringValidator.d.ts' />
+namespace Validator {
+  export class HanValidator implements StringValidator {
+    regExp: RegExp = /^[\u4e00-\u9fa5]{0,}/
+    resolve (str: string): boolean {
+      return this.regExp.test(str)
+    }
+  }
+}
+// test.ts
+/// <reference path='StringValidator.d.ts' />
+/// <reference path='EmailValidator.d.ts' />
+/// <reference path='HanValidator.d.ts' />
+// TODO
+```
+> namespace可以嵌套
+``` ts
+namespace Shapes {
+  export namespace Polygons {
+    export class Triangle { }
+    export class Square { }
+  }
+}
+import polygons = Shapes.Polygons
+let sq = new polygons.Square()
+```
+> declare namespace可以用来声明第三方插件（非TS插件）的api，这里会和上面的declare module混淆，当通过模块加载器加载时用declare module，当页面用script标签加载时用declare namespace。
+``` ts
+// D3.d.ts
+declare namespace D3 {
+  export interface Selectors {
+    select: {
+      (selector: string): Selection
+      (element: EventTarget): Selection
+    }
+  }
+  export interface Event {
+    x: number
+    y: number
+  }
+  export interface Base extends Selectors {
+    event: Event
+  }
+}
+
+declare var d3: D3.Base;
+```
 
 #### Decorators
 
 #### JSX
+> [详细文档](http://www.typescriptlang.org/docs/handbook/jsx.html)
 
 #### 类型兼容
 > [详细文档](http://www.typescriptlang.org/docs/handbook/type-compatibility.html)
+
+#### JSDoc注解
+> [详细文档](https://github.com/Microsoft/TypeScript/wiki/JSDoc-support-in-JavaScript)
+
+春节期间更新TS+Vue实战
+
+### FAQ
+``` ts
+// map.ts
+import { Observable } from "./observable";
+declare module "./observable" {
+  // 这里为什么没有export，declare module中export究竟作用是什么
+    interface Observable<T> {
+        map<U>(f: (x: T) => U): Observable<U>;
+    }
+}
+Observable.prototype.map = function (f) {
+    // ... another exercise for the reader
+}
+// consumer.ts
+import { Observable } from "./observable";
+import "./map";
+let o: Observable<number>;
+o.map(x => x.toFixed());
+```
+declare global是什么
+三斜杆和import的区别
+
 
 ### 参考
 [官方教程](https://www.tslang.cn/docs/home.html)
