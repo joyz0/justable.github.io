@@ -6,11 +6,11 @@ tags: [typescript]
 ---
 
 ### 引言
-> 本篇主要补充了些刚上手TS时不需要掌握的知识点，介绍下如何搭配Vue进行使用。
+本篇主要补充了些刚上手TS时不一定要掌握的知识点，然后介绍下如何搭配Vue进行使用。
 
 ### 扩展知识点
-- 进阶类型
 - 类型别名
+- 进阶类型
 - 枚举
 - 抽象类
 - 类型保护
@@ -19,7 +19,27 @@ tags: [typescript]
 - 类型兼容
 - JSDoc注解
 
+#### 类型别名
+可以为已有类型或自定义类型取别名
+``` ts
+// 类型别名
+type Name = string
+type NameObj = { name: string }
+// 具体值
+type Easing = 'ease-in' | 'ease-out' | 'ease-in-out' | 1
+type NameResolver = () => string
+type NameOrResolver = Name | NameResolver
+function getName (n: NameOrResolver): Name {
+  if (typeof n === 'string') {
+    return n
+  } else {
+    return n()
+  }
+}
+```
+
 #### 进阶类型
+TS类型系统的进阶用法
 ``` ts
 // (K extends keyof T)表示K必须是T的keys中的一员
 function getProperty<T, K extends keyof T> (o: T, name: K): T[K] {
@@ -101,25 +121,8 @@ type T10 = Foo<{ a: string, b: string }> // string
 type T11 = Foo<{ a: string, b: number }> // string | number
 ```
 
-#### 类型别名
-``` ts
-// 类型别名
-type Name = string
-type NameObj = { name: string }
-// 具体值
-type Easing = 'ease-in' | 'ease-out' | 'ease-in-out' | 1
-type NameResolver = () => string
-type NameOrResolver = Name | NameResolver
-function getName (n: NameOrResolver): Name {
-  if (typeof n === 'string') {
-    return n
-  } else {
-    return n()
-  }
-}
-```
-
 #### 枚举
+枚举用来定义一个同类常量集合，方便维护和调用，但在JS中并没有enum支持，其实TS最终输出的就是一个普通对象
 ``` typescript
 enum Color {Red, Green, Blue} // 默认从0自增
 // 转译后
@@ -142,7 +145,7 @@ var Color
 ```
 
 #### 抽象类
-> abstract只能修饰类，方法，setter&getter，变量声明，且在某抽象类的衍生类中必须实现被abstract修饰的成员，行为与java类似。
+abstract只能修饰类，方法，setter&getter，变量声明，且在某抽象类的衍生类中必须实现被abstract修饰的成员，行为与java类似。
 
 ``` typescript
 abstract class Animal {
@@ -155,7 +158,7 @@ abstract class Animal {
 ```
 
 #### 类型保护
-> 类型保护可以让我们更加简单的使用联合类型
+类型保护可以让我们更加简单的使用联合类型
 
 ``` ts
 class Bird {
@@ -218,7 +221,7 @@ if (pet instanceof Fish) {
 ```
 
 #### Decorators
-> 装饰器是一种特殊类型的声明，它能够被附加到类声明，方法， 访问符，属性或参数上。 装饰器使用 @expression这种形式，expression求值后必须为一个函数，它会在运行时被调用，被装饰的声明信息做为参数传入。[详细文档](http://es6.ruanyifeng.com/#docs/decorator)
+装饰器是一种特殊类型的声明，它能够被附加到类声明，方法， 访问符，属性或参数上。 装饰器使用 @expression这种形式，expression求值后必须为一个函数，它会在运行时被调用，被装饰的声明信息做为参数传入。[详细文档](http://es6.ruanyifeng.com/#docs/decorator)
 
 ``` ts
 // tsconfig.json
@@ -232,13 +235,13 @@ if (pet instanceof Fish) {
 ```
 
 #### JSX
-> [详细文档](http://www.typescriptlang.org/docs/handbook/jsx.html)
+[详细文档](http://www.typescriptlang.org/docs/handbook/jsx.html)
 
 #### 类型兼容
-> [详细文档](http://www.typescriptlang.org/docs/handbook/type-compatibility.html)
+[详细文档](http://www.typescriptlang.org/docs/handbook/type-compatibility.html)
 
 #### JSDoc注解
-> [详细文档](https://github.com/Microsoft/TypeScript/wiki/JSDoc-support-in-JavaScript)
+[详细文档](https://github.com/Microsoft/TypeScript/wiki/JSDoc-support-in-JavaScript)
 
 ### 参考
 [官方教程](https://www.tslang.cn/docs/home.html)

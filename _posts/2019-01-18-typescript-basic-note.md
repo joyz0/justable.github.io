@@ -170,7 +170,7 @@ class Jay implements Person, Skill {
 ```
 
 #### 类
-> TS为类增加了public(default)，protected，private，readonly修饰，其他和[ES6+](http://es6.ruanyifeng.com/#docs/class)中的没有差异。
+TS为类增加了public(default)，protected，private，readonly修饰，其他和[ES6+](http://es6.ruanyifeng.com/#docs/class)中的没有差异。
 
 ``` typescript
 class Octopus {
@@ -209,7 +209,7 @@ let greeter2: Greeter = new greeterMaker() // OK
 ```
 
 #### 泛型
-> 泛型作用是可以用来动态规定类型，[详细文档](http://www.typescriptlang.org/docs/handbook/generics.html)
+泛型作用是可以用来动态规定类型，[详细文档](http://www.typescriptlang.org/docs/handbook/generics.html)
 
 ``` typescript
 function identity<T> (arg: T): T {
@@ -244,7 +244,7 @@ n = '1'
 ```
 
 #### 构造器类型
-TS中构造器的类型[stackoverflow.com](https://stackoverflow.com/questions/38311672/generic-and-typeof-t-in-the-parameters/38311757#38311757)
+TS中构造器的类型，可以参考[stackoverflow.com](https://stackoverflow.com/questions/38311672/generic-and-typeof-t-in-the-parameters/38311757#38311757)
 
 ``` ts
 // Example 1
