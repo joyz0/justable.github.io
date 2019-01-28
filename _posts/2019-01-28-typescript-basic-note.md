@@ -1,6 +1,6 @@
 ---
 title:  "Typescript学习笔记--基础篇"
-date:   2018-01-18 14:24:00
+date:   2018-01-28 15:14:00
 categories: [blog]
 tags: [typescript]
 ---
@@ -97,7 +97,7 @@ a[3] = true // Error
 ```
 
 #### 函数（三种方式）
-TS中的函数类型
+函数类型会比较入参类型和数量，
 ``` typescript
 // 函数声明
 function sum1 (x: number, y: number): number {
@@ -115,6 +115,15 @@ let sum3: Sum = function (x: number, y?: number): number {
   return x + (y || 0)
 }
 ```
+剩余参数
+``` ts
+// ...restOfName: string[]表示剩余入参都是string
+function buildName (firstName: string, ...restOfName: string[]) {
+  return firstName + " " + restOfName.join(" ")
+}
+let employeeName = buildName("Joseph", "Samuel", "Lucas", "MacKinzie")
+```
+函数中的this还没理清除，详情参考[详细文档](https://www.tslang.cn/docs/handbook/functions.html)
 
 #### 接口
 TS中的接口可以充当对象类型，也可以作为一个规范被其他class实现（与其他面向对象语言类似）
@@ -513,12 +522,12 @@ mathLib.isPrime(2) // Error: 'mathLib' refers to a UMD global, but the current f
 // 相当于
 {
   "compilerOptions": {
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "strictBindCallApply": true,
+    "noImplicitAny": true, // 在表达式和声明上有隐含的any类型时报错
+    "noImplicitThis": true, // 当this表达式的值为any类型的时候，生成一个错误
+    "alwaysStrict": true, // 以严格模式解析并为每个源文件生成"use strict"语句
+    "strictBindCallApply": true, // 开启对bind&call&apply方法严格检测模式
     "strictNullChecks": true, // 决定null和undefined是否是其他类型的子类型
-    "strictFunctionTypes": true,
+    "strictFunctionTypes": true, // 禁用函数参数双向协变检查
     "strictPropertyInitialization": true // 决定class中的变量必须初始化赋值或在构造函数中赋值
   }
 }
@@ -526,6 +535,15 @@ mathLib.isPrime(2) // Error: 'mathLib' refers to a UMD global, but the current f
 春节期间更新TS+Vue实战
 
 ### FAQ
+1. return class extends SuperClass { /* ... */ }是什么意思？
+其实就是return了一个匿名类
+
+2. declare global是什么？
+https://www.tslang.cn/docs/handbook/declaration-merging.html底部
+
+3. TS中的this类型
+
+4. declare module/namespace有时有export有时没有
 ``` ts
 // map.ts
 import { Observable } from "./observable";
@@ -544,25 +562,18 @@ import "./map";
 let o: Observable<number>;
 o.map(x => x.toFixed());
 ```
-declare global是什么
-return class extends SuperClass { /* ... */ }
-'arg is Array<any>'
-this类型
-https://www.tslang.cn/docs/handbook/declaration-merging.html底部
-三斜杆和import的区别
+
+5. 三斜杆和import的区别
 ``` ts
 // myModules.d.ts
 // In a .d.ts file or .ts file that is not a module:
 declare module "SomeModule" {
     export function fn(): string;
 }
-
 // myOtherModule.ts
 /// <reference path="myModules.d.ts" />
 import * as m from "SomeModule";
 ```
-
-
 
 ### 参考
 [官方教程](https://www.tslang.cn/docs/home.html)
