@@ -6,18 +6,15 @@ tags: [typescript]
 ---
 
 ### Typescript简介
-> 大家应该都听说过Typescript是Javascript的超集。总的来说呢，它是一个编译时框架，而非运行时框架，也就是说不管平时写法变了多少，最终输出的依然是标准js，它主要是给JS提供了类型系统，为JS注入了很多面向对象的思想，顺带把转译ECMAScript 6+的事也做了。
+大家应该都听说过Typescript是Javascript的超集。总的来说呢，它是一个编译时框架，而非运行时框架，也就是说不管平时写法变了多少，最终输出的依然是标准js，它主要是给JS提供了类型系统，为JS注入了很多面向对象的思想，顺带把转译ECMAScript 6+的事也做了。
 
 ### 知识点汇总
 - 常用类型
-- 类型别名
 - 数组（三种方式）
 - 元组
 - 函数（三种方式）
-- 枚举
 - 接口
 - 类
-- 抽象类
 - 泛型
 - 类型断言（两种方式）
 - 类型推论
@@ -30,9 +27,8 @@ tags: [typescript]
 - tsconfig配置
 
 #### 常用类型
-> [基本类型](http://www.typescriptlang.org/docs/handbook/basic-types.html)
-[进阶类型](http://www.typescriptlang.org/docs/handbook/advanced-types.html)  
-默认情况下undefined和null是任意类型的子类型，实际项目中建议在tsconfig中设置strictNullChecks: true或strict: true  
+TS中经常使用到的类型，默认情况下undefined和null是任意类型的子类型，实际项目中建议在tsconfig中设置strictNullChecks: true或strict: true，详情参考[基本类型](http://www.typescriptlang.org/docs/handbook/basic-types.html)
+[进阶类型](http://www.typescriptlang.org/docs/handbook/advanced-types.html)
 
 ``` typescript
 let n: number = 1
@@ -72,25 +68,8 @@ let p: Point3d & NamedPoint = {
 }
 ```
 
-#### 类型别名
-``` ts
-// 类型别名
-type Name = string
-type NameObj = { name: string }
-// 具体值
-type Easing = 'ease-in' | 'ease-out' | 'ease-in-out' | 1
-type NameResolver = () => string
-type NameOrResolver = Name | NameResolver
-function getName (n: NameOrResolver): Name {
-  if (typeof n === 'string') {
-    return n
-  } else {
-    return n()
-  }
-}
-```
-
 #### 数组（三种方式）
+TS中的数组类型
 ``` typescript
 // 数组 type[]
 let arr1: number[]
@@ -106,6 +85,7 @@ let arr: NumberArray = [0, 1, 2]
 ```
 
 #### 元组
+元组适用于定义数组每项类型
 ``` typescript
 let a: [string, number]
 a = ['type', 10] // OK
@@ -117,6 +97,7 @@ a[3] = true // Error
 ```
 
 #### 函数（三种方式）
+TS中的函数类型
 ``` typescript
 // 函数声明
 function sum1 (x: number, y: number): number {
@@ -135,29 +116,8 @@ let sum3: Sum = function (x: number, y?: number): number {
 }
 ```
 
-#### 枚举
-``` typescript
-enum Color {Red, Green, Blue} // 默认从0自增
-// 转译后
-var Color
-(function (Color) {
-  Color[Color["Red"] = 0] = "Red"
-  Color[Color["Green"] = 1] = "Green"
-  Color[Color["Blue"] = 2] = "Blue"
-})(Color || (Color = {}))
-
-enum Color {Red = 1, Green, Blue = 5, Black} // 自动在自定义赋值后自增
-// 转译后
-var Color
-(function (Color) {
-  Color[Color["Red"] = 1] = "Red"
-  Color[Color["Green"] = 2] = "Green"
-  Color[Color["Blue"] = 5] = "Blue"
-  Color[Color["Black"] = 6] = "Black"
-})(Color || (Color = {}))
-```
-
 #### 接口
+TS中的接口可以充当对象类型，也可以作为一个规范被其他class实现（与其他面向对象语言类似）
 ``` typescript
 // 接口可以作为对象类型
 interface Person {
@@ -248,19 +208,6 @@ greeterMaker.standardGreeting = "Hey there!" // OK
 let greeter2: Greeter = new greeterMaker() // OK
 ```
 
-#### 抽象类
-> abstract只能修饰类，方法，setter&getter，变量声明，且在某抽象类的衍生类中必须实现被abstract修饰的成员，行为与java类似。
-
-``` typescript
-abstract class Animal {
-  abstract color: string
-  abstract makeSound(): void
-  move(): void {
-    console.log("roaming the earth...")
-  }
-}
-```
-
 #### 泛型
 > 泛型作用是可以用来动态规定类型，[详细文档](http://www.typescriptlang.org/docs/handbook/generics.html)
 
@@ -280,7 +227,7 @@ let strLength: number = (<string>sth).length
 ```
 
 #### 类型推论
-> 当没有明确指定类型时，会按照声明变量时的赋值推测
+当没有明确指定类型时，会按照声明变量时的赋值推测
 
 ``` typescript
 let n = 1
@@ -297,7 +244,7 @@ n = '1'
 ```
 
 #### 构造器类型
-> [stackoverflow.com](https://stackoverflow.com/questions/38311672/generic-and-typeof-t-in-the-parameters/38311757#38311757)
+TS中构造器的类型[stackoverflow.com](https://stackoverflow.com/questions/38311672/generic-and-typeof-t-in-the-parameters/38311757#38311757)
 
 ``` ts
 // Example 1
@@ -325,7 +272,7 @@ let test = new MyManager(MyClass)
 ```
 
 #### 声明合并
-> 在多处的同名声明，TS最终会把它合成一个。TS的强类型的初衷是提高代码可读性，减少代码风险。(2)比(1)多了2行代码，却提高了代码可读性。关于TS的声明合并策略，可以参考[详细文档](https://www.tslang.cn/docs/handbook/declaration-merging.html)
+在多处的同名声明，TS最终会把它合成一个。TS的强类型的初衷是提高代码可读性，减少代码风险。(2)比(1)多了2行代码，却提高了代码可读性。关于TS的声明合并策略，可以参考[详细文档](https://www.tslang.cn/docs/handbook/declaration-merging.html)
 
 ``` typescript
 // (1)
@@ -367,7 +314,7 @@ interface Person {
 ```
 
 #### Modules
-> module代表外部模块，TS支持ES6+和(commonjs/amd)两种导入导出方式，扩展阅读[TS的模块解析](https://www.tslang.cn/docs/handbook/module-resolution.html)，讲述模块路径解析机制，与node类似。
+Module代表外部模块，TS支持ES6+和(commonjs/amd)两种导入导出方式，扩展阅读[TS的模块解析](https://www.tslang.cn/docs/handbook/module-resolution.html)，讲述模块路径解析机制，与node类似。
 
 ``` ts
 // (1)ES6+
@@ -379,7 +326,7 @@ import module = require('module')
 ```
 
 #### Namespaces
-> namespace代表内部模块，平时开发时，如果把所有变量都定义在根级，第一可阅读行差，第二会出现变量重名。这时就需要命名空间，TS中的namespace就是来解决这问题。
+Namespace代表内部模块，平时开发时，如果把所有变量都定义在根级，第一可阅读行差，第二会出现变量重名。这时就需要命名空间，TS中的namespace就是来解决这问题。
 
 ``` ts
 interface StringValidator {
@@ -451,7 +398,7 @@ namespace Validator {
 /// <reference path='HanValidator.d.ts' />
 // TODO
 ```
-> namespace可以嵌套
+namespace可以嵌套
 
 ``` ts
 namespace Shapes {
@@ -463,7 +410,7 @@ namespace Shapes {
 import polygons = Shapes.Polygons
 let sq = new polygons.Square()
 ```
-> declare namespace可以用来声明第三方插件（非TS插件）的api，这里会和上面的declare module混淆，当通过模块加载器加载时用declare module，当页面用script标签加载时用declare namespace。
+declare namespace可以用来声明第三方插件（非TS插件）的api，这里会和上面的declare module混淆，当通过模块加载器加载时用declare module，当页面用script标签加载时用declare namespace。
 ``` ts
 // D3.d.ts
 declare namespace D3 {
@@ -486,7 +433,7 @@ declare var d3: D3.Base;
 ```
 
 #### 声明文件
-> 当引用第三方库时，比如jQuery，它暴露了全局变量$，我们要TS规范$方法，这时需要引用jQuery的声明文件，此外TS提供了一系列浏览器环境的全局对象（JS的内置对象，DOM和BOM等）[声明文件](https://github.com/Microsoft/TypeScript/tree/master/src/lib)
+当引用第三方库时，比如jQuery，它暴露了全局变量$，我们要TS规范$方法，这时需要引用jQuery的声明文件，此外TS提供了一系列浏览器环境的全局对象（JS的内置对象，DOM和BOM等）[声明文件](https://github.com/Microsoft/TypeScript/tree/master/src/lib)
 
 ##### 全局变量声明
 ``` ts
@@ -499,7 +446,7 @@ declare function $ (str: string): object
 let $title = $('#title')
 ```
 ##### 模块声明
-> 上面举了jQuery全局变量$的例子，再来想象另一种场景，我们需要引入node的path模块，并且要规范其类型
+上面举了jQuery全局变量$的例子，再来想象另一种场景，我们需要引入node的path模块，并且要规范其类型
 
 ``` ts
 // node.d.ts
@@ -516,7 +463,7 @@ declare module 'path' {
 import * as PATH from 'path'
 let dist = PATH.join(__dirname, '/dist')
 ```
-> 当外部模块为non-javascript时
+当外部模块为non-javascript时
 ``` ts
 declare module '*.text' {
   const content: string
@@ -534,7 +481,7 @@ import fileContent from 't.text'
 import data from 'json!http://example.com/data.json'
 import component from 'c.vue'
 ```
-> UMD模块
+UMD模块
 
 ``` ts
 // math-lib.d.ts
@@ -548,14 +495,14 @@ mathLib.isPrime(2) // Error: 'mathLib' refers to a UMD global, but the current f
 ```
 
 #### 三斜杠指令
-> 用来引入声明文件，新版本TS自动会引入声明文件[详细文档](https://www.tslang.cn/docs/handbook/triple-slash-directives.html)
+用来引入声明文件，新版本TS自动会引入声明文件[详细文档](https://www.tslang.cn/docs/handbook/triple-slash-directives.html)
 
 ``` ts
 /// <reference path="node.d.ts"/>
 ```
 
 #### tsconfig配置
-> [详细文档](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html)，这里主要讲一下strict相关配置
+[详细文档](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html)，这里主要讲一下strict相关配置
 
 ``` typescript
 {

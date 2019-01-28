@@ -10,6 +10,9 @@ tags: [typescript]
 
 ### 扩展知识点
 - 进阶类型
+- 类型别名
+- 枚举
+- 抽象类
 - 类型保护
 - Decorators
 - JSX
@@ -96,6 +99,59 @@ type T4 = TypeName<string[]>  // "object"
 type Foo<T> = T extends { a: infer U, b: infer U } ? U : never
 type T10 = Foo<{ a: string, b: string }> // string
 type T11 = Foo<{ a: string, b: number }> // string | number
+```
+
+#### 类型别名
+``` ts
+// 类型别名
+type Name = string
+type NameObj = { name: string }
+// 具体值
+type Easing = 'ease-in' | 'ease-out' | 'ease-in-out' | 1
+type NameResolver = () => string
+type NameOrResolver = Name | NameResolver
+function getName (n: NameOrResolver): Name {
+  if (typeof n === 'string') {
+    return n
+  } else {
+    return n()
+  }
+}
+```
+
+#### 枚举
+``` typescript
+enum Color {Red, Green, Blue} // 默认从0自增
+// 转译后
+var Color
+(function (Color) {
+  Color[Color["Red"] = 0] = "Red"
+  Color[Color["Green"] = 1] = "Green"
+  Color[Color["Blue"] = 2] = "Blue"
+})(Color || (Color = {}))
+
+enum Color {Red = 1, Green, Blue = 5, Black} // 自动在自定义赋值后自增
+// 转译后
+var Color
+(function (Color) {
+  Color[Color["Red"] = 1] = "Red"
+  Color[Color["Green"] = 2] = "Green"
+  Color[Color["Blue"] = 5] = "Blue"
+  Color[Color["Black"] = 6] = "Black"
+})(Color || (Color = {}))
+```
+
+#### 抽象类
+> abstract只能修饰类，方法，setter&getter，变量声明，且在某抽象类的衍生类中必须实现被abstract修饰的成员，行为与java类似。
+
+``` typescript
+abstract class Animal {
+  abstract color: string
+  abstract makeSound(): void
+  move(): void {
+    console.log("roaming the earth...")
+  }
+}
 ```
 
 #### 类型保护
