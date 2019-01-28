@@ -210,7 +210,7 @@ class Jay implements Person, Skill {
 ```
 
 #### 类
-> TS为类增加了public(default)，protected，private，readonly修饰，其他和[ES6+](http://es6.ruanyifeng.com/#docs/class)中没有差异。
+> TS为类增加了public(default)，protected，private，readonly修饰，其他和[ES6+](http://es6.ruanyifeng.com/#docs/class)中的没有差异。
 
 ``` typescript
 class Octopus {
@@ -298,6 +298,7 @@ n = '1'
 
 #### 构造器类型
 > [stackoverflow.com](https://stackoverflow.com/questions/38311672/generic-and-typeof-t-in-the-parameters/38311757#38311757)
+
 ``` ts
 // Example 1
 interface ArrayConstructor {
@@ -451,6 +452,7 @@ namespace Validator {
 // TODO
 ```
 > namespace可以嵌套
+
 ``` ts
 namespace Shapes {
   export namespace Polygons {
@@ -533,6 +535,7 @@ import data from 'json!http://example.com/data.json'
 import component from 'c.vue'
 ```
 > UMD模块
+
 ``` ts
 // math-lib.d.ts
 export function isPrime (x: number): boolean

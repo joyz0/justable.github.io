@@ -100,6 +100,7 @@ type T11 = Foo<{ a: string, b: number }> // string | number
 
 #### 类型保护
 > 类型保护可以让我们更加简单的使用联合类型
+
 ``` ts
 class Bird {
   fly() {}
@@ -162,6 +163,7 @@ if (pet instanceof Fish) {
 
 #### Decorators
 > 装饰器是一种特殊类型的声明，它能够被附加到类声明，方法， 访问符，属性或参数上。 装饰器使用 @expression这种形式，expression求值后必须为一个函数，它会在运行时被调用，被装饰的声明信息做为参数传入。[详细文档](http://es6.ruanyifeng.com/#docs/decorator)
+
 ``` ts
 // tsconfig.json
 // 开启装饰器特性
