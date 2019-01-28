@@ -6,10 +6,10 @@ tags: [typescript]
 ---
 
 ### Typescript简介
-> 大家应该都听说过Typescript是Javascript的超集。总的来说呢，它是一个框架，一个编译期框架，而非运行时框架，也就是说不管平时写法变了多少，最终输出的依然是标准js，它主要是给JS提供了类型系统，为JS注入了很多面向对象的思想，顺带把转译ECMAScript 6+的事也做了。
+> 大家应该都听说过Typescript是Javascript的超集。总的来说呢，它是一个编译时框架，而非运行时框架，也就是说不管平时写法变了多少，最终输出的依然是标准js，它主要是给JS提供了类型系统，为JS注入了很多面向对象的思想，顺带把转译ECMAScript 6+的事也做了。
 
 ### 知识点汇总
-#### 类型系统
+#### 常用类型
 > [基本类型](http://www.typescriptlang.org/docs/handbook/basic-types.html)
 [进阶类型](http://www.typescriptlang.org/docs/handbook/advanced-types.html)  
 默认情况下undefined和null是任意类型的子类型，实际项目中建议在tsconfig中设置strictNullChecks: true或strict: true  
@@ -23,6 +23,8 @@ let nul: null = null
 let any: any = 'any' // 任意类型
 let union: string | number // 联合类型
 let easing: 'ease-in' | 'ease-out' | 'ease-in-out'
+// 表示render方法的每个入参都是any
+function render (...args: any[]): void {}
 function v (): void {
   console.log('void')
 }
@@ -31,10 +33,8 @@ function error (message: string): never {
 }
 // (K extends keyof T)表示K必须是T的keys中的一员
 function getProperty<T, K extends keyof T> (o: T, name: K): T[K] {
-    return o[name] // o[name] is of type T[K]
+  return o[name] // o[name] is of type T[K]
 }
-
-let n: number = '1' // Type '"1"' is not assignable to type 'number'.
 ```
 ``` ts
 interface Point {
@@ -64,7 +64,7 @@ type Easing = 'ease-in' | 'ease-out' | 'ease-in-out' | 1
 type NameResolver = () => string
 type NameOrResolver = Name | NameResolver
 function getName (n: NameOrResolver): Name {
-  if (typeof n === "string") {
+  if (typeof n === 'string') {
     return n
   } else {
     return n()
@@ -144,6 +144,95 @@ type T4 = TypeName<string[]>  // "object"
 type Foo<T> = T extends { a: infer U, b: infer U } ? U : never
 type T10 = Foo<{ a: string, b: string }> // string
 type T11 = Foo<{ a: string, b: number }> // string | number
+```
+
+#### 类型保护
+> 类型保护可以让我们更加简单的使用联合类型
+``` ts
+class Bird {
+  fly() {}
+  layEggs() {}
+}
+class Fish {
+  swim() {}
+  layEggs() {}
+}
+function getSmallPet (): Fish | Bird {
+  return {
+    fly: function() {},
+    layEggs: function() {}
+  }
+}
+let pet = getSmallPet()
+function isFish (pet: Fish | Bird) {
+  return (<Fish>pet).swim !== undefined
+}
+if (isFish(pet)) {
+  // 此处会报错
+  pet.swim()
+} else {
+  // 此处会报错
+  pet.fly()
+}
+```
+三种解决方法
+1. 类型断言
+``` ts
+// ...
+let pet = getSmallPet();
+if ((<Fish>pet).swim) {
+  (<Fish>pet).swim()
+} else {
+  (<Bird>pet).fly()
+}
+```
+2. parameterName is Type
+``` ts
+let pet = getSmallPet()
+function isFish (pet: Fish | Bird): pet is Fish {
+  return (<Fish>pet).swim !== undefined
+}
+if (isFish(pet)) {
+  pet.swim()
+} else {
+  pet.fly()
+}
+```
+3. instanceof/typeof
+``` ts
+let pet = getSmallPet()
+if (pet instanceof Fish) {
+  pet.swim()
+} else {
+  pet.fly()
+}
+```
+
+#### 构造器类型
+> [stackoverflow.com](https://stackoverflow.com/questions/38311672/generic-and-typeof-t-in-the-parameters/38311757#38311757)
+``` ts
+// Example 1
+interface ArrayConstructor {
+  new (arrayLength?: number): any[]
+  new <T>(arrayLength: number): T[]
+  new <T>(...items: T[]): T[]
+  (arrayLength?: number): any[]
+  <T>(arrayLength: number): T[]
+  <T>(...items: T[]): T[]
+  isArray(arg: any): arg is Array<any>
+  readonly prototype: Array<any>
+}
+// Example 2
+class MyManager<T> {
+  constructor(private cls: { new(): T }) {
+    this.cls = cls
+  }
+  createInstance(): T {
+    return new this.cls()
+  }
+}
+class MyClass {}
+let test = new MyManager(MyClass)
 ```
 
 #### 类型推论
@@ -604,6 +693,17 @@ declare var d3: D3.Base;
 ```
 
 #### Decorators
+> 装饰器是一种特殊类型的声明，它能够被附加到类声明，方法， 访问符，属性或参数上。 装饰器使用 @expression这种形式，expression求值后必须为一个函数，它会在运行时被调用，被装饰的声明信息做为参数传入。[详细文档](http://es6.ruanyifeng.com/#docs/decorator)
+``` ts
+// tsconfig.json
+// 开启装饰器特性
+{
+  'compilerOptions': {
+    'target': 'ES5',
+    'experimentalDecorators': true
+  }
+}
+```
 
 #### JSX
 > [详细文档](http://www.typescriptlang.org/docs/handbook/jsx.html)
@@ -636,7 +736,22 @@ let o: Observable<number>;
 o.map(x => x.toFixed());
 ```
 declare global是什么
+return class extends SuperClass { /* ... */ }
+'arg is Array<any>'
+https://www.tslang.cn/docs/handbook/declaration-merging.html底部
 三斜杆和import的区别
+``` ts
+// myModules.d.ts
+// In a .d.ts file or .ts file that is not a module:
+declare module "SomeModule" {
+    export function fn(): string;
+}
+
+// myOtherModule.ts
+/// <reference path="myModules.d.ts" />
+import * as m from "SomeModule";
+```
+
 
 
 ### 参考
