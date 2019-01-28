@@ -1,6 +1,6 @@
 ---
-title:  "Typescript导读"
-date:   2018-01-03 14:24:00
+title:  "Typescript学习笔记--基础篇"
+date:   2018-01-18 14:24:00
 categories: [blog]
 tags: [typescript]
 ---
@@ -9,6 +9,26 @@ tags: [typescript]
 > 大家应该都听说过Typescript是Javascript的超集。总的来说呢，它是一个编译时框架，而非运行时框架，也就是说不管平时写法变了多少，最终输出的依然是标准js，它主要是给JS提供了类型系统，为JS注入了很多面向对象的思想，顺带把转译ECMAScript 6+的事也做了。
 
 ### 知识点汇总
+- 常用类型
+- 类型别名
+- 数组（三种方式）
+- 元组
+- 函数（三种方式）
+- 枚举
+- 接口
+- 类
+- 抽象类
+- 泛型
+- 类型断言（两种方式）
+- 类型推论
+- 构造器类型
+- 声明合并
+- Modules
+- Namespaces
+- 声明文件
+- 三斜杠指令
+- tsconfig配置
+
 #### 常用类型
 > [基本类型](http://www.typescriptlang.org/docs/handbook/basic-types.html)
 [进阶类型](http://www.typescriptlang.org/docs/handbook/advanced-types.html)  
@@ -31,10 +51,6 @@ function v (): void {
 function error (message: string): never {
   throw new Error(message)
 }
-// (K extends keyof T)表示K必须是T的keys中的一员
-function getProperty<T, K extends keyof T> (o: T, name: K): T[K] {
-  return o[name] // o[name] is of type T[K]
-}
 ```
 ``` ts
 interface Point {
@@ -55,6 +71,8 @@ let p: Point3d & NamedPoint = {
   name: 'pt'
 }
 ```
+
+#### 类型别名
 ``` ts
 // 类型别名
 type Name = string
@@ -71,185 +89,72 @@ function getName (n: NameOrResolver): Name {
   }
 }
 ```
-``` ts
-interface Maper<T> {
-  [key: string]: T
-}
-let obj: Maper<number>
-obj = { 'age': 1 }
-let keys: keyof Maper<number> // 相当于keys: string
-keys = 'age'
-let value: Maper<number>['foo']// 相当于value: number
-value = 1
-```
-``` ts
-interface Person {
-  name: string,
-  age: number
-}
-type Readonlyer<T> = {
-    readonly [P in keyof T]: T[P]
-}
-type Partialer<T> = {
-    [P in keyof T]?: T[P]
-}
-type PersonPartial = Partialer<Person>
-// 相当于
-type PersonPartial = {
-  name?: string,
-  age?: number
-}
-type ReadonlyPerson = Readonlyer<Person>
-// 相当于
-type ReadonlyPerson = {
-  readonly name: string,
-  readonly age: number
-}
-```
-``` ts
-// extends表示K继承T，类继承大家都能理解
-type Picker<T, K extends keyof T> = {
-    [P in K]: T[P]
-}
-// (K extends string)表示K继承string，也就是说最终值满足K就一定满足string，满足string却不一定满足K
-type Recorder<K extends string, T> = {
-    [P in K]: T
-}
-type ThreeStringProps = Recorder<'prop1' | 'prop2' | 'prop3', string>
-let three: ThreeStringProps = {
-  prop1: 'a',
-  prop2: 'b',
-  prop3: 'c'
-}
-```
-``` ts
-// 条件类型(T extends U ? X : Y)
-// 条件类型(T extends U ? X : Y)和联合类型(X | Y)的最终结果都是X和Y的其中之一
-type TypeName<T> =
-    T extends string ? "string" :
-    T extends number ? "number" :
-    T extends boolean ? "boolean" :
-    T extends undefined ? "undefined" :
-    T extends Function ? "function" :
-    "object"
-type T0 = TypeName<string>  // "string"
-type T1 = TypeName<"a">  // "string"
-type T2 = TypeName<true>  // "boolean"
-type T3 = TypeName<() => void>  // "function"
-type T4 = TypeName<string[]>  // "object"
-```
-``` ts
-// 推断infer
-// 不管怎么推断U的类型都不能满足(T extends { a: infer U, b: infer U })时走never路线
-type Foo<T> = T extends { a: infer U, b: infer U } ? U : never
-type T10 = Foo<{ a: string, b: string }> // string
-type T11 = Foo<{ a: string, b: number }> // string | number
-```
 
-#### 类型保护
-> 类型保护可以让我们更加简单的使用联合类型
-``` ts
-class Bird {
-  fly() {}
-  layEggs() {}
-}
-class Fish {
-  swim() {}
-  layEggs() {}
-}
-function getSmallPet (): Fish | Bird {
-  return {
-    fly: function() {},
-    layEggs: function() {}
-  }
-}
-let pet = getSmallPet()
-function isFish (pet: Fish | Bird) {
-  return (<Fish>pet).swim !== undefined
-}
-if (isFish(pet)) {
-  // 此处会报错
-  pet.swim()
-} else {
-  // 此处会报错
-  pet.fly()
-}
-```
-三种解决方法
-1. 类型断言
-``` ts
-// ...
-let pet = getSmallPet();
-if ((<Fish>pet).swim) {
-  (<Fish>pet).swim()
-} else {
-  (<Bird>pet).fly()
-}
-```
-2. parameterName is Type
-``` ts
-let pet = getSmallPet()
-function isFish (pet: Fish | Bird): pet is Fish {
-  return (<Fish>pet).swim !== undefined
-}
-if (isFish(pet)) {
-  pet.swim()
-} else {
-  pet.fly()
-}
-```
-3. instanceof/typeof
-``` ts
-let pet = getSmallPet()
-if (pet instanceof Fish) {
-  pet.swim()
-} else {
-  pet.fly()
-}
-```
-
-#### 构造器类型
-> [stackoverflow.com](https://stackoverflow.com/questions/38311672/generic-and-typeof-t-in-the-parameters/38311757#38311757)
-``` ts
-// Example 1
-interface ArrayConstructor {
-  new (arrayLength?: number): any[]
-  new <T>(arrayLength: number): T[]
-  new <T>(...items: T[]): T[]
-  (arrayLength?: number): any[]
-  <T>(arrayLength: number): T[]
-  <T>(...items: T[]): T[]
-  isArray(arg: any): arg is Array<any>
-  readonly prototype: Array<any>
-}
-// Example 2
-class MyManager<T> {
-  constructor(private cls: { new(): T }) {
-    this.cls = cls
-  }
-  createInstance(): T {
-    return new this.cls()
-  }
-}
-class MyClass {}
-let test = new MyManager(MyClass)
-```
-
-#### 类型推论
-> 当没有明确指定类型时，会按照声明变量时的赋值推测
-
+#### 数组（三种方式）
 ``` typescript
-let n = 1
-n = '1'
-// 等价于
-let n: number = 1
-n = '1'
+// 数组 type[]
+let arr1: number[]
+let arr1: { n: number }[]
+// 数组泛型 Array<elemType>
+let arr2: Array<number>
+let arr2: Array<{ n: number }>
+// 数组接口
+interface NumberArray {
+  [index: number]: number
+}
+let arr: NumberArray = [0, 1, 2]
+```
 
-let n
-n = '1'
-// 等价于
-let n: any
-n = '1'
+#### 元组
+``` typescript
+let a: [string, number]
+a = ['type', 10] // OK
+a = [10, "type"] // Error
+
+// 超出元组范围时，相当于联合类型a[3]: string|number
+a[3] = 'script' // OK
+a[3] = true // Error
+```
+
+#### 函数（三种方式）
+``` typescript
+// 函数声明
+function sum1 (x: number, y: number): number {
+  return x + y
+}
+// 函数表达式 (输入类型)=>输出类型
+let sum2: (x: number, y: number) => number = function (x: number, y: number): number {
+  return x + y
+}
+// 函数表达式 接口
+interface Sum {
+  (x: number, y?: number): number
+}
+let sum3: Sum = function (x: number, y?: number): number {
+  return x + (y || 0)
+}
+```
+
+#### 枚举
+``` typescript
+enum Color {Red, Green, Blue} // 默认从0自增
+// 转译后
+var Color
+(function (Color) {
+  Color[Color["Red"] = 0] = "Red"
+  Color[Color["Green"] = 1] = "Green"
+  Color[Color["Blue"] = 2] = "Blue"
+})(Color || (Color = {}))
+
+enum Color {Red = 1, Green, Blue = 5, Black} // 自动在自定义赋值后自增
+// 转译后
+var Color
+(function (Color) {
+  Color[Color["Red"] = 1] = "Red"
+  Color[Color["Green"] = 2] = "Green"
+  Color[Color["Blue"] = 5] = "Blue"
+  Color[Color["Black"] = 6] = "Black"
+})(Color || (Color = {}))
 ```
 
 #### 接口
@@ -283,101 +188,25 @@ printPerson({ // Error 对象字面量必须保证变量完全一致
 })
 ```
 ``` typescript
-interface Alarm {
-  alert ()
+interface Person {
+  eat ()
 }
-interface Light {
-  lightOn ()
-  lightOff ()
+interface Skill {
+  singing ()
+  dance ()
 }
 // 接口可以被class实现
-class Car implements Alarm, Light {
-  alert () {
-    console.log('Car alert')
+class Jay implements Person, Skill {
+  eat () {
+    console.log('Jay is eating')
   }
-  lightOn () {
-    console.log('Car light on')
+  singing () {
+    console.log('Jay is singing')
   }
-  lightOff () {
-    console.log('Car light off')
+  dance () {
+    console.log('Jat is dancing')
   }
 }
-```
-
-#### 数组（三种方式）
-``` typescript
-// 数组 type[]
-let arr1: number[]
-let arr1: { n: number }[]
-// 数组泛型 Array<elemType>
-let arr2: Array<number>
-let arr2: Array<{ n: number }>
-// 数组接口
-interface NumberArray {
-  [index: number]: number
-}
-let arr: NumberArray = [0, 1, 2]
-```
-
-#### 函数（三种方式）
-``` typescript
-// 函数声明
-function sum1 (x: number, y: number): number {
-  return x + y
-}
-// 函数表达式 (输入类型)=>输出类型
-let sum2: (x: number, y: number) => number = function (x: number, y: number): number {
-  return x + y
-}
-// 函数表达式 接口
-interface Sum {
-  (x: number, y?: number): number
-}
-let sum3: Sum = function (x: number, y?: number): number {
-  return x + (y || 0)
-}
-```
-
-#### 类型断言（两种方式）
-``` typescript
-let sth: any = "this is a string"
-let strLength: number = (sth as string).length
-
-let sth: any = "this is a string"
-let strLength: number = (<string>sth).length
-```
-
-#### 元组
-``` typescript
-let a: [string, number]
-a = ['type', 10] // OK
-a = [10, "type"] // Error
-
-// 超出元组范围时，相当于联合类型a[3]: string|number
-a[3] = 'script' // OK
-a[3] = true // Error
-```
-
-#### 枚举
-``` typescript
-enum Color {Red, Green, Blue} // 默认从0自增
-// 转译后
-var Color
-(function (Color) {
-  Color[Color["Red"] = 0] = "Red"
-  Color[Color["Green"] = 1] = "Green"
-  Color[Color["Blue"] = 2] = "Blue"
-})(Color || (Color = {}))
-
-enum Color {Red = 1, Green, Blue = 5, Black} // 自动在自定义赋值后自增
-// 转译后
-var Color
-(function (Color) {
-  Color[Color["Red"] = 1] = "Red"
-  Color[Color["Green"] = 2] = "Green"
-  Color[Color["Blue"] = 5] = "Blue"
-  Color[Color["Black"] = 6] = "Black"
-})(Color || (Color = {}))
 ```
 
 #### 类
@@ -424,7 +253,7 @@ let greeter2: Greeter = new greeterMaker() // OK
 
 ``` typescript
 abstract class Animal {
-  abstract a: string
+  abstract color: string
   abstract makeSound(): void
   move(): void {
     console.log("roaming the earth...")
@@ -441,8 +270,61 @@ function identity<T> (arg: T): T {
 }
 ```
 
-#### 方法重载&类型合并
-> TS的强类型的初衷是提高代码可读性，减少代码风险。(2)比(1)多了2行代码，却提高了代码可读性。关于TS的声明合并策略，可以参考[详细文档](https://www.tslang.cn/docs/handbook/declaration-merging.html)
+#### 类型断言（两种方式）
+``` typescript
+let sth: any = "this is a string"
+let strLength: number = (sth as string).length
+
+let sth: any = "this is a string"
+let strLength: number = (<string>sth).length
+```
+
+#### 类型推论
+> 当没有明确指定类型时，会按照声明变量时的赋值推测
+
+``` typescript
+let n = 1
+n = '1'
+// 等价于
+let n: number = 1
+n = '1'
+
+let n
+n = '1'
+// 等价于
+let n: any
+n = '1'
+```
+
+#### 构造器类型
+> [stackoverflow.com](https://stackoverflow.com/questions/38311672/generic-and-typeof-t-in-the-parameters/38311757#38311757)
+``` ts
+// Example 1
+interface ArrayConstructor {
+  new (arrayLength?: number): any[]
+  new <T>(arrayLength: number): T[]
+  new <T>(...items: T[]): T[]
+  (arrayLength?: number): any[]
+  <T>(arrayLength: number): T[]
+  <T>(...items: T[]): T[]
+  isArray(arg: any): arg is Array<any>
+  readonly prototype: Array<any>
+}
+// Example 2
+class MyManager<T> {
+  constructor(private cls: { new(): T }) {
+    this.cls = cls
+  }
+  createInstance(): T {
+    return new this.cls()
+  }
+}
+class MyClass {}
+let test = new MyManager(MyClass)
+```
+
+#### 声明合并
+> 在多处的同名声明，TS最终会把它合成一个。TS的强类型的初衷是提高代码可读性，减少代码风险。(2)比(1)多了2行代码，却提高了代码可读性。关于TS的声明合并策略，可以参考[详细文档](https://www.tslang.cn/docs/handbook/declaration-merging.html)
 
 ``` typescript
 // (1)
@@ -481,97 +363,6 @@ interface Person {
   say (x: string): string
   say (x: string, y: string): string
 }
-```
-
-#### tsconfig配置
-> [详细文档](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html)，这里主要讲一下strict相关配置
-
-``` typescript
-{
-  "compilerOptions": {
-    "strict": true
-  }
-}
-// 相当于
-{
-  "compilerOptions": {
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-    "strictBindCallApply": true,
-    "strictNullChecks": true, // 决定null和undefined是否是其他类型的子类型
-    "strictFunctionTypes": true,
-    "strictPropertyInitialization": true // 决定class中的变量必须初始化赋值或在构造函数中赋值
-  }
-}
-```
-
-#### 声明文件
-> 当引用第三方库时，比如jQuery，它暴露了全局变量$，我们要TS规范$方法，这时需要引用jQuery的声明文件，此外TS提供了一系列浏览器环境的全局对象（JS的内置对象，DOM和BOM等）[声明文件](https://github.com/Microsoft/TypeScript/tree/master/src/lib)
-
-##### 全局变量声明
-``` ts
-// jQuery.d.ts
-declare function $ (str: string): object
-```
-``` ts
-/// <reference path='jQuery.d.ts'/>
-// 如果不先declare，TS会提示(Cannot find name '$'.)
-let $title = $('#title')
-```
-##### 模块声明
-> 上面举了jQuery全局变量$的例子，再来想象另一种场景，我们需要引入node的path模块，并且要规范其类型
-
-``` ts
-// node.d.ts
-// 简写模式，此时所以类型都为any
-declare module 'path'
-// 手写模式
-declare module 'path' {
-  export function normalize (p: string): string
-  export function join (...paths: any[]): string
-  export let sep: string
-}
-/// <reference path='node.d.ts'/>
-// 如果不先declare，TS会提示(Cannot find module 'path'.)
-import * as PATH from 'path'
-let dist = PATH.join(__dirname, '/dist')
-```
-> 当外部模块为non-javascript时
-``` ts
-declare module '*.text' {
-  const content: string
-  export default content
-}
-declare module 'json!*' {
-  const value: any
-  export default value
-}
-declare module '*.vue' {
-  import Vue from 'vue'
-  export default Vue
-}
-import fileContent from 't.text'
-import data from 'json!http://example.com/data.json'
-import component from 'c.vue'
-```
-> UMD模块
-``` ts
-// math-lib.d.ts
-export function isPrime (x: number): boolean
-export as namespace mathLib // 暴露global var，但是只能在非模块文件(没有import和export)中使用，否则会报错
-
-// index.js
-import { isPrime } from "math-lib";
-isPrime(2)
-mathLib.isPrime(2) // Error: 'mathLib' refers to a UMD global, but the current file is a module.
-```
-
-#### 三斜杠指令
-> 用来引入声明文件[详细文档](https://www.tslang.cn/docs/handbook/triple-slash-directives.html)
-
-``` ts
-/// <reference path="node.d.ts"/>
 ```
 
 #### Modules
@@ -692,28 +483,96 @@ declare namespace D3 {
 declare var d3: D3.Base;
 ```
 
-#### Decorators
-> 装饰器是一种特殊类型的声明，它能够被附加到类声明，方法， 访问符，属性或参数上。 装饰器使用 @expression这种形式，expression求值后必须为一个函数，它会在运行时被调用，被装饰的声明信息做为参数传入。[详细文档](http://es6.ruanyifeng.com/#docs/decorator)
+#### 声明文件
+> 当引用第三方库时，比如jQuery，它暴露了全局变量$，我们要TS规范$方法，这时需要引用jQuery的声明文件，此外TS提供了一系列浏览器环境的全局对象（JS的内置对象，DOM和BOM等）[声明文件](https://github.com/Microsoft/TypeScript/tree/master/src/lib)
+
+##### 全局变量声明
 ``` ts
-// tsconfig.json
-// 开启装饰器特性
+// jQuery.d.ts
+declare function $ (str: string): object
+```
+``` ts
+/// <reference path='jQuery.d.ts'/>
+// 如果不先declare，TS会提示(Cannot find name '$'.)
+let $title = $('#title')
+```
+##### 模块声明
+> 上面举了jQuery全局变量$的例子，再来想象另一种场景，我们需要引入node的path模块，并且要规范其类型
+
+``` ts
+// node.d.ts
+// 简写模式，此时所以类型都为any
+declare module 'path'
+// 手写模式
+declare module 'path' {
+  export function normalize (p: string): string
+  export function join (...paths: any[]): string
+  export let sep: string
+}
+/// <reference path='node.d.ts'/>
+// 如果不先declare，TS会提示(Cannot find module 'path'.)
+import * as PATH from 'path'
+let dist = PATH.join(__dirname, '/dist')
+```
+> 当外部模块为non-javascript时
+``` ts
+declare module '*.text' {
+  const content: string
+  export default content
+}
+declare module 'json!*' {
+  const value: any
+  export default value
+}
+declare module '*.vue' {
+  import Vue from 'vue'
+  export default Vue
+}
+import fileContent from 't.text'
+import data from 'json!http://example.com/data.json'
+import component from 'c.vue'
+```
+> UMD模块
+``` ts
+// math-lib.d.ts
+export function isPrime (x: number): boolean
+export as namespace mathLib // 暴露global var，但是只能在非模块文件(没有import和export)中使用，否则会报错
+
+// index.js
+import { isPrime } from "math-lib";
+isPrime(2)
+mathLib.isPrime(2) // Error: 'mathLib' refers to a UMD global, but the current file is a module.
+```
+
+#### 三斜杠指令
+> 用来引入声明文件，新版本TS自动会引入声明文件[详细文档](https://www.tslang.cn/docs/handbook/triple-slash-directives.html)
+
+``` ts
+/// <reference path="node.d.ts"/>
+```
+
+#### tsconfig配置
+> [详细文档](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html)，这里主要讲一下strict相关配置
+
+``` typescript
 {
-  'compilerOptions': {
-    'target': 'ES5',
-    'experimentalDecorators': true
+  "compilerOptions": {
+    "strict": true
+  }
+}
+// 相当于
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "strictBindCallApply": true,
+    "strictNullChecks": true, // 决定null和undefined是否是其他类型的子类型
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true // 决定class中的变量必须初始化赋值或在构造函数中赋值
   }
 }
 ```
-
-#### JSX
-> [详细文档](http://www.typescriptlang.org/docs/handbook/jsx.html)
-
-#### 类型兼容
-> [详细文档](http://www.typescriptlang.org/docs/handbook/type-compatibility.html)
-
-#### JSDoc注解
-> [详细文档](https://github.com/Microsoft/TypeScript/wiki/JSDoc-support-in-JavaScript)
-
 春节期间更新TS+Vue实战
 
 ### FAQ
