@@ -575,5 +575,8 @@ declare module "SomeModule" {
 import * as m from "SomeModule";
 ```
 
+6. d.ts文件中不需都是declare
+A 'declare' modifier is required for a top level declaration in a .d.ts file
+
 ### 参考
 [官方教程](https://www.tslang.cn/docs/home.html)
