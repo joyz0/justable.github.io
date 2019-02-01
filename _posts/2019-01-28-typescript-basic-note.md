@@ -442,9 +442,10 @@ declare var d3: D3.Base;
 ```
 
 #### 声明文件
-当引用第三方库时，比如jQuery，它暴露了全局变量$，我们要TS规范$方法，这时需要引用jQuery的声明文件，此外TS提供了一系列浏览器环境的全局对象（JS的内置对象，DOM和BOM等）[声明文件](https://github.com/Microsoft/TypeScript/tree/master/src/lib)
+声明文件就是为已有的事物提供声明，来告知TS它的存在，TS默认只能识别js/ts/jsx/tsx文件，当引入模块时，比如node的path模块，此时就需要为其定义一个.d.ts文件，TS才能识别它，node的一系列模块都已在@types外部包中声明。此外TS提供了一系列浏览器环境的全局对象（JS的内置对象，DOM和BOM等）[声明文件](https://github.com/Microsoft/TypeScript/tree/master/src/lib)，另外要注意.d.ts文件的top level必须declare开头。
 
 ##### 全局变量声明
+当引用第三方库时，比如jQuery，它暴露了全局变量$，我们需要告知TS并规范$方法，这时需要引用jQuery的声明文件，
 ``` ts
 // jQuery.d.ts
 declare function $ (str: string): object
@@ -455,8 +456,6 @@ declare function $ (str: string): object
 let $title = $('#title')
 ```
 ##### 模块声明
-上面举了jQuery全局变量$的例子，再来想象另一种场景，我们需要引入node的path模块，并且要规范其类型
-
 ``` ts
 // node.d.ts
 // 简写模式，此时所以类型都为any
@@ -472,7 +471,7 @@ declare module 'path' {
 import * as PATH from 'path'
 let dist = PATH.join(__dirname, '/dist')
 ```
-当外部模块为non-javascript时
+当外部模块为non-javascript时，作如下声明，TS就能识别此类文件了
 ``` ts
 declare module '*.text' {
   const content: string
@@ -535,15 +534,13 @@ mathLib.isPrime(2) // Error: 'mathLib' refers to a UMD global, but the current f
 春节期间更新TS+Vue实战
 
 ### FAQ
-1. return class extends SuperClass { /* ... */ }是什么意思？
+- return class extends SuperClass { /* ... */ }是什么意思？
 其实就是return了一个匿名类
 
-2. declare global是什么？
+- declare global是什么？
 https://www.tslang.cn/docs/handbook/declaration-merging.html底部
 
-3. TS中的this类型
-
-4. declare module/namespace有时有export有时没有
+- declare module/namespace有时有export有时没有
 ``` ts
 // map.ts
 import { Observable } from "./observable";
@@ -563,20 +560,22 @@ let o: Observable<number>;
 o.map(x => x.toFixed());
 ```
 
-5. 三斜杆和import的区别
+- 三斜杆和import有什么区别？
 ``` ts
-// myModules.d.ts
-// In a .d.ts file or .ts file that is not a module:
-declare module "SomeModule" {
-    export function fn(): string;
+// node.d.ts
+declare module 'path' {
+  export function resolve(...args: string[]): string;
 }
-// myOtherModule.ts
-/// <reference path="myModules.d.ts" />
-import * as m from "SomeModule";
+// ins.ts
+/// <reference path='node.d.ts' />
+import {resolve} from 'path'
 ```
+看上面例子，首先要明白declare是用来声明一个已有事物的，而非具体实现，在ins.ts中，如果没有reference引入（新版本TS不需要手动引入），TS会识别不了'path'。如此可以看出，reference负责引入声明，告诉TS'path'是个模块，import导入具体的path模块功能。
 
-6. d.ts文件中不需都是declare
-A 'declare' modifier is required for a top level declaration in a .d.ts file
+- 函数中的this
+
+- TS中的this类型
 
 ### 参考
 [官方教程](https://www.tslang.cn/docs/home.html)
+[TypeScript Module Declaration Vs Augmentation](http://ideasintosoftware.com/typescript-module-augmentation-vs-declaration/)
