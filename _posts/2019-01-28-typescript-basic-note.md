@@ -576,6 +576,10 @@ import {resolve} from 'path'
 
 - TS中的this类型
 
+- !:什么作用
+[链接](https://stackoverflow.com/questions/42273853/in-typescript-what-is-the-exclamation-mark-bang-operator-when-dereferenci)
+That's the non-null assertion operator. It is a way to tell the compiler "this expression cannot be null or undefined here, so don't complain about the possibility of it being null or undefined." Sometimes the type checker is unable to make that determination itself.
+
 ### 参考
 [官方教程](https://www.tslang.cn/docs/home.html)
 [TypeScript Module Declaration Vs Augmentation](http://ideasintosoftware.com/typescript-module-augmentation-vs-declaration/)
