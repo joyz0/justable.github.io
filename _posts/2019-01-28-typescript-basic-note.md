@@ -524,7 +524,7 @@ mathLib.isPrime(2) // Error: 'mathLib' refers to a UMD global, but the current f
     "noImplicitAny": true, // 在表达式和声明上有隐含的any类型时报错
     "noImplicitThis": true, // 当this表达式的值为any类型的时候，生成一个错误
     "alwaysStrict": true, // 以严格模式解析并为每个源文件生成"use strict"语句
-    "strictBindCallApply": true, // 开启对bind&call&apply方法严格检测模式
+    "strictBindCallApply": true, // 开启对bind&call&apply方法严格检测模式(new feature)
     "strictNullChecks": true, // 决定null和undefined是否是其他类型的子类型
     "strictFunctionTypes": true, // 禁用函数参数双向协变检查
     "strictPropertyInitialization": true // 决定class中的变量必须初始化赋值或在构造函数中赋值
