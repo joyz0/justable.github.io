@@ -17,7 +17,7 @@ tags: [vue]
 ### script
 - 每个 .vue 文件最多包含一个 &lt;script&gt; 块。
 - 这个脚本会作为一个 ES Module 来执行。
-- 它的默认导出应该是一个 Vue.js 的组件选项对象。也可以导出由 Vue.extend() 创建的扩展对象，但是普通对象是更好的选择。
+- 它的默认导出应该是一个 Vue.js 的组件选项对象。也可以导出由 Vue.extend() 创建的扩展对象。
 - 任何匹配 .js 文件 (或通过它的 lang 特性指定的扩展名) 的 webpack 规则都将会运用到这个 &lt;script&gt; 块的内容中
 
 ### style
