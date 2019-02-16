@@ -564,7 +564,7 @@ o.map(x => x.toFixed());
 ``` ts
 // node.d.ts
 declare module 'path' {
-  export function resolve(...args: string[]): string;
+  export function resolve(...args: string[]): string
 }
 // ins.ts
 /// <reference path='node.d.ts' />
