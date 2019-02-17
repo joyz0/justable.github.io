@@ -224,6 +224,8 @@ let greeter2: Greeter = new greeterMaker() // OK
 function identity<T> (arg: T): T {
   return arg
 }
+identity<string>('123') // OK
+identity<string>(123) // Error
 ```
 
 #### 类型断言（两种方式）
