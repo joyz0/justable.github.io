@@ -242,7 +242,7 @@ let strLength: number = (<string>sth).length
 
 ``` typescript
 let n = 1
-n = '1'
+n = '1' // Error
 // 等价于
 let n: number = 1
 n = '1'
