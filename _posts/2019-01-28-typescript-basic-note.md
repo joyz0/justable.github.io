@@ -596,21 +596,21 @@ let elm: JSX.Element
 - declare module/namespace有时有export有时没有
 ``` ts
 // map.ts
-import { Observable } from "./observable";
+import { Observable } from "./observable"
 declare module "./observable" {
   // 这里为什么没有export，declare module中export究竟作用是什么
-    interface Observable<T> {
-        map<U>(f: (x: T) => U): Observable<U>;
-    }
+  interface Observable<T> {
+    map<U>(f: (x: T) => U): Observable<U>
+  }
 }
 Observable.prototype.map = function (f) {
-    // ... another exercise for the reader
+  // ... another exercise for the reader
 }
 // consumer.ts
-import { Observable } from "./observable";
-import "./map";
-let o: Observable<number>;
-o.map(x => x.toFixed());
+import { Observable } from "./observable"
+import "./map"
+let o: Observable<number>
+o.map(x => x.toFixed())
 ```
 
 - 三斜杆和import有什么区别？
@@ -646,6 +646,37 @@ interface Dispatch<A extends Action = AnyAction> {
 }
 
 ```
+``` ts
+// path.d.ts
+declare module "path" {
+  export function normalize(p: string): string
+  export function join(...paths: any[]): string
+  export var sep: string
+}
+// index.ts
+import * as Path from "path"
+```
+上面是TS官网的一个例子，声明了path模块。
+``` ts
+// map.ts
+import { Observable } from "./observable"
+declare module "./observable" {
+  interface Observable<T> {
+    map<U>(f: (x: T) => U): Observable<U>
+  }
+}
+Observable.prototype.map = function (f) {
+  // TODO
+}
+// consumer.ts
+import { Observable } from "./observable"
+import "./map"
+let o: Observable<number>
+o.map(x => x.toFixed())
+```
+上面也是TS官网的一个例子，observable是外部库，并为observable扩展了一个map方法。  
+这两个例子分开来看的时候能理解（其实是强行理解），放在一起就无法理解了，应该是我对"declare module"的语义没有完全理解。第一个有export第二个没有export？
+突然有点理解了，"declare module"的语义对应ES6的模块，第一个例子normalize，join等都是path模块源码中的导出变量，故需要export，第二个例子目的是在Observable的原型中扩展一个map方法，并不是导出变量。
 
 ### 参考
 [官方教程](https://www.tslang.cn/docs/home.html)
