@@ -97,7 +97,7 @@ a[3] = true // Error
 ```
 
 #### 函数（三种方式）
-函数类型会比较入参类型和数量，
+函数类型会比较入参类型和数量，返回类型，只要入参类型是匹配的，那么就认为它是有效的函数类型，而不在乎参数名是否正确，实际入参个数可以小于申明的个数。
 ``` typescript
 // 函数声明
 function sum1 (x: number, y: number): number {
@@ -226,6 +226,27 @@ function identity<T> (arg: T): T {
 }
 identity<string>('123') // OK
 identity<string>(123) // Error
+```
+泛型约束
+``` typescript
+interface lenWise {
+  length: number
+}
+function loggingIdentity<T extends lenWise>(arg: T): T {
+  return arg
+}
+loggingIdentity(3) // Error T doesn't have .length
+loggingIdentity({length:1, name:"zzy"}) // OK
+```
+泛型接口
+``` ts
+interface GenericIdentityFn<T> {
+  (arg: T): T // h函数
+}
+function identity<T>(arg: T): T {
+  return arg
+}
+let myIdentity: GenericIdentityFn<number> = identity
 ```
 
 #### 类型断言（两种方式）
@@ -445,6 +466,13 @@ declare var d3: D3.Base;
 
 #### 声明文件
 声明文件就是为已有的事物提供声明，来告知TS它的存在，TS默认只能识别js/ts/jsx/tsx文件，当引入模块时，比如node的path模块，此时就需要为其定义一个.d.ts文件，TS才能识别它，node的一系列模块都已在@types外部包中声明。此外TS提供了一系列浏览器环境的全局对象（JS的内置对象，DOM和BOM等）[声明文件](https://github.com/Microsoft/TypeScript/tree/master/src/lib)，另外要注意.d.ts文件的top level必须declare开头。
+实际项目中，比如项目用到了react，我们需要安装@types/react，typescript会自动去查找并引入node_module/@type下的声明文件，无须手动导入申明。
+https://github.com/Microsoft/TypeScript/issues/9725
+https://stackoverflow.com/questions/38444279/how-should-i-use-types-with-typescript-2
+``` ts
+import * as React from 'react'
+// 同时会把@types/react引入进来
+```
 
 ##### 全局变量声明
 当引用第三方库时，比如jQuery，它暴露了全局变量$，我们需要告知TS并规范$方法，这时需要引用jQuery的声明文件，
@@ -581,6 +609,20 @@ import {resolve} from 'path'
 - !:什么作用
 [链接](https://stackoverflow.com/questions/42273853/in-typescript-what-is-the-exclamation-mark-bang-operator-when-dereferenci)
 That's the non-null assertion operator. It is a way to tell the compiler "this expression cannot be null or undefined here, so don't complain about the possibility of it being null or undefined." Sometimes the type checker is unable to make that determination itself.
+
+- A extends Action = AnyAction什么意思？
+``` ts
+interface Action<T = any> {
+  type: T
+}
+interface AnyAction extends Action {
+  [extraProps: string]: any
+}
+interface Dispatch<A extends Action = AnyAction> {
+  <T extends A>(action: T): T
+}
+
+```
 
 ### 参考
 [官方教程](https://www.tslang.cn/docs/home.html)
