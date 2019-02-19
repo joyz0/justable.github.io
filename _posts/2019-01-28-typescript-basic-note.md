@@ -520,15 +520,20 @@ import data from 'json!http://example.com/data.json'
 import component from 'c.vue'
 ```
 UMD模块
-
+``` ts
+export = React // (1)
+export as namespace React // (2)
+```
+我们通常使用这种方式进行申明，(1) is used for CommonJS and AMD module systems. You have to match the export = React with import React = require('./React')，(2) creates a global variable so it can be used without importing, but you may still import it with the import { name } from "some-library" form of import。
+[参考](https://www.e-learn.cn/content/wangluowenzhang/1066130)
 ``` ts
 // math-lib.d.ts
 export function isPrime (x: number): boolean
-export as namespace mathLib // 暴露global var，但是只能在非模块文件(没有import和export)中使用，否则会报错
+export as namespace mathLib // 暴露global var，但是只能在非模块文件(没有import和export)中使用，否则会报错？
 
 // index.js
 import { isPrime } from "math-lib";
-isPrime(2)
+isPrime(2) // OK
 mathLib.isPrime(2) // Error: 'mathLib' refers to a UMD global, but the current file is a module.
 ```
 
@@ -569,6 +574,24 @@ mathLib.isPrime(2) // Error: 'mathLib' refers to a UMD global, but the current f
 
 - declare global是什么？
 https://www.tslang.cn/docs/handbook/declaration-merging.html底部
+declare global使得我们无须import，可以直接使用
+``` ts
+// shim-tsx.d.ts
+declare global {
+  namespace JSX {
+    // tslint:disable no-empty-interface
+    interface Element extends VNode {}
+    // tslint:disable no-empty-interface
+    interface ElementClass extends Vue {}
+    interface IntrinsicElements {
+      [elem: string]: any
+    }
+  }
+}
+
+// any file
+let elm: JSX.Element
+```
 
 - declare module/namespace有时有export有时没有
 ``` ts
