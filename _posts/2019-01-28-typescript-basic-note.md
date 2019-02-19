@@ -641,6 +641,7 @@ interface Action<T = any> {
 interface AnyAction extends Action {
   [extraProps: string]: any
 }
+// = 表示泛型的默认类型
 interface Dispatch<A extends Action = AnyAction> {
   <T extends A>(action: T): T
 }
