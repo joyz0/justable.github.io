@@ -679,6 +679,9 @@ o.map(x => x.toFixed())
 这两个例子分开来看的时候能理解（其实是强行理解），放在一起就无法理解了，应该是我对"declare module"的语义没有完全理解。第一个有export第二个没有export？
 突然有点理解了，"declare module"的语义对应ES6的模块，第一个例子normalize，join等都是path模块源码中的导出变量，故需要export，第二个例子目的是在Observable的原型中扩展一个map方法，并不是导出变量。
 
+- react + ts实战
+https://github.com/piotrwitek/react-redux-typescript-guide
+
 ### 参考
 [官方教程](https://www.tslang.cn/docs/home.html)
 [TypeScript Module Declaration Vs Augmentation](http://ideasintosoftware.com/typescript-module-augmentation-vs-declaration/)
