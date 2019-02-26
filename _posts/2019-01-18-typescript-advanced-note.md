@@ -243,7 +243,10 @@ if (pet instanceof Fish) {
 #### JSDoc注解
 [详细文档](https://github.com/Microsoft/TypeScript/wiki/JSDoc-support-in-JavaScript)
 
-### Typescript+Vue实战
+### Typescript+React/Vue实战
+<https://github.com/justable/vue-ts-startkit>  
+<https://github.com/justable/react-ts-startkit>   
+[typescript-react:vue.ppt](/assets/ppt/typescript-react:vue.key)
 
 ### 参考
 [官方教程](https://www.tslang.cn/docs/home.html)

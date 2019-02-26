@@ -248,6 +248,18 @@ function identity<T>(arg: T): T {
 }
 let myIdentity: GenericIdentityFn<number> = identity
 ```
+泛型默认值
+```ts
+interface Action<T = any> {
+  type: T
+}
+interface AnyAction extends Action {
+  [extraProps: string]: any
+}
+interface Dispatch<A extends Action = AnyAction> {
+  <T extends A>(action: T): T
+}
+```
 
 #### 类型断言（两种方式）
 ``` typescript
@@ -566,7 +578,6 @@ mathLib.isPrime(2) // Error: 'mathLib' refers to a UMD global, but the current f
   }
 }
 ```
-春节期间更新TS+Vue实战
 
 ### FAQ
 - return class extends SuperClass { /* ... */ }是什么意思？
@@ -588,29 +599,8 @@ declare global {
     }
   }
 }
-
 // any file
 let elm: JSX.Element
-```
-
-- declare module/namespace有时有export有时没有
-``` ts
-// map.ts
-import { Observable } from "./observable"
-declare module "./observable" {
-  // 这里为什么没有export，declare module中export究竟作用是什么
-  interface Observable<T> {
-    map<U>(f: (x: T) => U): Observable<U>
-  }
-}
-Observable.prototype.map = function (f) {
-  // ... another exercise for the reader
-}
-// consumer.ts
-import { Observable } from "./observable"
-import "./map"
-let o: Observable<number>
-o.map(x => x.toFixed())
 ```
 
 - 三斜杆和import有什么区别？
@@ -633,20 +623,7 @@ import {resolve} from 'path'
 [链接](https://stackoverflow.com/questions/42273853/in-typescript-what-is-the-exclamation-mark-bang-operator-when-dereferenci)
 That's the non-null assertion operator. It is a way to tell the compiler "this expression cannot be null or undefined here, so don't complain about the possibility of it being null or undefined." Sometimes the type checker is unable to make that determination itself.
 
-- A extends Action = AnyAction什么意思？
-``` ts
-interface Action<T = any> {
-  type: T
-}
-interface AnyAction extends Action {
-  [extraProps: string]: any
-}
-// = 表示泛型的默认类型
-interface Dispatch<A extends Action = AnyAction> {
-  <T extends A>(action: T): T
-}
-
-```
+- declare module/namespace有时有export有时没有
 ``` ts
 // path.d.ts
 declare module "path" {
