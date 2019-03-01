@@ -1,3 +1,10 @@
+---
+title:  "Learning EN plan"
+date:   2018-02-28 16:11:00
+categories: [blog]
+tags: [EN]
+---
+
 ### 学习目标
 
 1. 读，阅读第一手外国书籍
