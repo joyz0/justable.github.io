@@ -1,10 +1,3 @@
----
-title:  "Learning English plan"
-date:   2018-02-28 16:11:00
-categories: [blog]
-tags: [English]
----
-
 ### 学习目标
 
 1. 读，阅读第一手外国书籍
@@ -18,11 +11,19 @@ tags: [English]
 
 《英语学习指南》
 
+《英语语法手册》
+
+《英语学习指南》
+
 《BBC基础英语》
 
 《BBC进阶英语》
 
-剑桥雅思考试全真试题解析系列（剑桥大学）外语教学与研究出版社
+《英语拼写轻松学》
+
+《牛津简明英语词典第9版》
+
+《剑桥雅思考试全真试题解析系列（剑桥大学）》外语教学与研究出版社
 
 《哈佛书架》
 
@@ -110,6 +111,5 @@ Oxford Advanced Learner's Dictionaryof Current English with Chinese Translation�
 
 
 读 → 科技人员多读短文（报刊、论文），少量读些深的（Tolstoy、Holmes→Wells文科精读、Feynman理科精读→Russell、Plato）。
-
 
 写 → 背下50～100篇NCE，对写地道英语有很大帮助。
