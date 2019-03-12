@@ -93,11 +93,7 @@ Oxford Advanced Learner's Dictionaryof Current English with Chinese Translation�
 
 11. 如果做不好第一条后面10条全部失效。
 
-
-
 精听NCE2、仿诵NCE2、默写NCE2、泛读OXford Bookworm、泛听OXford Bookworm
-
-
 
 第一步、列出所有的“生词”，假如是上面的spot, accumulate, be obliged to, investigate和extraordinarily五个，注上音标，标明意义。 
 
