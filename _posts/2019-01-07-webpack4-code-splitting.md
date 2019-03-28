@@ -18,7 +18,7 @@ tags: [webpack4]
 2. 防止重复：使用<a href="https://webpack.js.org/plugins/split-chunks-plugin/" target="_blank">SplitChunksPlugin</a>。
 3. 动态导入：通过模块的内联函数调用来分离代码，比如import()。
 
-#### 入口起点
+#### 方法一：入口起点
 &#160; &#160; &#160; &#160;该方法就是通过配置entry来实现代码分离，看下面这个例子 
 ##### index.js(分离前)
 ```javascript
@@ -87,7 +87,7 @@ index.bundle.js  552 KiB   index  [emitted]  index
 1. 如果入口chunks中包含重复的modules，那些modules都会被引入到各个bundle中。
 2. 这种方法不够灵活，并且不能依据程序逻辑进行动态拆分代码。
 
-#### 防止重复
+#### 方法二：防止重复
 &#160; &#160; &#160; &#160;使用<a href="https://webpack.js.org/plugins/split-chunks-plugin/" target="_blank">SplitChunksPlugin</a>可以把重复的依赖输出到指定的chunk中，继续沿用上面的例子  
 ##### webpack.config.js(修改后)
 ```javascript
@@ -115,7 +115,7 @@ vendors~hello~index.bundle.js   547 KiB  vendors~hello~index  [emitted]  vendors
 - <a href="https://webpack.js.org/loaders/bundle-loader/" target="_blank">bundle-loader</a>: 用于分离代码和延迟加载生成的bundle
 - <a href="https://github.com/gaearon/promise-loader" target="_blank">promise-loader</a>: 类似于bundle-loader，但是用的是promises
 
-#### 动态导入
+#### 方法三：动态导入
 &#160; &#160; &#160; &#160;动态导入就是通过<a href="https://github.com/tc39/proposal-dynamic-import" target="_blank">import()</a>或<a href="https://webpack.js.org/api/module-methods/#require-ensure" target="_blank">require.ensure</a>来动态引入依赖，沿用上面的例子
 ##### webpack.config.js(修改后)
 ```javascript

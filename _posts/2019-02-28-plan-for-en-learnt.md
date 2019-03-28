@@ -1,5 +1,5 @@
 ---
-title:  "Learning EN plan"
+title:  "Plan for EN learnt"
 date:   2018-02-28 16:11:00
 categories: [blog]
 tags: [EN]
