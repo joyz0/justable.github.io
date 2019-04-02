@@ -662,3 +662,4 @@ https://github.com/piotrwitek/react-redux-typescript-guide
 ### 参考
 [官方教程](https://www.tslang.cn/docs/home.html)
 [TypeScript Module Declaration Vs Augmentation](http://ideasintosoftware.com/typescript-module-augmentation-vs-declaration/)
+[Typescript-Book](https://basarat.gitbooks.io/typescript/content/)

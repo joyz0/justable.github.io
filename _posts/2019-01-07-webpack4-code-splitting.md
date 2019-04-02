@@ -202,11 +202,11 @@ webpack识别到webpackPreload: true时，会在index.html的head中append&lt;li
 
 ### SplitChunksPlugin
 &#160; &#160; &#160; &#160;此插件负责webpack4的chunk分离，不作任何配置即可享用此插件提供的默认配置方案，我们也可以在配置文件的optimization.splitChunks中去覆盖默认配置，它替代了以前的CommonsChunkPlugin插件。
-webpack会基于以下4个条件自动把目标代码块分离成chunk：
-1. 新的chunk能够被共享或是来自node_modules的模块
-2. 新的chunk文件压缩前体积大于30kb
-3. 按需加载代码块的请求数量应该<=5
-4. 页面初始化时加载代码块的请求数量应该<=3
+webpack自动split chunks是有几个限制条件的：
+1. 新产出的chunk是要被共享的或是来自node_modules的模块
+2. 新产出的chunk文件压缩前体积得大于30kb
+3. 并行请求chunk的数量不能超出5个
+4. 入口文件时加载代码块的请求数量应该<=3
 为了满足条件条件3和4，bigger chunks是更好的选择
 
 ### 默认配置
@@ -266,5 +266,5 @@ optimization: {
 
 [1]: https://webpack.js.org/guides/code-splitting/
 [2]: https://webpack.js.org/plugins/split-chunks-plugin/
-
+[3]: https://www.cnblogs.com/wmhuang/p/8967639.html
 
