@@ -158,7 +158,8 @@ abstract class Animal {
 ```
 
 #### 类型保护
-类型保护可以让我们更加简单的使用联合类型
+类型保护可以让我们更加简单的使用联合类型  
+Type Guards allow you to narrow down the type of an object within a conditional block.
 
 ``` ts
 class Bird {

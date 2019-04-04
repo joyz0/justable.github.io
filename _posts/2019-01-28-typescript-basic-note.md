@@ -454,6 +454,15 @@ namespace Shapes {
 import polygons = Shapes.Polygons
 let sq = new polygons.Square()
 ```
+Copying both the Type + Value
+```ts
+namespace importing {
+    export class Foo { }
+}
+// 必须import，不能let/const，这涉及到Variable Declaration Space(VDS)和Type Declaration Space(TDS)的区别，let/const只能copy VDS，import 能 copy VDS + TDS
+import Bar = importing.Foo;
+var bar: Bar; // Okay
+```
 declare namespace可以用来声明第三方插件（非TS插件）的api，这里会和上面的declare module混淆，当通过模块加载器加载时用declare module，当页面用script标签加载时用declare namespace。
 ``` ts
 // D3.d.ts
@@ -493,6 +502,7 @@ import * as React from 'react'
 declare function $ (str: string): object
 ```
 ``` ts
+// 此步非必须，d.ts文件会自动引入
 /// <reference path='jQuery.d.ts'/>
 // 如果不先declare，TS会提示(Cannot find name '$'.)
 let $title = $('#title')
