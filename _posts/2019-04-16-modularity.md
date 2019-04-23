@@ -18,5 +18,5 @@ webpack是编译时确定模块的依赖关系，并在webapck的运行时文件
 ### 一个组件被多个文件import...
 useState和useEffect在react渲染主程序中是靠数组维系运作的，依靠内部维护的cursor(数组下标)进行一一对应，所以对调用的顺序和稳定性有严格要求。每次rerender时cursor置0，这儿有个疑惑，是整个页面所有的update称作一次rerender还是一个组件的update称作一次rerender，之所以有这个困惑还是源自模块化，useState和useEffect被多个组件使用，内部又维护了全局变量，那这个cursor是以整个页面渲染为单位还是以单组件渲染为单位？
 
-[1]: (http://www.cnblogs.com/jiasm/p/9160691.html)
-[2]: (https://www.jianshu.com/p/b52b6996d612)
+[1]: http://www.cnblogs.com/jiasm/p/9160691.html
+[2]: https://www.jianshu.com/p/b52b6996d612

@@ -165,5 +165,5 @@ VS Code可以在当node program时自动进入debug模式
 - ${command:commandID} - command variables
 - ${input:variableID} - input variables
 
-[https://code.visualstudio.com/docs/nodejs/nodejs-debugging](1)
-[https://code.visualstudio.com/docs/editor/variables-reference](2)
+[1]: https://code.visualstudio.com/docs/nodejs/nodejs-debugging
+[2]: https://code.visualstudio.com/docs/editor/variables-reference
