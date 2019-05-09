@@ -1,6 +1,6 @@
 ---
 title:  "个人博客搭建指南"
-date:   2018-01-03 14:24:00
+date:   2019-01-03 14:24:00
 categories: [blog]
 tags: [blog]
 ---

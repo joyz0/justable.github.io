@@ -1,6 +1,6 @@
 ---
 title:  "Typescript学习笔记--基础篇"
-date:   2018-01-28 15:14:00
+date:   2019-01-28 15:14:00
 categories: [blog]
 tags: [typescript]
 ---
@@ -612,7 +612,16 @@ declare global {
 // any file
 let elm: JSX.Element
 ```
-
+- obj: any和obj: {}的区别
+```ts
+let obj: {} // 表示obj是个对象
+obj = 1 // Ok
+obj = true // Ok
+obj = [] // Ok
+obj = 'str' // Ok
+obj = null // Error
+obj = undefine // Error
+```
 - 三斜杆和import有什么区别？
 ``` ts
 // node.d.ts

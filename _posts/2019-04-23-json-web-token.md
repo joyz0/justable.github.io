@@ -1,6 +1,6 @@
 ---
 title:  "Json Web Token"
-date:   2018-04-23 20:19:00
+date:   2019-04-23 20:19:00
 categories: [blog]
 tags: [JWT]
 ---

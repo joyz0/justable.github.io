@@ -1,6 +1,6 @@
 ---
 title:  "Typescript学习笔记--进阶篇"
-date:   2018-01-28 13:06:00
+date:   2019-01-28 13:06:00
 categories: [blog]
 tags: [typescript]
 ---

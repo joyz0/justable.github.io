@@ -1,6 +1,6 @@
 ---
 title:  "vue-loader"
-date:   2018-02-13 12:13:00
+date:   2019-02-13 12:13:00
 categories: [blog]
 tags: [vue]
 ---
