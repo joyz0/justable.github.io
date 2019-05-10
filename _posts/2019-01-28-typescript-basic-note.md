@@ -107,9 +107,10 @@ function sum1 (x: number, y: number): number {
 let sum2: (x: number, y: number) => number = function (x: number, y: number): number {
   return x + y
 }
-// 函数表达式 接口
+// 函数表达式 接口，可以重载
 interface Sum {
   (x: number, y?: number): number
+  (x: number): number
 }
 let sum3: Sum = function (x: number, y?: number): number {
   return x + (y || 0)
@@ -133,6 +134,8 @@ interface Person {
   readonly id: number // 只能在变量声明时赋值
   name: string
   age?: number // 可选
+  say: (s: string) => void // (1)
+  say(s: string): void // (2)等价于(1)
   [propName: string]: any // 任意属性
 }
 ```
