@@ -9,9 +9,10 @@ tags: [webpack4]
 ### 引言
 &#160; &#160; &#160; &#160;Code Splitting是webpack的重要特性之一，它允许我们把code分离到各个bundles中，好好的设计分离策略，可以提高项目对代码的利用效率，优化web项目在浏览器中的表现时显得尤为重要。
 
-### chunk VS bundle
-&#160; &#160; &#160; &#160;在webpack官方文档或是第三方文档都会频繁出现这两个词汇，一定有其他小伙伴和我有同样的困惑，就是它们有什么区别。官方说明可以参考<a href="https://webpack.js.org/glossary/" target="_blank">官方glossary</a>和<a href="https://github.com/webpack/webpack.js.org/issues/970" target="_blank">github issue</a>，不过我看完后还是一脸懵比。  
-&#160; &#160; &#160; &#160;我的理解是：它们都是代码的集合，多数情况下能互相替换，只不过侧重点有着细微区别，chunk往往在一段描述中侧重逻辑上的代码集合，bundle侧重物理代码集合，比如“我把sourceA.js和sourceB.js两个文件中的公共chuck提取到了bundle C中”这句话，我们还是能从中体会到那点区别的，又比如“该项目有三个entry chuck(bundle)”这句话，它们互相替换貌似没啥问题，不过文档中此时都会用chuck。
+### chunk VS bundle VS module
+module，chunk 和 bundle 其实就是同一份逻辑代码在不同转换场景下的取了三个名字：  
+我们直接写出来的是 module，webpack 处理时是 chunk，最后生成浏览器可以直接运行的 bundle。
+[https://juejin.im/post/5cede821f265da1bbd4b5630](https://juejin.im/post/5cede821f265da1bbd4b5630)
 
 ### 分离方法
 1. 入口起点：使用 entry 配置手动地分离代码。
@@ -147,7 +148,7 @@ getHello().then(() => {
          index.bundle.js  8.55 KiB           index  [emitted]  index
 vendors~lodash.bundle.js   547 KiB  vendors~lodash  [emitted]  vendors~lodash
 ```
-&#160; &#160; &#160; &#160;可能有人注意到了上面的<a herf="https://webpack.js.org/api/module-methods/#import-" target="_blank">webpackChunkName</a>注释，它的目的是修改chunk name，这里说下打包结果中各个title的含义，Asset：bundle名称，Size：bundle大小，Chunks：chunkIds，Chunk Names：chunk name。再说下webpack.config.js中的chunkFilename，它规定非入口的chunk文件名称。
+&#160; &#160; &#160; &#160;可能有人注意到了上面的<a herf="https://webpack.js.org/api/module-methods/#import-" target="_blank">webpackChunkName</a>注释，它的目的是修改chunk name，这里说下打包结果中各个title的含义，Asset：bundle名称，Size：bundle大小，Chunks：chunkIds，Chunk Names：chunk name，没有列在entry的则没有name。再说下webpack.config.js中的chunkFilename，它规定非入口的chunk文件名称。
 
 ### Prefetching/Preloading modules(4.6.0+)
 - prefetch: resource is probably needed for some navigation in the future。
