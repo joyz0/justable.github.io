@@ -41,7 +41,6 @@ function getName (n: NameOrResolver): Name {
 #### 进阶类型
 TS类型系统的进阶用法
 ``` ts
-// (K extends keyof T)表示K必须是T的keys中的一员
 function getProperty<T, K extends keyof T> (o: T, name: K): T[K] {
   return o[name] // o[name] is of type T[K]
 }
@@ -82,7 +81,6 @@ type ReadonlyPerson = {
 }
 ```
 ``` ts
-// extends表示K继承T，类继承大家都能理解
 type Picker<T, K extends keyof T> = {
     [P in K]: T[P]
 }
@@ -251,3 +249,32 @@ if (pet instanceof Fish) {
 
 ### 参考
 [官方教程](https://www.tslang.cn/docs/home.html)
+
+### FAQ
+- keyof VS in VS extends
+例子一
+假如T={a: 1, b: 2}，那么keyof T表示'a' | 'b'，K必须符合T，所以K可以是'a'，但不可以是'a' | 'b' | 'c'
+```ts
+function setProperty<T, K extends keyof T>(obj: T, key: K, value: T[K]) {
+    obj[key] = value;
+}
+```
+例子二
+假如T={a: 1, b: 2}，那么keyof T表示'a' | 'b'，K必须符合T，所以K可以是'a'，但不可以是'a' | 'b' | 'c'，P为循环K的每一项
+```ts
+type Picker<T, K extends keyof T> = {
+    [P in K]: T[P]
+}
+```
+例子三
+```ts
+interface Person {
+    name: string;
+    age: number;
+    location: string;
+}
+
+type K1 = keyof Person; // "name" | "age" | "location"
+type K2 = keyof { [x: string]: Person };  // string
+```
+总结为，keyof取右侧对象的key组成联合类型，in循环右侧联合类型并将每项赋于左侧，extends表示左侧必须是右侧的子集
