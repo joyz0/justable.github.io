@@ -277,4 +277,12 @@ interface Person {
 type K1 = keyof Person; // "name" | "age" | "location"
 type K2 = keyof { [x: string]: Person };  // string
 ```
-总结为，keyof取右侧对象的key组成联合类型，in循环右侧联合类型并将每项赋于左侧，extends表示左侧必须是右侧的子集
+例子四
+```ts
+type Exclude<T, U> = T extends U ? never : T;
+type AB = 'a' | 'b'
+type BC = 'b' | 'c'
+type Demo = Exclude<AB, BC> // => type Demo = 'a'
+(A extends U ? never : T) | (B extends U ? never : T)
+```
+总结为，keyof取右侧对象的key组成联合类型，in循环右侧联合类型并将每项赋于左侧，extends表示左侧必须是右侧的子集，如果右侧是联合类型，则数量小之，如果右侧是对象，则key数量多之
