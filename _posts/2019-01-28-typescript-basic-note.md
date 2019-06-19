@@ -645,6 +645,11 @@ import {resolve} from 'path'
 [链接](https://stackoverflow.com/questions/42273853/in-typescript-what-is-the-exclamation-mark-bang-operator-when-dereferenci)
 That's the non-null assertion operator. It is a way to tell the compiler "this expression cannot be null or undefined here, so don't complain about the possibility of it being null or undefined." Sometimes the type checker is unable to make that determination itself.
 
+- object VS {} VS Object
+object表示非原始类型，也就是除number，string，boolean，symbol，null或undefined之外的类型。  
+{}表示一种值的结构，可以理解为interface的简写方式
+Object表示
+
 - declare module/namespace有时有export有时没有
 ``` ts
 // path.d.ts
