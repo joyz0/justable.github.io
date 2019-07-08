@@ -11,6 +11,7 @@ https://codepen.io/Justable/pen/PrbVXb
 Suspense的子组件异常throw promise -> Suspense componentDidCatch -> error resolved -> Suspence setState rerender -> 子组件rerender -> 子组件显示数据
 
 - static getDerivedStateFromProps()的应用
+当一个组件需要根据传入的props来更新内部state时，可以使用该方法
 
 - getSnapshotBeforeUpdate()的应用
 https://codepen.io/Justable/pen/QXKXzR

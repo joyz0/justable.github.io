@@ -641,6 +641,9 @@ import {resolve} from 'path'
 
 - TS中的this类型
 
+- <reference path="..." />和<reference types="..." />
+前者表示一个非声明文件依赖某个声明文件，后者表示一个声明文件依赖某一个包中的声明文件，比如<reference types="node" />表明这个声明文件使用了 @types/node/index.d.ts里面声明的名字
+
 - !:什么作用
 [链接](https://stackoverflow.com/questions/42273853/in-typescript-what-is-the-exclamation-mark-bang-operator-when-dereferenci)
 That's the non-null assertion operator. It is a way to tell the compiler "this expression cannot be null or undefined here, so don't complain about the possibility of it being null or undefined." Sometimes the type checker is unable to make that determination itself.
