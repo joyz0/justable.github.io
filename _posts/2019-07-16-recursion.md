@@ -87,4 +87,20 @@ factorial(40);
 ```
 第一次调用创建了1个变量，第二次2个，第三次4个，每次以指数形式增长，很容易导致程序瘫痪。
 
+### 如何理解递归中的return
+首先，把每次递归想象成一个节点，每个return只在那个节点中起作用，告诉程序不用执行我这节点后的步骤了。如何理解最外层的return root返回什么，只需假设只发生了一次递归。
+```java
+TreeNode insertIntoBST(TreeNode root, int val) {
+    // 找到空位置插入新节点
+    if (root == null) return new TreeNode(val);
+    // if (root.val == val)
+    //     BST 中一般不会插入已存在元素
+    if (root.val < val) 
+        root.right = insertIntoBST(root.right, val);
+    if (root.val > val) 
+        root.left = insertIntoBST(root.left, val);
+    return root;
+}
+```
+
 

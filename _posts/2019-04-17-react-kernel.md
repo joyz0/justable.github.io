@@ -5,6 +5,11 @@ categories: [blog]
 tags: [react]
 ---
 
+### 概述
+基于vdom机制的前端框架，它们的渲染原理大同小异，可以表示为
+mount阶段：组件 --编译-> vdom -> mount
+update阶段：组件 --编译-> vdom --diff-> patch
+
 ### 目录介绍
 /packages 核心代码区  
 /packages/react React  
