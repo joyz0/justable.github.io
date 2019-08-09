@@ -7,7 +7,7 @@ tags: [webpack4]
 > 学习下webpack4的CodeSplitting
 
 ### 引言
-&#160; &#160; &#160; &#160;Code Splitting是webpack的重要特性之一，它允许我们把code分离到各个bundles中，好好的设计分离策略，可以提高项目对代码的利用效率，优化web项目在浏览器中的表现时显得尤为重要。
+Code Splitting是webpack的重要特性之一，它允许我们把code分离到各个bundles中，好好的设计分离策略，可以提高项目对代码的利用效率，优化web项目在浏览器中的表现时显得尤为重要。
 
 ### chunk VS bundle VS module
 module，chunk 和 bundle 其实就是同一份逻辑代码在不同转换场景下的取了三个名字：  
@@ -15,16 +15,17 @@ module，chunk 和 bundle 其实就是同一份逻辑代码在不同转换场景
 [https://juejin.im/post/5cede821f265da1bbd4b5630](https://juejin.im/post/5cede821f265da1bbd4b5630)
 
 ### 分离方法
+有下面3种分离策略
 1. 入口起点：使用 entry 配置手动地分离代码。
-2. 防止重复：使用<a href="https://webpack.js.org/plugins/split-chunks-plugin/" target="_blank">SplitChunksPlugin</a>。
+2. 防止重复：使用[SplitChunksPlugin][2]。
 3. 动态导入：通过模块的内联函数调用来分离代码，比如import()。
 
 #### 方法一：入口起点
-&#160; &#160; &#160; &#160;该方法就是通过配置entry来实现代码分离，看下面这个例子 
-##### index.js(分离前)
-```javascript
+该方法的核心思想是不修改SplitChunksPlugin的默认配置，依靠人为组织代码文件，配置entry达到分离效果，看下面这个例子 
+##### 分离前
+```js
+// index.js
 import _ from 'lodash'
-
 function hello () {
   console.log(
     _.join(['Hello', 'world!'], ' ')
@@ -35,25 +36,30 @@ console.log(
   _.join(['I', 'am', 'index!'], ' ')
 )
 ```
-##### webpack.config.js(分离前)
-```javascript
+```js
+// webpack.config.js
 {
   entry: {
     index: './src/index.js'
   }
 }
 ```
-##### index.js(分离后)
-```javascript
+打包结果
+```
+          Asset     Size  Chunks             Chunk Names
+index.bundle.js  551 KiB   index  [emitted]  index
+```
+##### 分离后
+```js
+// index.js
 import _ from 'lodash'
 import './hello.js'
-
 console.log(
   _.join(['I', 'am', 'index!'], ' ')
 )
 ```
-##### webpack.config.js(分离后)
-```javascript
+```js
+// webpack.config.js
 {
   entry: {
     index: './src/index.js',
@@ -61,37 +67,31 @@ console.log(
   }
 }
 ```
-##### hello.js
-```javascript
+```js
+// hello.js
 import _ from 'lodash'
-
 function hello () {
   console.log(
     _.join(['Hello', 'world!'], ' ')
   )
 }
-
 hello()
 ```
-##### 打包结果(分离前)
-```
-          Asset     Size  Chunks             Chunk Names
-index.bundle.js  551 KiB   index  [emitted]  index
-```
-##### 打包结果(分离后)
+打包结果
 ```
           Asset     Size  Chunks             Chunk Names
 hello.bundle.js  551 KiB   hello  [emitted]  hello
 index.bundle.js  552 KiB   index  [emitted]  index
 ```
-&#160; &#160; &#160; &#160;经过分离，hello功能放到了单独的文件中，但是两个文件都引用了lodash，导致最终生成的2个bundle都包含了lodash的代码。反映了此方法的2个问题：
-1. 如果入口chunks中包含重复的modules，那些modules都会被引入到各个bundle中。
+经过分离，hello功能放到了单独的文件中，但是因为SplitChunksPlugin的默认配置只针对async模块，最终导致生成的2个bundle都包含了lodash的代码。反映了此方法的2个问题：
+1. 如果不同入口文件中包含相同的第三方库，这些库都会被各个引入到bundle中。
 2. 这种方法不够灵活，并且不能依据程序逻辑进行动态拆分代码。
 
 #### 方法二：防止重复
-&#160; &#160; &#160; &#160;使用<a href="https://webpack.js.org/plugins/split-chunks-plugin/" target="_blank">SplitChunksPlugin</a>可以把重复的依赖输出到指定的chunk中，继续沿用上面的例子  
-##### webpack.config.js(修改后)
-```javascript
+该方法的核心思想是修改SplitChunksPlugin的默认配置，根据实际需求自定义配置，继续沿用上面的例子  
+##### 修改后
+```js
+// webpack.config.js
 {
   entry: {
     index: './src/index.js',
@@ -104,22 +104,23 @@ index.bundle.js  552 KiB   index  [emitted]  index
   }
 }
 ```
-##### 打包结果
+打包结果
 ```
                         Asset      Size               Chunks             Chunk Names
               hello.bundle.js   6.9 KiB                hello  [emitted]  hello
               index.bundle.js  7.72 KiB                index  [emitted]  index
 vendors~hello~index.bundle.js   547 KiB  vendors~hello~index  [emitted]  vendors~hello~index
 ```
-&#160; &#160; &#160; &#160;可以看到lodash被分离到了单独的bundle中。还有一些对于代码分离很有帮助的插件和loaders
-- <a href="https://webpack.js.org/plugins/mini-css-extract-plugin/" target="_blank">mini-css-extract-plugin</a>: 用于分离css
-- <a href="https://webpack.js.org/loaders/bundle-loader/" target="_blank">bundle-loader</a>: 用于分离代码和延迟加载生成的bundle
-- <a href="https://github.com/gaearon/promise-loader" target="_blank">promise-loader</a>: 类似于bundle-loader，但是用的是promises
+可以看到lodash被分离到了单独的bundle中。还有一些对于代码分离很有帮助的插件和loaders
+- [mini-css-extract-plugin](https://webpack.js.org/plugins/mini-css-extract-plugin/): 用于分离css
+- [bundle-loader](https://webpack.js.org/loaders/bundle-loader/): 用于分离代码和延迟加载生成的bundle
+- [promise-loader](https://github.com/gaearon/promise-loader): 类似于bundle-loader，但是用的是promises
 
 #### 方法三：动态导入
-&#160; &#160; &#160; &#160;动态导入就是通过<a href="https://github.com/tc39/proposal-dynamic-import" target="_blank">import()</a>或<a href="https://webpack.js.org/api/module-methods/#require-ensure" target="_blank">require.ensure</a>来动态引入依赖，沿用上面的例子
-##### webpack.config.js(修改后)
-```javascript
+该方法的核心思想是不修改SplitChunksPlugin的默认配置，利用SplitChunksPlugin默认针对async的特点，使用[import()][4]或[require.ensure][5]异步管理第三方库，沿用上面的例子
+##### 修改后
+```js
+// webpack.config.js
 {
   entry: {
     index: './src/index.js'
@@ -131,8 +132,8 @@ vendors~hello~index.bundle.js   547 KiB  vendors~hello~index  [emitted]  vendors
   }
 }
 ```
-##### index.js(修改后)
-```javascript
+```js
+// index.js
 function getHello() {
   return import(/* webpackChunkName: "lodash" */ 'lodash').then(({ default: _ }) => {
     console.log(_.join(['Hello', 'world!'], ' '))
@@ -142,13 +143,13 @@ getHello().then(() => {
   console.log(_.join(['I', 'am', 'index!'], ' '))
 })
 ```
-##### 打包结果
+打包结果
 ```
                    Asset      Size          Chunks             Chunk Names
          index.bundle.js  8.55 KiB           index  [emitted]  index
 vendors~lodash.bundle.js   547 KiB  vendors~lodash  [emitted]  vendors~lodash
 ```
-&#160; &#160; &#160; &#160;可能有人注意到了上面的<a herf="https://webpack.js.org/api/module-methods/#import-" target="_blank">webpackChunkName</a>注释，它的目的是修改chunk name，这里说下打包结果中各个title的含义，Asset：bundle名称，Size：bundle大小，Chunks：chunkIds，Chunk Names：chunk name，没有列在entry的则没有name。再说下webpack.config.js中的chunkFilename，它规定非入口的chunk文件名称。
+可能有人注意到了上面的[webpackChunkName][6]注释，它的目的是修改chunk name，这里说下打包结果中各个title的含义，Asset：bundle名称，Size：bundle大小，Chunks：chunkIds，Chunk Names：chunk name，没有列在entry的则没有name。
 
 ### Prefetching/Preloading modules(4.6.0+)
 - prefetch: resource is probably needed for some navigation in the future。
@@ -156,8 +157,8 @@ vendors~lodash.bundle.js   547 KiB  vendors~lodash  [emitted]  vendors~lodash
 
 #### 一个prefetch例子
 比如有3个文件，分别是index.html，index.js和modal.js，index.html中有个button，点击后弹框，也就是要去加载modal.js
-##### index.js
-```javascript
+```js
+// index.js
 async showModal () {
   const modal = import(/* webpackPrefetch: true */ 'modal.js')
   modal.show()
@@ -169,23 +170,23 @@ webpack检测到webpackPrefetch: true时，会在index.html的head中append&lt;l
 
 #### 一个preload例子
 想象一个场景，有一个图标可视化组件ChartComponent，它依赖了ECharts库
-##### ChartComponent.js
-```javascript
+```js
+// ChartComponent.js
 async initComponent () {
   const ECharts = import(/* webpackPreload: true */ 'ECharts.js')
   ECharts.init()
 }
 export default initComponent
 ```
-##### index.js
-```javascript
+```js
+// index.js
 import initChart from './ChartComponent.js'
 function pageInit () {
   loadingIndicator() // 比如loading圈圈
   initChart()
 }
 ```
-webpack识别到webpackPreload: true时，会在index.html的head中append&lt;link rel="preload"&gt;，浏览器就会在渲染index.html时并发的去加载ECharts库，如果不是preload的情况，浏览器要执行到loadingIndicator()时才会去加载ECharts库。
+webpack识别到webpackPreload: true时，会在index.html的head中append&lt;link rel="preload"&gt;，浏览器就会在渲染index.html时并发的去加载ECharts库，如果不使用preload，浏览器要执行到loadingIndicator()时才会去加载ECharts库，总结来说就是提前通知浏览器当前页面会加载ECharts库。
 
 #### preload和prefetch的区别
 1. A preloaded chunk starts loading in parallel to the parent chunk. A prefetched chunk starts after the parent chunk finishes loading.
@@ -195,23 +196,50 @@ webpack识别到webpackPreload: true时，会在index.html的head中append&lt;li
 
 ### bundle分析
 有的时候我们需要分析bundles的依赖分布，占用空间等等，下面列了些工具链接  
-- <a href="https://github.com/webpack/analyse" target="_blank">official analyze tool</a>: 官方分析工具
-- <a href="https://alexkuz.github.io/webpack-chart/" target="_blank">webpack-chart</a>: 交互式饼图来显示webpack统计数据
-- <a href="https://chrisbateman.github.io/webpack-visualizer/" target="_blank">webpack-visualizer</a>: 可视化并分析你的bundles，检查哪些模块占用空间，哪些可能是重复使用的
-- <a href="https://github.com/webpack-contrib/webpack-bundle-analyzer" target="_blank">webpack-bundle-analyzer</a>: 一款分析bundles内容的插件及CLI工具，以便捷的、交互式、可缩放的树状图形式展现给用户
-- <a href="https://webpack.jakoblind.no/optimize" target="_blank">webpack bundle optimize helper</a>: 这款工具会分析你的bundles，并给予你怎么改善缩减bundle size切实可行的建议
+- [official analyze tool][7]: 官方分析工具
+- [webpack-chart][8]: 交互式饼图来显示webpack统计数据
+- [webpack-visualizer][9]: 可视化并分析你的bundles，检查哪些模块占用空间，哪些可能是重复使用的
+- [webpack-bundle-analyzer][10]: 一款分析bundles内容的插件及CLI工具，以便捷的、交互式、可缩放的树状图形式展现给用户
+- [webpack bundle optimize helper][11]: 这款工具会分析你的bundles，并给予你怎么改善缩减bundle size切实可行的建议
 
-### SplitChunksPlugin
-&#160; &#160; &#160; &#160;此插件负责webpack4的chunk分离，不作任何配置即可享用此插件提供的默认配置方案，我们也可以在配置文件的optimization.splitChunks中去覆盖默认配置，它替代了以前的CommonsChunkPlugin插件。
-webpack自动split chunks是有几个限制条件的：
-1. 新产出的chunk是要被共享的或是来自node_modules的模块
-2. 新产出的chunk文件压缩前体积得大于30kb
-3. 并行请求chunk的数量不能超出5个
-4. 入口文件时加载代码块的请求数量应该<=3
-为了满足条件条件3和4，bigger chunks是更好的选择
+### SplitChunksPlugin VS CommonsChunkPlugin
+webpack v4版本使用SplitChunksPlugin替换了之前的CommonsChunkPlugin，CommonsChunkPlugin有以下问题： 
+#### CommonsChunkPlugin
+```
+文件
+entryA: Vue, Vuex, component
+entryB: Vue, axios, component
+entryC: Vue, Vuex, axios, component
+minChunks: 2 
+产出
+vendor-chunk: vue vuex axios
+chunkA~chunkC: only the component
+```
+可以看出抽离的粒度比较粗，并且它不支持async
+#### SplitChunksPlugin
+```
+文件
+entryA: Vue, Vuex, component
+entryB: Vue, axios, component
+entryC: Vue, Vuex, axios, component
+minChunks: 2 
+产出
+vendor-chunkA-C：Vuex
+vendor-chunkB-C：axios
+vendor-chunkA-B-C：Vue
+chunkA~chunkC: only the component
+```
+可以看出抽离的粒度刚刚好，并且支持async，不过会有文件过多的问题
 
-### 默认配置
-```javascript
+### optimization.runtimeChunk
+它的作用是将包含chunks映射关系的runtime文件单独从entry chunk中提取出来，因为每一个chunk的id基本都是基于内容hash出来的，所以你每次改动都会影响它，如果不将它提取出来的话，等于entry chunk每次都会改变，每次发版本都会使浏览器缓存失效（第三方库并没有变动，但runtime变了）。
+
+### optimization.splitChunks.cacheGroups.default
+因为默认的vendors组只会匹配node_modules下的库，如果是自己写的可复用代码（比如/utils/fetch）或下载到本地的第三方库（比如/assets/js/jquery）被多处引入，则会匹配到default组中
+
+
+### SplitChunksPlugin的默认配置
+```js
 optimization: {
   splitChunks: {
     // [function (chunk) | string]
@@ -252,7 +280,7 @@ optimization: {
       default: {
         minChunks: 2,
         // [number]
-        // 优先级，大的先执行
+        // 优先级大的先匹配，在vendors组匹配正则后，没匹配上的剩余部分会打到default中
         priority: -20,
         // [boolean]
         reuseExistingChunk: true
@@ -268,4 +296,11 @@ optimization: {
 [1]: https://webpack.js.org/guides/code-splitting/
 [2]: https://webpack.js.org/plugins/split-chunks-plugin/
 [3]: https://www.cnblogs.com/wmhuang/p/8967639.html
-
+[4]: https://github.com/tc39/proposal-dynamic-import
+[5]: https://webpack.js.org/api/module-methods/#require-ensure
+[6]: https://webpack.js.org/api/module-methods/#import-
+[7]: https://github.com/webpack/analyse
+[8]: https://alexkuz.github.io/webpack-chart/
+[9]: https://chrisbateman.github.io/webpack-visualizer/
+[10]: https://github.com/webpack-contrib/webpack-bundle-analyzer
+[11]: https://webpack.jakoblind.no/optimize
