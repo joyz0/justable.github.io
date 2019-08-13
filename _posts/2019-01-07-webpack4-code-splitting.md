@@ -256,7 +256,7 @@ optimization: {
     // 按需加载时最大异步请求chuck数
     maxAsyncRequests: 5,
     // [number]
-    // 入口文件的最大请求chuck数
+    // 入口文件的最大请求chuck数，当入口文件的请求数超过这个值时，那个入口文件打包策略会变成all in one
     maxInitialRequests: 3,
     // [string]
     // chunk的命名连接符

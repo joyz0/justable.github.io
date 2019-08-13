@@ -20,3 +20,12 @@ https://codepen.io/Justable/pen/QXKXzR
 当然，之后是触发componentDidUpdate()
 
 - 如何获取孙子组件的ref
+
+- useMemo的应用
+https://codepen.io/Justable/pen/zgmXZY
+
+- useCallback的应用
+注意React.useCallback要和React.memo配对使用，useCallback
+
+- 对比useMemo和useCallback
+useCallback(fn, deps) 相当于 useMemo(() => fn, deps)
