@@ -33,3 +33,6 @@ https://codepen.io/Justable/pen/zgmXZY
 
 - 对比useMemo和useCallback
 useCallback(fn, deps) 相当于 useMemo(() => fn, deps)
+
+- 对比useState和useReducer
+多状态时用useReducer更利于维护，并且会合并更新
