@@ -42,5 +42,8 @@ tags: [react]
   显式的 setState，props 改变，父组件重绘（如果并没有影响到子组件的 state 和 props，则不会重绘）
 
 - useEffect 中的 setInterval 无法获取最新 state 问题
-  主要由闭包导致
+  主要由闭包导致，看 react-use 中的 useInterval
   https://codepen.io/Justable/pen/oNNbOWg
+
+- 解决竞态问题
+  https://codepen.io/Justable/pen/wvvzEav
