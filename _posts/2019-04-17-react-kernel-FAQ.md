@@ -22,12 +22,15 @@ tags: [react]
 
 - 如何获取孙子组件的 ref
 
-- useCallback 的应用
-  试想一个场景，一个内联函数中有 setState 的逻辑，这会导致组件 rerender，又因内联函数每次都是重新赋值的，因此会导致无限循环，useCallback 返回一个被缓存的函数，每次 rerender 时 react 检测到的函数没有发生变化，可以有效的避免无限循环 rerender
+- React.memo 和 shouldComponentUpdate 的应用
+  https://codepen.io/Justable/pen/LYYjJJN
 
 - useMemo 的应用
   useMemo 会缓存函数的返回结果
   https://codepen.io/Justable/pen/zgmXZY
+
+- useCallback 的应用
+  useCallback 会缓存函数
 
 - useRef 和普通对象{ current: null }的区别
   普通对象在每次组件 rerender 时会重新赋值，useRef 的返回值是不变的
@@ -47,3 +50,6 @@ tags: [react]
 
 - 解决竞态问题
   https://codepen.io/Justable/pen/wvvzEav
+
+- ReactDOM.unstable_batchedUpdates
+  通常多个 setState 会被合并成一个之后执行协调和提交阶段，但是在 setTimeout、Promise.then 中的 setState 会立即执行协调和提交阶段，此时可以借助 ReactDOM.unstable_batchedUpdates 进行合并
