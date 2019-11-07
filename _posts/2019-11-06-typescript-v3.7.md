@@ -61,3 +61,173 @@ function yell(str) {
 declare function assert(value: unknown): asserts value;
 declare function assertIsArrayOfStrings(obj: unknown): asserts obj is string[];
 ```
+
+### --declaration and --allowJs
+
+--declaration 是自动生成 d.ts 文件，--allowJs 是允许混合 ts 和 js。
+v3.7 之前这两个指令无法同时使用，v3.7 之后可以。
+
+### Recursive Type Aliases
+
+```ts
+// 下面代码在v3.7之前会报错
+type Foo = Foo;
+type ValueOrArray<T> = T | Array<ValueOrArray<T>>;
+```
+
+```ts
+// v3.7之前的解决方法是借助interface
+type ValueOrArray<T> = T | ArrayOfValueOrArray<T>;
+interface ArrayOfValueOrArray<T> extends Array<ValueOrArray<T>> {}
+```
+
+```ts
+// v3.7之前
+type Json = string | number | boolean | null | JsonObject | JsonArray;
+interface JsonObject {
+  [property: string]: Json;
+}
+interface JsonArray extends Array<Json> {}
+```
+
+```ts
+// v3.7之后
+type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [property: string]: Json }
+  | Json[];
+// 虚拟node结构
+type VirtualNode = string | [string, { [key: string]: any }, ...VirtualNode[]];
+const myNode: VirtualNode = [
+  "div",
+  { id: "parent" },
+  ["div", { id: "first-child" }, "I'm the first child"],
+  ["div", { id: "second-child" }, "I'm the second child"]
+];
+```
+
+### --useDefineForClassFields and The declare Property Modifier
+
+例子一
+
+```ts
+class Base {
+  set data(value: string) {
+    console.log("data changed to " + value);
+  }
+}
+class Derived extends Base {
+  // v3.7之前会触发console
+  // v3.7之后使用--useDefineForClassFields就不会触发console
+  data = 10;
+}
+```
+
+```ts
+class Base {
+  set data(value: string) {
+    console.log("data changed to " + value);
+  }
+}
+class Derived extends Base {
+  // v3.7之前可以通过在constructor中赋值避免console
+  constructor() {
+    this.data = 10;
+  }
+}
+```
+
+例子二
+
+```ts
+interface Animal {
+  animalStuff: any;
+}
+interface Dog extends Animal {
+  dogStuff: any;
+}
+class AnimalHouse {
+  resident: Animal;
+  constructor(animal: Animal) {
+    this.resident = animal;
+  }
+}
+class DogHouse extends AnimalHouse {
+  resident: Dog;
+  // v3.7之前会报“resident没有初始化，也没有在constructor赋值”的错
+  constructor(dog: Dog) {
+    super(dog);
+  }
+}
+```
+
+```ts
+class DogHouse extends AnimalHouse {
+  resident: Dog;
+  // v3.7之前可以在constructor赋值解决
+  constructor(dog: Dog) {
+    this.resident = dog;
+  }
+}
+```
+
+```ts
+class DogHouse extends AnimalHouse {
+  // declare resident: Dog;
+  // v3.7之后可以添加declare声明解决
+  constructor(dog: Dog) {
+    super(dog);
+  }
+}
+```
+
+### Uncalled Function Checks
+
+```ts
+interface User {
+  isAdministrator(): boolean;
+  notify(): void;
+  doNotDisturb?(): boolean;
+}
+// Broken code, do not use!
+// v3.7之前不会报错
+function doAdminThing(user: User) {
+  // isAdministrator是个required方法，这儿永远是true，应该报错
+  if (user.isAdministrator) {
+    sudo();
+    editTheConfiguration();
+  } else {
+    throw new AccessDeniedError("User is not an admin");
+  }
+}
+```
+
+```ts
+// v3.7在可选情况或是条件中调用了就不会报错
+interface User {
+  isAdministrator(): boolean;
+  notify(): void;
+  doNotDisturb?(): boolean;
+}
+function issueNotification(user: User) {
+  if (user.doNotDisturb) {
+    // OK, property is optional
+  }
+  if (user.notify) {
+    // OK, called the function
+    user.notify();
+  }
+  if (!!user.isAdministrator) {
+    // !!表示故意不调用方法，所以也不会报错
+  }
+}
+```
+
+### // @ts-nocheck in TypeScript Files
+
+@ts-nocheck 以注释的形式写在文件的最顶部
+v3.7 前@ts-nocheck 通常出现在 js 文件中，为了忽略对 js 文件的类型检查；
+v3.7 后在 ts 文件中也可以忽略类型检查。
