@@ -53,3 +53,29 @@ tags: [react]
 
 - ReactDOM.unstable_batchedUpdates
   通常多个 setState 会被合并成一个之后执行协调和提交阶段，但是在 setTimeout、Promise.then 中的 setState 会立即执行协调和提交阶段，此时可以借助 ReactDOM.unstable_batchedUpdates 进行合并
+
+- 在 vscode 中调试源码
+  ```json
+  {
+    "version": "0.1.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "Jest Entry",
+        "program": "${workspaceRoot}/node_modules/.bin/jest",
+        "args": [
+          "${file}",
+          "--config",
+          "./scripts/jest/config.source.js",
+          "--runInBand"
+        ],
+        "console": "integratedTerminal",
+        "internalConsoleOptions": "neverOpen",
+        "env": {
+          "NODE_ENV": "development"
+        }
+      }
+    ]
+  }
+  ```
