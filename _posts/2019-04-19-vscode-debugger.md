@@ -177,7 +177,8 @@ attach 是指把 debug sessions 附加到指定的正在运行的处于 debug �
 
 ### node --inspect vs node --inspect-brk
 
-inspect 是 node 的调试模式，前者表示开启 node 调试模式，当我们不需要调试主程序时可以选择此模式，比如调试监听事件的回掉函数；后者表示开启 node 调试模式，并且在主程序开始处等待，当我们需要调试主程序时可以选择此模式。
+inspect 是 node 的调试模式，前者表示开启 node 调试模式，当我们不需要调试主程序时可以选择此模式，比如调试监听事件的回掉函数；后者表示开启 node 调试模式，并且在主程序开始处等待，当我们需要调试主程序时可以选择此模式。  
+node --inspect-brk 执行后，打开 chrome://inspect/#devices，在 Remote Target 中点击对应的 inspect 即可开始调试。
 
 ### 自动 debug
 

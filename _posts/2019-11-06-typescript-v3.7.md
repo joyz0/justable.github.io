@@ -18,15 +18,28 @@ if (foo?.bar?.baz) {
 }
 ```
 
+要注意这样一种情况
+
+```ts
+type Foo = {
+  foo?: string;
+};
+let demo: Foo | null;
+// 这样是会报错的
+console.log(demo?.foo);
+// 应该这样使用
+if (demo) {
+  console.log(demo?.foo);
+}
+```
+
 ### Nullish Coalescing
 
 ```ts
 // Before
 let x = foo ?? bar();
 // After-ish
-let x = (foo !== null && foo !== undefined) ?
-    foo :
-    bar();
+let x = foo !== null && foo !== undefined ? foo : bar();
 ```
 
 ### Assertion Functions
