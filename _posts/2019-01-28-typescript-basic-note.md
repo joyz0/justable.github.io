@@ -144,7 +144,7 @@ let employeeName = buildName("Joseph", "Samuel", "Lucas", "MacKinzie");
 
 #### 接口
 
-TS 中的接口可以充当对象  类型，也可以作为一个规范被其他 class 实现（与其他  面向对象语言类似）
+TS 中的接口可以充当对象类型，也可以作为一个规范被其他 class 实现（与其他 面向对象语言类似）
 
 ```typescript
 // 接口可以作为对象类型
@@ -294,6 +294,18 @@ interface Dispatch<A extends Action = AnyAction> {
 }
 ```
 
+常用泛型
+
+```ts
+// 值类型
+type ValueType<T> = T[keyof T];
+type obj = {
+  foo: string;
+  bar: number;
+};
+type Custom = ValueType<obj>;
+```
+
 #### 类型断言（两种方式）
 
 ```typescript
@@ -397,7 +409,7 @@ interface Person {
 
 #### Modules
 
-Module 代表外部模块，TS 支持 ES6+ 和(commonjs/amd)两种导入导出方式，扩展阅读[TS 的模块解析](https://www.tslang.cn/docs/handbook/module-resolution.html)，讲述模块路径解析机制，与 node 类似。
+Module 代表外部模块，TS 支持 ES6+ 和(commonjs/amd)两种导入导出方式，扩展阅读[TS 的模块加载策略](https://www.tslang.cn/docs/handbook/module-resolution.html)，讲述模块路径解析机制，与 node 类似。
 
 ```ts
 // (1)ES6+
@@ -410,7 +422,7 @@ import module = require('module')
 
 #### Namespaces
 
-Namespace 代表内部  模块，平时开发时，如果把所有变量都定义在根级，第一  可阅读行差，第二会出现变量重名。这时就需要命名空间，TS 中的 namespace 就是来解决这问题。
+Namespace 代表内部模块，平时开发时，如果把所有变量都定义在根级，第一可阅读行差，第二会出现变量重名。这时就需要命名空间，TS 中的 namespace 就是来解决这问题。
 
 ```ts
 interface StringValidator {
@@ -619,7 +631,7 @@ mathLib.isPrime(2); // Error: 'mathLib' refers to a UMD global, but the current 
 
 #### 三斜杠指令
 
-用来引入声明文件，新版本 TS 自动会引入声明文件[详细文档](https://www.tslang.cn/docs/handbook/triple-slash-directives.html)
+用来引入声明文件，新版本 TS 会在 import 模块时自动根据 moduleResolution 配置的加载策略来引入声明文件[详细文档](https://www.tslang.cn/docs/handbook/triple-slash-directives.html)
 
 ```ts
 /// <reference path="node.d.ts"/>
@@ -629,7 +641,7 @@ mathLib.isPrime(2); // Error: 'mathLib' refers to a UMD global, but the current 
 
 [详细文档](http://www.typescriptlang.org/docs/handbook/tsconfig-json.html)，这里主要讲一下 strict 相关配置
 
-```typescript
+```json
 {
   "compilerOptions": {
     "strict": true
@@ -649,7 +661,46 @@ mathLib.isPrime(2); // Error: 'mathLib' refers to a UMD global, but the current 
 }
 ```
 
+常用配置
+
+```json
+{
+  "compilerOptions": {
+    "target": "esnext", // 编译后的JS的语法版本，默认ES3。如果我们分配tsc负责编译类型，babel负责编译特性，那么把target设置成最新即可，也就是说像regenerate，Array.prototype.includes这些特性不会编译
+    "module": "esnext", // 编译后的模块类型，默认（target === "ES3" or "ES5" ? "CommonJS" : "ES6"），可以指定为"None"，"CommonJS"，"AMD"，"System"，"UMD"，"ES6"，"ES2015"或"ESNext"
+    "strict": true,
+    "declaration": true, // 自动生成相应的.d.ts文件
+    "declarationDir": true, // 生成的 .d.ts 文件存放路径默认与 .ts 文件相同
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true, // 允许从没有默认导出的模块进行默认导入
+    "moduleResolution": "node", // 加载非相对路径模块的策略
+    "baseUrl": "node", // import 加载模块是的相对路径
+    "paths": {
+      "*": ["my-custom-types/*", "*"]
+    }, // 路径的map，*代表原本的路径，比如import * from 'lodash'会变成import * from 'my-custom-types/lodash'，如果找不到再恢复成import * from 'lodash'
+    "resolveJsonModule": true, // 包含使用.json扩展名导入的模块
+    "outDir": "", // 编译生成的文件存放路径，默认与 .ts 文件相同
+    "sourceMap": false, // 生成 .map 文件
+    "experimentalDecorators": false, // 启用实验功能 ES 装饰器
+    "types": ["node", "lodash", "express"], // 指定加载具名的模块类型声明文件，会忽视typeRoots
+    "typeRoots": [], // 指定默认的类型声明文件查找路径，默认node_modules/@types
+    "allowJs": false, // 允许编译 JS 文件
+    "checkJs": false, // 报告 JS 文件中存在的类型错误需要配合 allowJs 使用
+    "lib": [] // 要包含在编译中的库文件列表
+  },
+  "files": ["main.ts", "main.d.ts", "main.tsx"], // 具名指定编译文件，会忽视include，优先级高于exclude，默认支持.ts, .tsx, .d.ts后缀，如果allowJs=true，则默认支持.js and .jsx后缀
+  "include": [], // 默认编译目录下所有 TypeScript(.ts, .d.ts, .tsx) 文件，除了exclude指定的
+  "exclude": [] // 默认排除编译node_modules, bower_components, jspm_packages 和指定的 <outDir>
+}
+```
+
+> TS 根据 typeRoots and types 选项只会查找符合 NPM format 的目录（包含 package.json--根据 types 字段 或 index.d.ts），因此平时如果配置了 typeRoots: ["./typings"]，如果 typings 里的文件目录并不符合 NPM format，则等价于没找到。注意自动引入的声明必须是全局声明--declare global。
+> 注意 includes, excludes, files, typeRoots and types 只会作用于全局声明文件的自动引入，通过 import 加载的模块的声明文件会跳过上面这些配置，而只会采用 baseUrl, paths, and moduleResolution 这三个配置选项去寻找。[这篇回答](https://stackoverflow.com/questions/40222162/typescript-2-custom-typings-for-untyped-npm-module)有详细介绍。
+
 ### FAQ
+
+- 如何自定义全局声明
+  https://stackoverflow.com/questions/40222162/typescript-2-custom-typings-for-untyped-npm-module
 
 - return class extends SuperClass { /_ ... _/ }是什么意思？
   其实就是 return 了一个匿名类
@@ -684,7 +735,7 @@ obj = true; // Ok
 obj = []; // Ok
 obj = "str"; // Ok
 obj = null; // Error
-obj = undefine; // Error
+obj = undefined; // Error
 ```
 
 - 三斜杆和 import 有什么区别？
