@@ -631,11 +631,16 @@ mathLib.isPrime(2); // Error: 'mathLib' refers to a UMD global, but the current 
 
 #### 三斜杠指令
 
-用来引入声明文件，新版本 TS 会在 import 模块时自动根据 moduleResolution 配置的加载策略来引入声明文件[详细文档](https://www.tslang.cn/docs/handbook/triple-slash-directives.html)
+这里特指 path 和 types 两种用法，都是用来申明类型依赖的，path 表示对具体的 d.ts 文件依赖，types 表示对一个包的依赖。
+比如：
 
 ```ts
-/// <reference path="node.d.ts"/>
+/// <reference path="./node_modules/@types/node/index.d.ts"/>
+// 等价于
+/// <reference types="node"/>
 ```
+
+> 注意 reference 的使用场景是目标为 Global Library， 当目标是 module 或 UMD Library 时不要用，这种情况使用 import。参考[详细文档 1](https://www.tslang.cn/docs/handbook/triple-slash-directives.html)、[详细文档 2](https://github.com/Microsoft/TypeScript-Handbook/blob/master/pages/declaration%20files/Library%20Structures.md)
 
 #### tsconfig 配置
 
@@ -682,32 +687,61 @@ mathLib.isPrime(2); // Error: 'mathLib' refers to a UMD global, but the current 
     "outDir": "", // 编译生成的文件存放路径，默认与 .ts 文件相同
     "sourceMap": false, // 生成 .map 文件
     "experimentalDecorators": false, // 启用实验功能 ES 装饰器
-    "types": ["node", "lodash", "express"], // 指定加载具名的模块类型声明文件，会忽视typeRoots
-    "typeRoots": [], // 指定默认的类型声明文件查找路径，默认node_modules/@types
+    "types": ["node", "lodash", "express"], // 指定加载具名的模块类型声明文件，如果值是个相对文件夹路径，则文件夹下必须有index.d.ts，优先级高，不必在files，include，exclude的结果内，可以指定"types": []来禁用自动引入@types包
+    "typeRoots": [], // 指定默认的类型声明文件查找路径，默认node_modules/@types，必须在files，include，exclude的结果内
     "allowJs": false, // 允许编译 JS 文件
     "checkJs": false, // 报告 JS 文件中存在的类型错误需要配合 allowJs 使用
     "lib": [] // 要包含在编译中的库文件列表
   },
   "files": ["main.ts", "main.d.ts", "main.tsx"], // 具名指定编译文件，会忽视include，优先级高于exclude，默认支持.ts, .tsx, .d.ts后缀，如果allowJs=true，则默认支持.js and .jsx后缀
-  "include": [], // 默认编译目录下所有 TypeScript(.ts, .d.ts, .tsx) 文件，除了exclude指定的
+  "include": [], // 默认编译目录下所有 TypeScript(.ts, .d.ts, .tsx) 文件，包括自定义typings目录下的声明（不需要符合NPM Format），除了exclude指定的
   "exclude": [] // 默认排除编译node_modules, bower_components, jspm_packages 和指定的 <outDir>
 }
 ```
 
-> TS 根据 typeRoots and types 选项只会查找符合 NPM format 的目录（包含 package.json--根据 types 字段 或 index.d.ts），因此平时如果配置了 typeRoots: ["./typings"]，如果 typings 里的文件目录并不符合 NPM format，则等价于没找到。注意自动引入的声明必须是全局声明--declare global。
-> 注意 includes, excludes, files, typeRoots and types 只会作用于全局声明文件的自动引入，通过 import 加载的模块的声明文件会跳过上面这些配置，而只会采用 baseUrl, paths, and moduleResolution 这三个配置选项去寻找。[这篇回答](https://stackoverflow.com/questions/40222162/typescript-2-custom-typings-for-untyped-npm-module)有详细介绍。
+> TS 根据 typeRoots and types 选项只会查找符合 NPM format 的目录（包含 package.json 且有 types 字段 或 index.d.ts），因此平时如果配置了 typeRoots: ["./typings"]，如果 typings 里的文件目录并不符合 NPM format，则等价于没找到。注意自动引入只在你使用了全局的声明（相反于模块）时是重要的，也就是说 includes, excludes, files, typeRoots and types 只会作用于全局声明的自动引入，通过 import 加载的模块并不会被这些配置项所影响，只会根据 baseUrl, paths, and moduleResolution 这三个配置项去寻找。[这篇回答](https://stackoverflow.com/questions/40222162/typescript-2-custom-typings-for-untyped-npm-module)有详细介绍。
 
 ### FAQ
 
 - 如何自定义全局声明
+  新建 typings 目录，定义 index.d.ts，在其中使用三斜杠表达式引入其他什么文件
   https://stackoverflow.com/questions/40222162/typescript-2-custom-typings-for-untyped-npm-module
 
 - return class extends SuperClass { /_ ... _/ }是什么意思？
   其实就是 return 了一个匿名类
 
 - declare global 是什么？
-  https://www.tslang.cn/docs/handbook/declaration-merging.html底部
-  declare global 使得我们无须 import，可以直接使用
+  必须定义在 module 中，也就是说必须有 export，可以像这样`export = {}`hack 以下。参考https://www.tslang.cn/docs/handbook/declaration-merging.html底部；
+
+```ts
+// observable.ts
+export class Observable<T> {
+  // ... still no implementation ...
+}
+
+declare global {
+  interface Array<T> {
+    toObservable(): Observable<T>;
+  }
+}
+
+Array.prototype.toObservable = function() {
+  // ...
+};
+```
+
+或者
+
+```ts
+// observable.d.ts
+declare module "observable" {
+  global {
+    interface Array<T> {
+      toObservable(): Observable<T>;
+    }
+  }
+}
+```
 
 ```ts
 // shim-tsx.d.ts
@@ -740,35 +774,20 @@ obj = undefined; // Error
 
 - 三斜杆和 import 有什么区别？
 
-```ts
-// node.d.ts
-declare module "path" {
-  export function resolve(...args: string[]): string;
-}
-// ins.ts
-/// <reference path='node.d.ts' />
-import { resolve } from "path";
-```
-
-看上面例子，首先要明白 declare 是用来声明一个已有事物的，而非具体实现，在 ins.ts 中，如果没有 reference 引入（新版本 TS 不需要手动引入），TS 会识别不了'path'。如此可以看出，reference 负责引入声明，告诉 TS'path'是个模块，import 导入具体的 path 模块功能。
-
 - 函数中的 this
 
 - TS 中的 this 类型
 
-- <reference path="..." />和<reference types="..." />
-  前者表示一个非声明文件依赖某个声明文件，后者表示一个声明文件依赖某一个包中的声明文件，比如<reference types="node" />表明这个声明文件使用了 @types/node/index.d.ts 里面声明的名字
-
-- !:什么作用
+* !:什么作用
   [链接](https://stackoverflow.com/questions/42273853/in-typescript-what-is-the-exclamation-mark-bang-operator-when-dereferenci)
   That's the non-null assertion operator. It is a way to tell the compiler "this expression cannot be null or undefined here, so don't complain about the possibility of it being null or undefined." Sometimes the type checker is unable to make that determination itself.
 
-- object VS {} VS Object
+* object VS {} VS Object
   object 表示非原始类型，也就是除 number，string，boolean，symbol，null 或 undefined 之外的类型。  
   {}表示一种值的结构，可以理解为 interface 的简写方式
   Object 表示
 
-- declare module/namespace 有时有 export 有时没有
+* declare module/namespace 有时有 export 有时没有
 
 ```ts
 // path.d.ts
