@@ -554,23 +554,38 @@ import * as React from "react";
 // 同时会把@types/react引入进来
 ```
 
-##### 全局变量声明
+##### Global 模式
 
-当引用第三方库时，比如 jQuery，它暴露了全局变量$，我们需要告知TS并规范$方法，这时需要引用 jQuery 的声明文件，
+当声明文件没有 import/export 时，被认为是 Global 模式，该模式下 TS 会根据 tsconfig.json 中配置文件编译范围自动引入声明。
 
 ```ts
 // jQuery.d.ts
 declare function $(str: string): object;
 ```
 
+该模式下也可以有 global 域，不过必须得在 module 中，不然会报错，比如这样用：
+
 ```ts
-// 此步非必须，d.ts文件会自动引入
-/// <reference path='jQuery.d.ts'/>
-// 如果不先declare，TS会提示(Cannot find name '$'.)
-let $title = $("#title");
+declare module "react" {
+  global {
+    namespace Global1 {
+      interface ElementAttributesProperty {
+        props: {};
+      }
+    }
+  }
+}
 ```
 
-#####  模块声明
+这和 Module 模式的 global 还是有点含义的区别的，这里表示的是先声明了 react 模块，然后里面有个 global 类型 Global1，也就是说这个 Global1 是属于 react 模块的 global 域，表示不必 import react 即可使用它。而 Module 模式下的 global 是属于整个文件的，因为整个文件就是个 module。
+
+> 在全局声明中的 `declare interface`可以被直接使用无需 reference 依赖是自动引入机制导致的；模块声明中的`decalre global`可以被直接使用，可以是自动引入机制导致的，也可以是通过 import 自动导入的，也就是说该模块声明文件如果不在自动引入范围中，也可以通过 import 自动导入，很显然前者不可以。
+
+#####  Module 模式
+
+当声明文件包含 import/export 时，被认为是 Module 模式，并且不能再像 global 模式一样再声明 module 了，因为文件本身就是个 module。该模式下的声明不会被自动引入，必须改为 export decalre 的形式，然后通过 import 去引入，有个例外是 declare global 不需要 export，global 本身代表了全局域，无需 import 即可使用。
+
+> 声明文件中的 module 可以简写也可手写
 
 ```ts
 // node.d.ts
@@ -582,13 +597,9 @@ declare module "path" {
   export function join(...paths: any[]): string;
   export let sep: string;
 }
-/// <reference path='node.d.ts'/>
-// 如果不先declare，TS会提示(Cannot find module 'path'.)
-import * as PATH from "path";
-let dist = PATH.join(__dirname, "/dist");
 ```
 
-当外部模块为 non-javascript 时，作如下声明，TS 就能识别此类文件了
+> 当外部模块为 non-javascript 时，作如下声明，TS 就能识别此类文件了
 
 ```ts
 declare module "*.text" {
@@ -608,26 +619,39 @@ import data from "json!http://example.com/data.json";
 import component from "c.vue";
 ```
 
-UMD 模块
+#####  兼容模块
+
+为了兼容 UMD 模块，通常会在声明文件中加入以下两行代码：
 
 ```ts
 export = React; // (1)
 export as namespace React; // (2)
 ```
 
-我们通常使用这种方式进行申明，(1) is used for CommonJS and AMD module systems. You have to match the export = React with import React = require('./React')，(2) creates a global variable so it can be used without importing, but you may still import it with the import { name } from "some-library" form of import。
-[参考](https://www.e-learn.cn/content/wangluowenzhang/1066130)
+1. 第一行是为了兼容 CommonJS 和 AMD 模式，我们可以通过`import React = require('./React')`来引入，前提是 tsconfig.json 中的 module 设置为 CommonJS 或 AMD；
+2. 第二行是为了兼容 UMD 模式，UMD 模式通常可以被 import，也会包含全局变量被直接使用，不过使用全局变量时必须保证当前文件不是模块，即没有 imports/exports，[参考文章](https://www.e-learn.cn/content/wangluowenzhang/1066130)，比如：
 
 ```ts
 // math-lib.d.ts
 export function isPrime(x: number): boolean;
-export as namespace mathLib; // 暴露global var，但是只能在非模块文件(没有import和export)中使用，否则会报错？
-
-// index.js
-import { isPrime } from "math-lib";
-isPrime(2); // OK
-mathLib.isPrime(2); // Error: 'mathLib' refers to a UMD global, but the current file is a module.
+export as namespace mathLib;
+// index.ts
+mathLib.isPrime(1);
 ```
+
+但是不能：
+
+```ts
+// math-lib.d.ts
+export function isPrime(x: number): boolean;
+export as namespace mathLib;
+// index.ts
+import { isPrime } from "math-lib";
+isPrime(1); // ok
+mathLib.isPrime(1); // error
+```
+
+> 注意`export as namespace`和`declare global`都可以达到全局使用，但是前者侧重兼容 UMD，且必须在非 module 文件中使用，后者侧重代表模块的 global 域，可以在 module 文件中使用，也可以在非 module 文件中使用。
 
 #### 三斜杠指令
 
@@ -711,54 +735,7 @@ mathLib.isPrime(2); // Error: 'mathLib' refers to a UMD global, but the current 
   其实就是 return 了一个匿名类
 
 - declare global 是什么？
-  必须定义在 module 中，也就是说必须有 export，可以像这样`export = {}`hack 以下。参考https://www.tslang.cn/docs/handbook/declaration-merging.html底部；
-
-```ts
-// observable.ts
-export class Observable<T> {
-  // ... still no implementation ...
-}
-
-declare global {
-  interface Array<T> {
-    toObservable(): Observable<T>;
-  }
-}
-
-Array.prototype.toObservable = function() {
-  // ...
-};
-```
-
-或者
-
-```ts
-// observable.d.ts
-declare module "observable" {
-  global {
-    interface Array<T> {
-      toObservable(): Observable<T>;
-    }
-  }
-}
-```
-
-```ts
-// shim-tsx.d.ts
-declare global {
-  namespace JSX {
-    // tslint:disable no-empty-interface
-    interface Element extends VNode {}
-    // tslint:disable no-empty-interface
-    interface ElementClass extends Vue {}
-    interface IntrinsicElements {
-      [elem: string]: any;
-    }
-  }
-}
-// any file
-let elm: JSX.Element;
-```
+  声明模块的 global 域，必须模块文件中或`declare module`中，总之它得是一个模块。有时可以像这样`export = {}`hack 一下。参考https://www.tslang.cn/docs/handbook/declaration-merging.html底部；
 
 - obj: any 和 obj: {}的区别
 
