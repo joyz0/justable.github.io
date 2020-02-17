@@ -703,7 +703,7 @@ mathLib.isPrime(1); // error
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true, // 允许从没有默认导出的模块进行默认导入
     "moduleResolution": "node", // 加载非相对路径模块的策略
-    "baseUrl": "node", // import 加载模块是的相对路径
+    "baseUrl": "", // import 加载模块是的相对路径
     "paths": {
       "*": ["my-custom-types/*", "*"]
     }, // 路径的map，*代表原本的路径，比如import * from 'lodash'会变成import * from 'my-custom-types/lodash'，如果找不到再恢复成import * from 'lodash'

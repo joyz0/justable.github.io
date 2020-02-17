@@ -1,9 +1,62 @@
----
-title: "React Kernel FAQ"
-date: 2019-04-17 14:28:00
-categories: [blog]
-tags: [react]
----
+- React 中的 refs  
+  支持两种方式：
+
+  1. React.creatRef()或者 useRef()，两者都返回`{current:...}`对象
+  2. `(element) => void`回调函数
+  3. 字符串的使用方式会在未来的版本中去除，不推荐使用
+
+- React.useRef() 和 React.createRef()/自定义对象`{current: ...}`的区别？  
+  React.useRef() 每次都会返回相同的引用，而 React.createRef 每次渲染都会返回一个新的引用  
+  下面例子可以更直观看出两者差异：
+
+  ```jsx
+  import { useState, useRef, createRef } from "react";
+  const Test = props => {
+    const [renderIndex, setRenderIndex] = useState(1);
+    const refFromUseRef = useRef();
+    const refFromCreateRef = createRef();
+
+    if (!refFromUseRef.current) {
+      refFromUseRef.current = renderIndex;
+    }
+    if (!refFromCreateRef.current) {
+      refFromCreateRef.current = renderIndex;
+    }
+
+    return (
+      <div>
+        <p>renderIndex: {renderIndex}</p>
+        <p>refFromUseRef: {refFromUseRef.current}</p>
+        <p>refFromCreateRef: {refFromCreateRef.current}</p>
+        <button onClick={() => setRenderIndex(prev => prev + 1)}>
+          rerender
+        </button>
+      </div>
+    );
+  };
+  ```
+
+- 在 webpack 体系中，通常会使用 html-webpack-plugin 插件管理 html 模版，那么如何在 jsx/tsx 中动态修改 html 头部呢？  
+  使用 react-helmet 组件
+
+  ```tsx
+  import { Helmet } from "react-helmet";
+
+  <Helmet>
+    <title>hello</title>
+    <meta name="description" content="hello" />
+  </Helmet>;
+  ```
+
+- 如何在 js/ts 文件中控制弹框，比如在 axios 的拦截器中弹异常框？  
+  可以参考 antd 中 Notification 组件的做法，在拦截器中调用
+
+  ```ts
+  import { notification } from "antd";
+  notification.error();
+  ```
+
+  Notification 组件实际是对 [rc-notification](https://github.com/react-component/notification/blob/master/src/Notification.tsx) 组件的包装，rc-notification 内部会在 newInstance 时调用 `ReactDOM.render(<Notification />, rootNode)`将弹框加入组件树中;
 
 - baseUrl 配置在哪
 
