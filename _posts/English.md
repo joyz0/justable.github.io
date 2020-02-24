@@ -466,6 +466,8 @@ session 会话
 
 setter 设值函数
 
+shorthands 速记、临时记录
+
 side effect 副作用
 
 signature 签名
