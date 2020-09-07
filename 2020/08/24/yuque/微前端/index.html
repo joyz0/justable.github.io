@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="场景公司内部有一个公共平台，需要集成各个项目组的相关对内业务，提供给公司员工使用。 暂时取名公共平台为 Public，有三个项目组对内业务 A、B、C，使用 React 开发。 All In OneABC 业务作为 Public 项目的子模块放在同一个项目里，做统一的版本控制和打包编译。 12345├── Public  ├── Common  ├── A  ├── B  ├── C  会有如下问">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微前端">
+<meta property="og:url" content="http://example.com/2020/08/24/yuque/%E5%BE%AE%E5%89%8D%E7%AB%AF/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="场景公司内部有一个公共平台，需要集成各个项目组的相关对内业务，提供给公司员工使用。 暂时取名公共平台为 Public，有三个项目组对内业务 A、B、C，使用 React 开发。 All In OneABC 业务作为 Public 项目的子模块放在同一个项目里，做统一的版本控制和打包编译。 12345├── Public  ├── Common  ├── A  ├── B  ├── C  会有如下问">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-08-24T03:09:07.000Z">
+<meta property="article:modified_time" content="2020-09-07T08:20:31.041Z">
+<meta property="article:author" content="Zhenyu">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/08/24/yuque/%E5%BE%AE%E5%89%8D%E7%AB%AF/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>微前端 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/24/yuque/%E5%BE%AE%E5%89%8D%E7%AB%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zhenyu">
+      <meta itemprop="description" content="个人博客，同步自我的语雀文档">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微前端
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-24 03:09:07" itemprop="dateCreated datePublished" datetime="2020-08-24T03:09:07+00:00">2020-08-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-07 08:20:31" itemprop="dateModified" datetime="2020-09-07T08:20:31+00:00">2020-09-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>公司内部有一个公共平台，需要集成各个项目组的相关对内业务，提供给公司员工使用。</p>
+<p>暂时取名公共平台为 Public，有三个项目组对内业务 A、B、C，使用 React 开发。</p>
+<h2 id="All-In-One"><a href="#All-In-One" class="headerlink" title="All In One"></a>All In One</h2><p>ABC 业务作为 Public 项目的子模块放在同一个项目里，做统一的版本控制和打包编译。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">├── Public</span><br><span class="line">  ├── Common</span><br><span class="line">  ├── A</span><br><span class="line">  ├── B</span><br><span class="line">  ├── C</span><br></pre></td></tr></table></figure>
+
+<p>会有如下问题：</p>
+<ol>
+<li>A 迭代发版时 B 和 C 可能并不需要。</li>
+<li>A 修改了 Common 中的组件，但因为并不了解 B 和 C 的业务，导致该组件不兼容 B 和 C 产生 bug。</li>
+<li>中途需要接入项目组 D，D 是使用 Vue 开发的。</li>
+</ol>
+<p>在长时间跨度的单体应用中，由于参与的人员、团队的增多、变迁，从一个普通应用演变成一个巨石应用，变得难以维护。</p>
+<h2 id="Micro-Frontend"><a href="#Micro-Frontend" class="headerlink" title="Micro Frontend"></a>Micro Frontend</h2><ol>
+<li>形成主应用和微应用体系，主应用作为所有微应用的载体，同时可以向微应用分发数据，并且最好是单向的，或者考虑使用回调函数的形式向微应用提供修改主应用的有限能力。</li>
+<li>微应用具备单独运行能力，同时又可接入主应用，可以通过全局遍历来判断是否处在微前端体系下，这个全局变量由主应用注入。</li>
+<li>主应用监测 URL 的变化来决定拉取对应微应用的代码入口文件进行初始化操作，微应用输出一些钩子函数向主应用提供管控自己的能力，主应用可以在各个阶段调用微应用暴露的钩子函数。主微应用之间采用这种轻接触的交流方式，可以保证双方的自治。</li>
+<li>主应用需要为每个微应用提供一个相对独立的沙盒环境，避免一系列冲突。</li>
+<li>由于主应用使用的是编译后的微应用代码（即微应用对于主应用而言就相当于一个外部模块），所以天然的具备技术栈无关性，但同时微应用的打包配置中需要做些标识性配置，以 webpack 为例，修改 output 的 library、libraryTarget、jsonpFunction 参数，其实目的就是为了在主应用运行环境中，每个微应用有自己的命名空间。</li>
+</ol>
+<h2 id="微前端框架"><a href="#微前端框架" class="headerlink" title="微前端框架"></a>微前端框架</h2><p>使用阿里开源的 <a target="_blank" rel="noopener" href="https://qiankun.umijs.org/">qiankun</a>。</p>
+<h2 id="变化"><a href="#变化" class="headerlink" title="变化"></a>变化</h2><p>在微前端体系下，原本的单体应用变成了现在的微应用，项目构成是否发生了什么变化呢？</p>
+<p>其实没有太多变化，以 React 为例，原本我们会在入口文件中调用 ReactDOM.render()将组件挂载到 container 中，并且在打包编译后以外部脚本被 HTML 文件引入；在微前端体系下，为了同时也能独立运行，只需在打包的入口文件输出钩子函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">if (window.__MICRO_FRONTEND__) &#123;</span><br><span class="line">  oldRender();</span><br><span class="line">&#125;</span><br><span class="line">function oldRender(props) &#123;</span><br><span class="line">  &#x2F;&#x2F; do something</span><br><span class="line">  ReactDOM.render(&lt;App &#x2F;&gt;, document.getElementById(&quot;root&quot;));</span><br><span class="line">&#125;</span><br><span class="line">export async function bootstrap() &#123;&#125;</span><br><span class="line">export async function mount(props) &#123;</span><br><span class="line">  oldRender(props);</span><br><span class="line">&#125;</span><br><span class="line">export async function unmount() &#123;</span><br><span class="line">  ReactDOM.unmountComponentAtNode(document.getElementById(&quot;root&quot;));</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; export other lifecycles</span><br></pre></td></tr></table></figure>
+
+<p>打包编译后（可以配置成 umd 的输出格式），这个入口文件作为模块被主应用引入。</p>
+<p>在主应用中，需要提前注册好要对接的微应用，具体流程配置、路由调度原理、沙箱构建原理等就不介绍了，可以自行查找这方面的资料。</p>
+<h2 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h2><ul>
+<li>主应用是监测 URL 的变化来决定接入对应微应用的，但是微应用也有自己的路由系统，此时如何解决路由的接管权？</li>
+</ul>
+<p>TODO</p>
+<ul>
+<li>主应用的拉取微应用代码的策略，即如何应对微应用变更？</li>
+</ul>
+<p>TODO</p>
+<ul>
+<li>每个微应用沙盒环境构建策略？</li>
+</ul>
+<p>TODO，为什么不使用 iframe，参考<a target="_blank" rel="noopener" href="https://www.yuque.com/kuitos/gky7yw/gesexv">qiankun 为什么不使用 iframe</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://github.com/single-spa/single-spa">https://github.com/single-spa/single-spa</a><br><a target="_blank" rel="noopener" href="https://qiankun.umijs.org/zh/guide">https://qiankun.umijs.org/zh/guide</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/24/yuque/%E7%BC%96%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/" rel="prev" title="编程中的奇技淫巧">
+      <i class="fa fa-chevron-left"></i> 编程中的奇技淫巧
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/25/yuque/PnP/" rel="next" title="PnP">
+      PnP <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#All-In-One"><span class="nav-number">2.</span> <span class="nav-text">All In One</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Micro-Frontend"><span class="nav-number">3.</span> <span class="nav-text">Micro Frontend</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E5%89%8D%E7%AB%AF%E6%A1%86%E6%9E%B6"><span class="nav-number">4.</span> <span class="nav-text">微前端框架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%98%E5%8C%96"><span class="nav-number">5.</span> <span class="nav-text">变化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FAQ"><span class="nav-number">6.</span> <span class="nav-text">FAQ</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">7.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Zhenyu</p>
+  <div class="site-description" itemprop="description">个人博客，同步自我的语雀文档</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhenyu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

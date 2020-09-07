@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="概述unified 是一个通过语法树来处理文本的工具，它支持 remark (Markdown)，retext (natural language)，和 rehype (HTML)的格式文本。 使用目的我想要使用 unified 来实现如下功能，  将 md 文档转换成 html 格式 为 html 下的 heading 标签增加唯一 id，同时导出此 html 的锚点信息，用于构建此 html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="unified使用总结">
+<meta property="og:url" content="http://example.com/2020/08/25/yuque/unified%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="概述unified 是一个通过语法树来处理文本的工具，它支持 remark (Markdown)，retext (natural language)，和 rehype (HTML)的格式文本。 使用目的我想要使用 unified 来实现如下功能，  将 md 文档转换成 html 格式 为 html 下的 heading 标签增加唯一 id，同时导出此 html 的锚点信息，用于构建此 html">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-08-25T01:27:04.000Z">
+<meta property="article:modified_time" content="2020-09-07T08:20:30.913Z">
+<meta property="article:author" content="Zhenyu">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2020/08/25/yuque/unified%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>unified使用总结 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/25/yuque/unified%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zhenyu">
+      <meta itemprop="description" content="个人博客，同步自我的语雀文档">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          unified使用总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-25 01:27:04" itemprop="dateCreated datePublished" datetime="2020-08-25T01:27:04+00:00">2020-08-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-07 08:20:30" itemprop="dateModified" datetime="2020-09-07T08:20:30+00:00">2020-09-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>unified 是一个通过语法树来处理文本的工具，它支持 remark (Markdown)，retext (natural language)，和 rehype (HTML)的格式文本。</p>
+<h2 id="使用目的"><a href="#使用目的" class="headerlink" title="使用目的"></a>使用目的</h2><p>我想要使用 unified 来实现如下功能，</p>
+<ul>
+<li>将 md 文档转换成 html 格式</li>
+<li>为 html 下的 heading 标签增加唯一 id，同时导出此 html 的锚点信息，用于构建此 html 的导航菜单</li>
+</ul>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>实现此功能的核心还是转化成 AST 来做。根据 unified<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/unified">使用文档</a>，一个大纲代码如下所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&quot;fs&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> path = <span class="built_in">require</span>(<span class="string">&quot;path&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> unified = <span class="built_in">require</span>(<span class="string">&quot;unified&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> markdown = <span class="built_in">require</span>(<span class="string">&quot;remark-parse&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> remark2rehype = <span class="built_in">require</span>(<span class="string">&quot;remark-rehype&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> anthor = <span class="built_in">require</span>(<span class="string">&quot;rehype-slugs&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> sanitize = <span class="built_in">require</span>(<span class="string">&quot;hast-util-sanitize&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> format = <span class="built_in">require</span>(<span class="string">&quot;rehype-format&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> html = <span class="built_in">require</span>(<span class="string">&quot;rehype-stringify&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> report = <span class="built_in">require</span>(<span class="string">&quot;vfile-reporter&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> anthors;</span><br><span class="line">unified()</span><br><span class="line">  .use(markdown) <span class="comment">// 先将md文档转成md规范的AST</span></span><br><span class="line">  .use(remark2rehype) <span class="comment">// 将md规范的AST转换成html规范的AST</span></span><br><span class="line">  .use(sanitize) <span class="comment">// 安全处理防止XSS攻击</span></span><br><span class="line">  .use(anthor, &#123;</span><br><span class="line">    <span class="comment">// 根据AST提取锚点信息</span></span><br><span class="line">    maxDepth: <span class="number">3</span>,</span><br><span class="line">    callback: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">      anthors = res;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;)</span><br><span class="line">  .use(format) <span class="comment">// 格式化此AST</span></span><br><span class="line">  .use(html) <span class="comment">// 最终将AST转换成html文本</span></span><br><span class="line">  .process(fs.readFileSync(path.resolve(__dirname, <span class="string">&quot;./example.md&quot;</span>)), <span class="function"><span class="keyword">function</span> (<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    err,</span></span></span><br><span class="line"><span class="function"><span class="params">    file</span></span></span><br><span class="line"><span class="function"><span class="params">  </span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(anthors);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">String</span>(file));</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>上述使用到的包除了 rehype-slugs 是自己实现之外其余都可在 unified 的使用教程的例子中找到，后文也会对这些工具包进行一个汇总。</p>
+<h2 id="unified-介绍"><a href="#unified-介绍" class="headerlink" title="unified 介绍"></a>unified 介绍</h2><p>unified 官方的描述，</p>
+<blockquote>
+<p>unified is an interface for processing text using syntax trees. Syntax trees are a representation of text understandable to programs. Those programs, called plugins, take these trees and inspect and modify them. To get to the syntax tree from text, there is a parser. To get from that back to text, there is a compiler. This is the process of a processor.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">| ........................ process ........................... |</span><br><span class="line">| .......... parse ... | ... run ... | ... stringify ..........|</span><br><span class="line"></span><br><span class="line">          +--------+                     +----------+</span><br><span class="line">Input -&gt;- | Parser | -&gt;- Syntax Tree -&gt;- | Compiler | -&gt;- Output</span><br><span class="line">          +--------+          |          +----------+</span><br><span class="line">                              X</span><br><span class="line">                              |</span><br><span class="line">                       +--------------+</span><br><span class="line">                       | Transformers |</span><br><span class="line">                       +--------------+</span><br></pre></td></tr></table></figure>
+
+<p>总的来讲，unified 先把输入通过 Parser 转换成语法树，再通过一系列 Transformers 来修改这个语法树，最终通过 Compiler 输出。</p>
+<h3 id="parse-阶段"><a href="#parse-阶段" class="headerlink" title="parse 阶段"></a>parse 阶段</h3><p>我们需要使用不同的 Parser 来解析成不同规范的语法树，unified 主要支持三种规范，分别是：</p>
+<ul>
+<li>remark (Markdown)</li>
+<li>retext (natural language)</li>
+<li>rehype (HTML)</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/remarkjs/remark">remark</a>及其附属工具族都以<code>remark-</code>开头，对应符合<a target="_blank" rel="noopener" href="https://github.com/syntax-tree/mdast">mdast</a>规范的语法树。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/retextjs/retext">retext</a>及其附属工具族都以<code>retext-</code>开头，对应符合<a target="_blank" rel="noopener" href="https://github.com/syntax-tree/nlcst">nlcst</a>规范的语法树。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/rehypejs/rehype-slugs">rehype</a>及其附属工具族都以<code>rehype-</code>开头，对应符合<a target="_blank" rel="noopener" href="https://github.com/syntax-tree/hast">hast</a>规范的语法树。</p>
+<p>通常都是使用对应的<code>[remark|retext|rehype]-parse</code>包来完成。</p>
+<h3 id="run-阶段"><a href="#run-阶段" class="headerlink" title="run 阶段"></a>run 阶段</h3><p>就是使用对应的工具族来修改对应的语法树，它的 run 阶段使用<a target="_blank" rel="noopener" href="https://github.com/wooorm/trough">trough</a>来处理，灵感来自<a target="_blank" rel="noopener" href="https://github.com/segmentio/ware">ware</a>，类似 Koa 的剥洋葱中间件组装形式。</p>
+<h3 id="stringify-阶段"><a href="#stringify-阶段" class="headerlink" title="stringify 阶段"></a>stringify 阶段</h3><p>通常都是使用对应的<code>remark|retext|rehype-stringify</code>包来完成。</p>
+<h3 id="AST-构建工具"><a href="#AST-构建工具" class="headerlink" title="AST 构建工具"></a>AST 构建工具</h3><blockquote>
+<p>unist 是一个通用语法树规范，mdast, hast, xast, 和 nlcst 都继承自 unist。</p>
+</blockquote>
+<p>至此应该对 unified 体系的工作流程有了大体的了解。</p>
+<p>虽然如上面介绍的，在 parse 阶段使用对应的 parser 完成解析，但我们也可以使用工具直接构建 AST，这里介绍如下几种工具，</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/hyperhype/hyperscript">hyperscript</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/syntax-tree/hastscript">hastscript</a> (create hast trees)</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/syntax-tree/xastscript">xastscript</a> (create <a target="_blank" rel="noopener" href="https://github.com/syntax-tree/xast">xast</a> trees)</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/syntax-tree/unist-builder">unist-builder</a> (create any <a target="_blank" rel="noopener" href="https://github.com/syntax-tree/unist">unist</a> trees)</li>
+</ul>
+<h2 id="如何实现-run-阶段对应的工具包呢"><a href="#如何实现-run-阶段对应的工具包呢" class="headerlink" title="如何实现 run 阶段对应的工具包呢"></a>如何实现 run 阶段对应的工具包呢</h2><p>可以参考我对 <a target="_blank" rel="noopener" href="https://github.com/tingyur/rehype-slugs">rehype-slugs</a> 的实现，而我又是参考 <a target="_blank" rel="noopener" href="https://github.com/syntax-tree/mdast-util-toc">mdast-util-toc</a> 实现的。写完后发现有个类似的<a target="_blank" rel="noopener" href="https://github.com/rehypejs/rehype-slug">包</a>，不过功能不太一样。</p>
+<h2 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h2><p>因为由这些工具生成的内容可能会被直接用在 html 中，造成 cross-site scripting (XSS)，可以使用 rehype-sanitize 对 AST 进行安全处理，并且最好把 rehype-sanitize 放在所有 plugins 最后面，因为其他 plugins 也不一定安全。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/25/yuque/PnP/" rel="prev" title="PnP">
+      <i class="fa fa-chevron-left"></i> PnP
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/25/yuque/%E5%89%8D%E7%AB%AF%E5%BC%82%E5%B8%B8%E7%9B%91%E6%8E%A7/" rel="next" title="前端异常监控">
+      前端异常监控 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%9B%AE%E7%9A%84"><span class="nav-number">2.</span> <span class="nav-text">使用目的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-number">3.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#unified-%E4%BB%8B%E7%BB%8D"><span class="nav-number">4.</span> <span class="nav-text">unified 介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#parse-%E9%98%B6%E6%AE%B5"><span class="nav-number">4.1.</span> <span class="nav-text">parse 阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#run-%E9%98%B6%E6%AE%B5"><span class="nav-number">4.2.</span> <span class="nav-text">run 阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stringify-%E9%98%B6%E6%AE%B5"><span class="nav-number">4.3.</span> <span class="nav-text">stringify 阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AST-%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7"><span class="nav-number">4.4.</span> <span class="nav-text">AST 构建工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0-run-%E9%98%B6%E6%AE%B5%E5%AF%B9%E5%BA%94%E7%9A%84%E5%B7%A5%E5%85%B7%E5%8C%85%E5%91%A2"><span class="nav-number">5.</span> <span class="nav-text">如何实现 run 阶段对应的工具包呢</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E5%85%A8%E6%80%A7"><span class="nav-number">6.</span> <span class="nav-text">安全性</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Zhenyu</p>
+  <div class="site-description" itemprop="description">个人博客，同步自我的语雀文档</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhenyu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,90 +1,965 @@
 <!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>听鱼的博客</title>
-    <meta name="description" content="随便玩玩">
-    <meta name="generator" content="VuePress 1.3.1">
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="个人博客，同步自我的语雀文档">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="个人博客，同步自我的语雀文档">
+<meta property="og:locale">
+<meta property="article:author" content="Zhenyu">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Hexo</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/07/hello-world/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zhenyu">
+      <meta itemprop="description" content="个人博客，同步自我的语雀文档">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/07/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-07 08:20:00" itemprop="dateCreated datePublished" datetime="2020-09-07T08:20:00+00:00">2020-09-07</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
     
     
-    <link rel="preload" href="/assets/css/0.styles.341cfc29.css" as="style"><link rel="preload" href="/assets/js/app.5f1549a3.js" as="script"><link rel="preload" href="/assets/js/2.9121317e.js" as="script"><link rel="preload" href="/assets/js/32.451262e0.js" as="script"><link rel="prefetch" href="/assets/js/10.2b223f51.js"><link rel="prefetch" href="/assets/js/100.88f34131.js"><link rel="prefetch" href="/assets/js/101.7bd5d049.js"><link rel="prefetch" href="/assets/js/102.a2416ce9.js"><link rel="prefetch" href="/assets/js/103.b99a3983.js"><link rel="prefetch" href="/assets/js/104.7b14bb74.js"><link rel="prefetch" href="/assets/js/105.48cc9c64.js"><link rel="prefetch" href="/assets/js/106.f5c5fdef.js"><link rel="prefetch" href="/assets/js/107.db559f47.js"><link rel="prefetch" href="/assets/js/11.b41c262c.js"><link rel="prefetch" href="/assets/js/12.11ed69d3.js"><link rel="prefetch" href="/assets/js/13.c3ce1a72.js"><link rel="prefetch" href="/assets/js/14.c76f109f.js"><link rel="prefetch" href="/assets/js/15.a64e573f.js"><link rel="prefetch" href="/assets/js/16.e7fa5866.js"><link rel="prefetch" href="/assets/js/17.064422d1.js"><link rel="prefetch" href="/assets/js/18.02f8761b.js"><link rel="prefetch" href="/assets/js/19.11713135.js"><link rel="prefetch" href="/assets/js/20.9aa94593.js"><link rel="prefetch" href="/assets/js/21.a0315b58.js"><link rel="prefetch" href="/assets/js/22.3304311a.js"><link rel="prefetch" href="/assets/js/23.43780215.js"><link rel="prefetch" href="/assets/js/24.03bcab68.js"><link rel="prefetch" href="/assets/js/25.3892ef13.js"><link rel="prefetch" href="/assets/js/26.7368c3c8.js"><link rel="prefetch" href="/assets/js/27.a447d7a3.js"><link rel="prefetch" href="/assets/js/28.688769d3.js"><link rel="prefetch" href="/assets/js/29.0f5ae53c.js"><link rel="prefetch" href="/assets/js/3.e37f38d1.js"><link rel="prefetch" href="/assets/js/30.835875d4.js"><link rel="prefetch" href="/assets/js/31.d1ebe3d5.js"><link rel="prefetch" href="/assets/js/33.a6fda2b8.js"><link rel="prefetch" href="/assets/js/34.fd67c298.js"><link rel="prefetch" href="/assets/js/35.8cc1d6d7.js"><link rel="prefetch" href="/assets/js/36.ef518f55.js"><link rel="prefetch" href="/assets/js/37.9cd39257.js"><link rel="prefetch" href="/assets/js/38.86233114.js"><link rel="prefetch" href="/assets/js/39.877da125.js"><link rel="prefetch" href="/assets/js/4.e6414d4d.js"><link rel="prefetch" href="/assets/js/40.70dc3d39.js"><link rel="prefetch" href="/assets/js/41.e1a77180.js"><link rel="prefetch" href="/assets/js/42.dbc31dcd.js"><link rel="prefetch" href="/assets/js/43.3871485c.js"><link rel="prefetch" href="/assets/js/44.4449b2e0.js"><link rel="prefetch" href="/assets/js/45.3d48d78f.js"><link rel="prefetch" href="/assets/js/46.9a3471ee.js"><link rel="prefetch" href="/assets/js/47.3b6bfa4c.js"><link rel="prefetch" href="/assets/js/48.9da4ab43.js"><link rel="prefetch" href="/assets/js/49.1ab258d8.js"><link rel="prefetch" href="/assets/js/5.768ecfb1.js"><link rel="prefetch" href="/assets/js/50.209cafdb.js"><link rel="prefetch" href="/assets/js/51.0456622a.js"><link rel="prefetch" href="/assets/js/52.85a0550e.js"><link rel="prefetch" href="/assets/js/53.223fb839.js"><link rel="prefetch" href="/assets/js/54.5ea04027.js"><link rel="prefetch" href="/assets/js/55.a283b62f.js"><link rel="prefetch" href="/assets/js/56.ff2d36de.js"><link rel="prefetch" href="/assets/js/57.96dd32d6.js"><link rel="prefetch" href="/assets/js/58.a29947e9.js"><link rel="prefetch" href="/assets/js/59.8f0833b9.js"><link rel="prefetch" href="/assets/js/6.624eac56.js"><link rel="prefetch" href="/assets/js/60.4ce1076c.js"><link rel="prefetch" href="/assets/js/61.31fcfa18.js"><link rel="prefetch" href="/assets/js/62.08614913.js"><link rel="prefetch" href="/assets/js/63.b8066b11.js"><link rel="prefetch" href="/assets/js/64.2300a12e.js"><link rel="prefetch" href="/assets/js/65.cf63b8ca.js"><link rel="prefetch" href="/assets/js/66.798e9bc2.js"><link rel="prefetch" href="/assets/js/67.8744354c.js"><link rel="prefetch" href="/assets/js/68.91664d01.js"><link rel="prefetch" href="/assets/js/69.b117396d.js"><link rel="prefetch" href="/assets/js/7.ec318c6d.js"><link rel="prefetch" href="/assets/js/70.ddc2e5ee.js"><link rel="prefetch" href="/assets/js/71.80515641.js"><link rel="prefetch" href="/assets/js/72.1c50e6a9.js"><link rel="prefetch" href="/assets/js/73.df5031bc.js"><link rel="prefetch" href="/assets/js/74.30e6d9e4.js"><link rel="prefetch" href="/assets/js/75.88aab629.js"><link rel="prefetch" href="/assets/js/76.8d1ed4d2.js"><link rel="prefetch" href="/assets/js/77.7de6bbe9.js"><link rel="prefetch" href="/assets/js/78.667bf803.js"><link rel="prefetch" href="/assets/js/79.52f48ae6.js"><link rel="prefetch" href="/assets/js/8.5f713608.js"><link rel="prefetch" href="/assets/js/80.470e5818.js"><link rel="prefetch" href="/assets/js/81.15db1e32.js"><link rel="prefetch" href="/assets/js/82.f7534eb2.js"><link rel="prefetch" href="/assets/js/83.4cd16380.js"><link rel="prefetch" href="/assets/js/84.9e4cf4b7.js"><link rel="prefetch" href="/assets/js/85.2daeb56c.js"><link rel="prefetch" href="/assets/js/86.62c75f2a.js"><link rel="prefetch" href="/assets/js/87.f4038b2d.js"><link rel="prefetch" href="/assets/js/88.30c294eb.js"><link rel="prefetch" href="/assets/js/89.ff8e509c.js"><link rel="prefetch" href="/assets/js/9.0adc4cd7.js"><link rel="prefetch" href="/assets/js/90.84efa137.js"><link rel="prefetch" href="/assets/js/91.b8ca7db3.js"><link rel="prefetch" href="/assets/js/92.5ecfca64.js"><link rel="prefetch" href="/assets/js/93.50b8a095.js"><link rel="prefetch" href="/assets/js/94.920b2d6c.js"><link rel="prefetch" href="/assets/js/95.1951a5fe.js"><link rel="prefetch" href="/assets/js/96.37e4257f.js"><link rel="prefetch" href="/assets/js/97.1171a0e1.js"><link rel="prefetch" href="/assets/js/98.5f53030b.js"><link rel="prefetch" href="/assets/js/99.29d49bbc.js">
-    <link rel="stylesheet" href="/assets/css/0.styles.341cfc29.css">
-  </head>
-  <body>
-    <div id="app" data-server-rendered="true"><div class="theme-container no-sidebar"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-exact-active router-link-active"><!----> <span class="site-name">听鱼的博客</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="/article/浅谈JS中的AST.html" class="nav-link">
-  文章
-</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="基础知识" class="dropdown-title"><span class="title">基础知识</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/basic/html5/BrowsingContext.html" class="nav-link">
-  HTML5
-</a></li><li class="dropdown-item"><!----> <a href="/basic/css3/flex.html" class="nav-link">
-  CSS3
-</a></li><li class="dropdown-item"><!----> <a href="/basic/javascript/作用域.html" class="nav-link">
-  JavaScript
-</a></li><li class="dropdown-item"><!----> <a href="/basic/nodejs/作用域.html" class="nav-link">
-  NodeJS
-</a></li><li class="dropdown-item"><!----> <a href="/basic/typescript/basic.html" class="nav-link">
-  TypeScript
-</a></li><li class="dropdown-item"><!----> <a href="/basic/browser/cors.html" class="nav-link">
-  Browser
-</a></li><li class="dropdown-item"><!----> <a href="/basic/webpack/webpack4.html" class="nav-link">
-  Webpack
-</a></li><li class="dropdown-item"><!----> <a href="/basic/react/react-kernel.html" class="nav-link">
-  React
-</a></li><li class="dropdown-item"><!----> <a href="/basic/vue/vue-loader.html" class="nav-link">
-  Vue
-</a></li><li class="dropdown-item"><!----> <a href="/basic/minip/FAQ.html" class="nav-link">
-  Minip
-</a></li><li class="dropdown-item"><!----> <a href="/basic/network/" class="nav-link">
-  Network
-</a></li><li class="dropdown-item"><!----> <a href="/basic/git/command.html" class="nav-link">
-  Git
-</a></li><li class="dropdown-item"><!----> <a href="/basic/docker/基础篇.html" class="nav-link">
-  Docker
-</a></li><li class="dropdown-item"><!----> <a href="/basic/db/范式.html" class="nav-link">
-  DataBase
-</a></li><li class="dropdown-item"><!----> <a href="/basic/linux/bash.html" class="nav-link">
-  Linux
-</a></li></ul></div></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="/article/浅谈JS中的AST.html" class="nav-link">
-  文章
-</a></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="基础知识" class="dropdown-title"><span class="title">基础知识</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/basic/html5/BrowsingContext.html" class="nav-link">
-  HTML5
-</a></li><li class="dropdown-item"><!----> <a href="/basic/css3/flex.html" class="nav-link">
-  CSS3
-</a></li><li class="dropdown-item"><!----> <a href="/basic/javascript/作用域.html" class="nav-link">
-  JavaScript
-</a></li><li class="dropdown-item"><!----> <a href="/basic/nodejs/作用域.html" class="nav-link">
-  NodeJS
-</a></li><li class="dropdown-item"><!----> <a href="/basic/typescript/basic.html" class="nav-link">
-  TypeScript
-</a></li><li class="dropdown-item"><!----> <a href="/basic/browser/cors.html" class="nav-link">
-  Browser
-</a></li><li class="dropdown-item"><!----> <a href="/basic/webpack/webpack4.html" class="nav-link">
-  Webpack
-</a></li><li class="dropdown-item"><!----> <a href="/basic/react/react-kernel.html" class="nav-link">
-  React
-</a></li><li class="dropdown-item"><!----> <a href="/basic/vue/vue-loader.html" class="nav-link">
-  Vue
-</a></li><li class="dropdown-item"><!----> <a href="/basic/minip/FAQ.html" class="nav-link">
-  Minip
-</a></li><li class="dropdown-item"><!----> <a href="/basic/network/" class="nav-link">
-  Network
-</a></li><li class="dropdown-item"><!----> <a href="/basic/git/command.html" class="nav-link">
-  Git
-</a></li><li class="dropdown-item"><!----> <a href="/basic/docker/基础篇.html" class="nav-link">
-  Docker
-</a></li><li class="dropdown-item"><!----> <a href="/basic/db/范式.html" class="nav-link">
-  DataBase
-</a></li><li class="dropdown-item"><!----> <a href="/basic/linux/bash.html" class="nav-link">
-  Linux
-</a></li></ul></div></div> <!----></nav>  <!----> </aside> <main aria-labelledby="main-title" class="home"><header class="hero"><img src="/hero.png" alt="hero"> <h1 id="main-title">
-      听鱼的博客
-    </h1> <p class="description">
-      VuePress挺好用的😊
-    </p> <p class="action"><a href="/article/浅谈JS中的AST.html" class="nav-link action-button">
-  开始阅读 →
-</a></p></header> <div class="features"><div class="feature"><h2>基础知识</h2> <p>怕忘记的基础知识，记下来再说🍉</p></div><div class="feature"><h2>项目经验</h2> <p>实战项目中遇到的问题，如何解决及优化呢❓</p></div><div class="feature"><h2>其他</h2> <p>随便记录的乱七八糟的东西🥱</p></div></div> <div class="theme-default-content custom content__default"></div> <div class="footer">
-    不保证技术的权威性，仅供参考，欢迎交流👏
-  </div></main></div><div class="global-ui"></div></div>
-    <script src="/assets/js/app.5f1549a3.js" defer></script><script src="/assets/js/2.9121317e.js" defer></script><script src="/assets/js/32.451262e0.js" defer></script>
-  </body>
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/04/yuque/%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zhenyu">
+      <meta itemprop="description" content="个人博客，同步自我的语雀文档">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/04/yuque/%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99/" class="post-title-link" itemprop="url">搭建博客网站</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-04 05:54:19" itemprop="dateCreated datePublished" datetime="2020-09-04T05:54:19+00:00">2020-09-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-07 08:20:30" itemprop="dateModified" datetime="2020-09-07T08:20:30+00:00">2020-09-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="小插曲"><a href="#小插曲" class="headerlink" title="小插曲"></a>小插曲</h2><p>一直想搭建一个博客网站，作为工作以来的知识积累汇总，也算有个云存档，复习起来也方便。当时的打算是，把新项目定位成个人门户，不仅可以展示博客，还可以运载一些代码 demo，或者其他任何类型的东西，并且使用 React 体系编写，成为一个 SPA 项目，这样整个网站都是受控状态，能够更加迎合一些突发奇想的 idea。</p>
+<p>一开始要实现两个页面，</p>
+<ul>
+<li>博客列表，显示博客列表</li>
+<li>博客详情，加载 markdown 文件</li>
+</ul>
+<p>要获取博客列表，需要先静态分析本地的 markdown 文件，输出一个 manifest 文件，在运行时加载 manifest 文件获取所有博客的信息，当时设计的 manifest 文件格式是这样的，</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">interface</span> Slug &#123;</span><br><span class="line">  id: <span class="built_in">string</span>;</span><br><span class="line">  depth: <span class="built_in">number</span>;</span><br><span class="line">  tagName: <span class="built_in">string</span>;</span><br><span class="line">  text: <span class="built_in">string</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> FrontMatter &#123;</span><br><span class="line">  title?: <span class="built_in">string</span>;</span><br><span class="line">  description?: <span class="built_in">string</span>;</span><br><span class="line">  date?: <span class="built_in">string</span>;</span><br><span class="line">  author?: <span class="built_in">string</span>;</span><br><span class="line">  categories?: [<span class="built_in">string</span>, <span class="built_in">string</span>];</span><br><span class="line">  tags?: <span class="built_in">string</span>[];</span><br><span class="line">  complexity?: <span class="string">&quot;easy&quot;</span> | <span class="string">&quot;ordinary&quot;</span> | <span class="string">&quot;hard&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">interface</span> BlogContent &#123;</span><br><span class="line">  id: <span class="built_in">string</span>;</span><br><span class="line">  md5: <span class="built_in">string</span>;</span><br><span class="line">  filename: <span class="built_in">string</span>;</span><br><span class="line">  slugs: Slug[] | <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">type</span> BlogDesc = FrontMatter &amp; BlogContent;</span><br><span class="line"><span class="keyword">interface</span> Manifest &#123;</span><br><span class="line">  index: <span class="built_in">number</span>;</span><br><span class="line">  cache: &#123;</span><br><span class="line">    [key: <span class="built_in">string</span>]: BlogDesc;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>本地编写的 md 文件需要支持 front matter 注释，这样可以赋予博客更多信息。</p>
+<p>博客详情页面的加载资源不能是 md 格式，所以需要将 md 格式转换成网页可用的 html 格式，并且希望详情页有标题导航，能快速滚动到网页对应锚点位置。</p>
+<p>综合如上的需求，我开始写 md 编译脚本，</p>
+<ol>
+<li>提取 md 文件中的 front matter 注释，输出成 manifest 文件</li>
+<li>将 md 格式转换成 html 格式，输出到直到 cache 目录，供运行时加载</li>
+<li>为 html 中的 h 节点增加锚点，并且把每个文件的锚点信息也输出到 manifest 文件</li>
+<li>html 文件最终会应用于 React 的 dangerouslySetInnerHTML 属性，这就涉及到网络安全问题，需要对 html 做一个防 XSS 攻击的安全过滤</li>
+</ol>
+<p>具体实现还是依靠 AST 中间态来自定义处理，主要使用了 unified 包。</p>
+<p>之所以称之为小插曲，是因为并没有继续做下去。主要面临了几个问题，</p>
+<ol>
+<li>本地 markdown 编辑体验较差</li>
+<li>我实现了如上需求的 md 格式转换脚本，发现还是太简陋了，需要支持更多的编译配置项就需要更详细的需求规划，工作量有点大，不如使用 hexo 这个博客搭建工具</li>
+<li>语雀平台的云编辑功能很强大，并且支持在云编辑完后触发 webhook 做一些自动化部署</li>
+</ol>
+<p>权衡利弊后，原本的个人门户项目依然需要，但是博客系统分离到 hexo 项目上，考虑个人门户项目是否可以采用微前端架构，作为一个主应用，后续可以接入更多子应用。</p>
+<p>接下来本文主要讲述博客搭建过程。</p>
+<h2 id="搭建流程"><a href="#搭建流程" class="headerlink" title="搭建流程"></a>搭建流程</h2><ol>
+<li>使用<a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo">hexo</a>初始化 blog 项目</li>
+<li>选择一个 theme，我选的是<a target="_blank" rel="noopener" href="https://theme-next.js.org/docs/theme-settings/">theme-next</a></li>
+<li></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/25/yuque/%E5%89%8D%E7%AB%AF%E5%BC%82%E5%B8%B8%E7%9B%91%E6%8E%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zhenyu">
+      <meta itemprop="description" content="个人博客，同步自我的语雀文档">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/25/yuque/%E5%89%8D%E7%AB%AF%E5%BC%82%E5%B8%B8%E7%9B%91%E6%8E%A7/" class="post-title-link" itemprop="url">前端异常监控</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-25 02:40:17" itemprop="dateCreated datePublished" datetime="2020-08-25T02:40:17+00:00">2020-08-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-07 08:20:30" itemprop="dateModified" datetime="2020-09-07T08:20:30+00:00">2020-09-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>异常监控是为了能提前预警前端项目发生的异常，我们可以捕获异常，并将其发送给负责收集异常的后台服务，这样就能对错误进行汇总和分析。</p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>前端部分可以这么做：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.onerror = <span class="function"><span class="keyword">function</span> (<span class="params">msg, url, lineno, colno</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> img = <span class="keyword">new</span> Image();</span><br><span class="line">  img.src = <span class="string">`http://api/sendError`</span>; <span class="comment">// 可以附加本项目信息，为了后台服务定位错误来源和错误分类</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>window.onerror</code>可以全局捕获错误信息，包括外部加载的 JS，不过如果是跨域的外部资源，得使用<code>&lt;script crossorigin&gt;&lt;/script&gt;</code>，否则无法捕获。这里之所以使用 img 标签，仅仅是为了方便的调用 get 请求。</p>
+<p>监控服务接收到错误信息和项目信息后存入数据库，并做可视化展示，这样程序员就能更直观和高效的排查错误。</p>
+<h2 id="过滤干扰日志"><a href="#过滤干扰日志" class="headerlink" title="过滤干扰日志"></a>过滤干扰日志</h2><p>不过实际收集到的错误信息可能不全是自己前端项目的错误，因为前端页面所在的容器平台可能会注入第三方的脚本，这些脚本本身也可能会抛异常，当一个项目的体量变大，或者监控后台对接的项目越来越多，其接受到的错误信息也会急剧增多，第三方脚本干扰的信息会造成程序员无法快速定位自身项目的异常问题，这就需要对错误信息进行过滤。</p>
+<p>下面三种是常见的干扰日志：</p>
+<ol>
+<li>第 1 个是第三方脚本注入</li>
+<li>第 2 个是容器脚本的注入</li>
+<li>第 3 个是由手机制造商脚本注入</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/25/yuque/unified%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zhenyu">
+      <meta itemprop="description" content="个人博客，同步自我的语雀文档">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/25/yuque/unified%E4%BD%BF%E7%94%A8%E6%80%BB%E7%BB%93/" class="post-title-link" itemprop="url">unified使用总结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-25 01:27:04" itemprop="dateCreated datePublished" datetime="2020-08-25T01:27:04+00:00">2020-08-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-07 08:20:30" itemprop="dateModified" datetime="2020-09-07T08:20:30+00:00">2020-09-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>unified 是一个通过语法树来处理文本的工具，它支持 remark (Markdown)，retext (natural language)，和 rehype (HTML)的格式文本。</p>
+<h2 id="使用目的"><a href="#使用目的" class="headerlink" title="使用目的"></a>使用目的</h2><p>我想要使用 unified 来实现如下功能，</p>
+<ul>
+<li>将 md 文档转换成 html 格式</li>
+<li>为 html 下的 heading 标签增加唯一 id，同时导出此 html 的锚点信息，用于构建此 html 的导航菜单</li>
+</ul>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>实现此功能的核心还是转化成 AST 来做。根据 unified<a target="_blank" rel="noopener" href="https://www.npmjs.com/package/unified">使用文档</a>，一个大纲代码如下所示：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&quot;fs&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> path = <span class="built_in">require</span>(<span class="string">&quot;path&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> unified = <span class="built_in">require</span>(<span class="string">&quot;unified&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> markdown = <span class="built_in">require</span>(<span class="string">&quot;remark-parse&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> remark2rehype = <span class="built_in">require</span>(<span class="string">&quot;remark-rehype&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> anthor = <span class="built_in">require</span>(<span class="string">&quot;rehype-slugs&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> sanitize = <span class="built_in">require</span>(<span class="string">&quot;hast-util-sanitize&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> format = <span class="built_in">require</span>(<span class="string">&quot;rehype-format&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> html = <span class="built_in">require</span>(<span class="string">&quot;rehype-stringify&quot;</span>);</span><br><span class="line"><span class="keyword">var</span> report = <span class="built_in">require</span>(<span class="string">&quot;vfile-reporter&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> anthors;</span><br><span class="line">unified()</span><br><span class="line">  .use(markdown) <span class="comment">// 先将md文档转成md规范的AST</span></span><br><span class="line">  .use(remark2rehype) <span class="comment">// 将md规范的AST转换成html规范的AST</span></span><br><span class="line">  .use(sanitize) <span class="comment">// 安全处理防止XSS攻击</span></span><br><span class="line">  .use(anthor, &#123;</span><br><span class="line">    <span class="comment">// 根据AST提取锚点信息</span></span><br><span class="line">    maxDepth: <span class="number">3</span>,</span><br><span class="line">    callback: <span class="function"><span class="keyword">function</span> (<span class="params">res</span>) </span>&#123;</span><br><span class="line">      anthors = res;</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;)</span><br><span class="line">  .use(format) <span class="comment">// 格式化此AST</span></span><br><span class="line">  .use(html) <span class="comment">// 最终将AST转换成html文本</span></span><br><span class="line">  .process(fs.readFileSync(path.resolve(__dirname, <span class="string">&quot;./example.md&quot;</span>)), <span class="function"><span class="keyword">function</span> (<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    err,</span></span></span><br><span class="line"><span class="function"><span class="params">    file</span></span></span><br><span class="line"><span class="function"><span class="params">  </span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(anthors);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">String</span>(file));</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+
+<p>上述使用到的包除了 rehype-slugs 是自己实现之外其余都可在 unified 的使用教程的例子中找到，后文也会对这些工具包进行一个汇总。</p>
+<h2 id="unified-介绍"><a href="#unified-介绍" class="headerlink" title="unified 介绍"></a>unified 介绍</h2><p>unified 官方的描述，</p>
+<blockquote>
+<p>unified is an interface for processing text using syntax trees. Syntax trees are a representation of text understandable to programs. Those programs, called plugins, take these trees and inspect and modify them. To get to the syntax tree from text, there is a parser. To get from that back to text, there is a compiler. This is the process of a processor.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">| ........................ process ........................... |</span><br><span class="line">| .......... parse ... | ... run ... | ... stringify ..........|</span><br><span class="line"></span><br><span class="line">          +--------+                     +----------+</span><br><span class="line">Input -&gt;- | Parser | -&gt;- Syntax Tree -&gt;- | Compiler | -&gt;- Output</span><br><span class="line">          +--------+          |          +----------+</span><br><span class="line">                              X</span><br><span class="line">                              |</span><br><span class="line">                       +--------------+</span><br><span class="line">                       | Transformers |</span><br><span class="line">                       +--------------+</span><br></pre></td></tr></table></figure>
+
+<p>总的来讲，unified 先把输入通过 Parser 转换成语法树，再通过一系列 Transformers 来修改这个语法树，最终通过 Compiler 输出。</p>
+<h3 id="parse-阶段"><a href="#parse-阶段" class="headerlink" title="parse 阶段"></a>parse 阶段</h3><p>我们需要使用不同的 Parser 来解析成不同规范的语法树，unified 主要支持三种规范，分别是：</p>
+<ul>
+<li>remark (Markdown)</li>
+<li>retext (natural language)</li>
+<li>rehype (HTML)</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://github.com/remarkjs/remark">remark</a>及其附属工具族都以<code>remark-</code>开头，对应符合<a target="_blank" rel="noopener" href="https://github.com/syntax-tree/mdast">mdast</a>规范的语法树。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/retextjs/retext">retext</a>及其附属工具族都以<code>retext-</code>开头，对应符合<a target="_blank" rel="noopener" href="https://github.com/syntax-tree/nlcst">nlcst</a>规范的语法树。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/rehypejs/rehype-slugs">rehype</a>及其附属工具族都以<code>rehype-</code>开头，对应符合<a target="_blank" rel="noopener" href="https://github.com/syntax-tree/hast">hast</a>规范的语法树。</p>
+<p>通常都是使用对应的<code>[remark|retext|rehype]-parse</code>包来完成。</p>
+<h3 id="run-阶段"><a href="#run-阶段" class="headerlink" title="run 阶段"></a>run 阶段</h3><p>就是使用对应的工具族来修改对应的语法树，它的 run 阶段使用<a target="_blank" rel="noopener" href="https://github.com/wooorm/trough">trough</a>来处理，灵感来自<a target="_blank" rel="noopener" href="https://github.com/segmentio/ware">ware</a>，类似 Koa 的剥洋葱中间件组装形式。</p>
+<h3 id="stringify-阶段"><a href="#stringify-阶段" class="headerlink" title="stringify 阶段"></a>stringify 阶段</h3><p>通常都是使用对应的<code>remark|retext|rehype-stringify</code>包来完成。</p>
+<h3 id="AST-构建工具"><a href="#AST-构建工具" class="headerlink" title="AST 构建工具"></a>AST 构建工具</h3><blockquote>
+<p>unist 是一个通用语法树规范，mdast, hast, xast, 和 nlcst 都继承自 unist。</p>
+</blockquote>
+<p>至此应该对 unified 体系的工作流程有了大体的了解。</p>
+<p>虽然如上面介绍的，在 parse 阶段使用对应的 parser 完成解析，但我们也可以使用工具直接构建 AST，这里介绍如下几种工具，</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/hyperhype/hyperscript">hyperscript</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/syntax-tree/hastscript">hastscript</a> (create hast trees)</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/syntax-tree/xastscript">xastscript</a> (create <a target="_blank" rel="noopener" href="https://github.com/syntax-tree/xast">xast</a> trees)</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/syntax-tree/unist-builder">unist-builder</a> (create any <a target="_blank" rel="noopener" href="https://github.com/syntax-tree/unist">unist</a> trees)</li>
+</ul>
+<h2 id="如何实现-run-阶段对应的工具包呢"><a href="#如何实现-run-阶段对应的工具包呢" class="headerlink" title="如何实现 run 阶段对应的工具包呢"></a>如何实现 run 阶段对应的工具包呢</h2><p>可以参考我对 <a target="_blank" rel="noopener" href="https://github.com/tingyur/rehype-slugs">rehype-slugs</a> 的实现，而我又是参考 <a target="_blank" rel="noopener" href="https://github.com/syntax-tree/mdast-util-toc">mdast-util-toc</a> 实现的。写完后发现有个类似的<a target="_blank" rel="noopener" href="https://github.com/rehypejs/rehype-slug">包</a>，不过功能不太一样。</p>
+<h2 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h2><p>因为由这些工具生成的内容可能会被直接用在 html 中，造成 cross-site scripting (XSS)，可以使用 rehype-sanitize 对 AST 进行安全处理，并且最好把 rehype-sanitize 放在所有 plugins 最后面，因为其他 plugins 也不一定安全。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/25/yuque/PnP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zhenyu">
+      <meta itemprop="description" content="个人博客，同步自我的语雀文档">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/25/yuque/PnP/" class="post-title-link" itemprop="url">PnP</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-25 01:25:26" itemprop="dateCreated datePublished" datetime="2020-08-25T01:25:26+00:00">2020-08-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-07 08:20:30" itemprop="dateModified" datetime="2020-09-07T08:20:30+00:00">2020-09-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>还是等社区用的人多了再用吧，初步试用了下有好多坑。。。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>在初次遇见前端项目的时候，当时就有一个困惑，依赖包为何要以项目为单位进行维护？正常的逻辑应该是，所有项目的依赖包都存放在一个本地中心仓库，初次安装或者不同版本时更新到中心仓库，这样从以项目为单位的分散管理变成统一管理，可以大大提高利用率啊，就像后端项目的 Maven 一样。如果有哪位朋友知道当初这么设计的原因请留言告知。</p>
+<p>根据 <a target="_blank" rel="noopener" href="https://nodejs.org/api/modules.html#modules_all_together">Node Resolution</a> 的策略，寻找依赖是个很低效的过程，具体分析可以参考<a target="_blank" rel="noopener" href="https://yarnpkg.com/features/pnp">这里</a>。</p>
+<p>Yarn 的 PnP 特性就是解决 Node 包管理低效的问题，开启 PnP 特性后，使用 Yarn install 初始化项目时不再生成 node_modules 目录，而是生成一个.pnp.js 文件，该文件维护了包对应的磁盘位置和依赖项，如下格式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  <span class="string">&quot;react&quot;</span>,</span><br><span class="line">  <span class="keyword">new</span> <span class="built_in">Map</span>([</span><br><span class="line">    [</span><br><span class="line">      <span class="string">&quot;16.13.1&quot;</span>,</span><br><span class="line">      &#123;</span><br><span class="line">        packageLocation: path.resolve(</span><br><span class="line">          __dirname,</span><br><span class="line">          <span class="string">&quot;../../Library/Caches/Yarn/v6/npm-react-16.13.1-2e818822f1a9743122c063d6410d85c1e3afe48e-integrity/node_modules/react/&quot;</span></span><br><span class="line">        ),</span><br><span class="line">        packageDependencies: <span class="keyword">new</span> <span class="built_in">Map</span>([</span><br><span class="line">          [<span class="string">&quot;loose-envify&quot;</span>, <span class="string">&quot;1.4.0&quot;</span>],</span><br><span class="line">          [<span class="string">&quot;object-assign&quot;</span>, <span class="string">&quot;4.1.1&quot;</span>],</span><br><span class="line">          [<span class="string">&quot;prop-types&quot;</span>, <span class="string">&quot;15.7.2&quot;</span>],</span><br><span class="line">          [<span class="string">&quot;react&quot;</span>, <span class="string">&quot;16.13.1&quot;</span>],</span><br><span class="line">        ]),</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  ]),</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+<p>未开启 PnP 时 Yarn install 实际做了以下事情：</p>
+<ol>
+<li>将依赖包的版本区间解析为某个具体的版本号，下载对应版本依赖的 tar 包到本地离线镜像</li>
+<li>将依赖从离线镜像解压到本地缓存</li>
+<li>将依赖从缓存拷贝到当前目录的 node_modules 目录</li>
+<li>We apply the computed changes (a bunch of rsync operations, basically)</li>
+</ol>
+<p>在开启 PnP 之后的 Yarn2 版本：</p>
+<ol>
+<li>下载对应版本依赖的 tar 包到本地缓存（合并了离线镜像和本地缓存）</li>
+<li>生成.pnp.js，建立依赖模块到本地磁盘的映射关系</li>
+</ol>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>PnP 会使用自定义的 resolver 来处理 require()请求，以此来覆盖原本的 Node Resolution 策略，但同时会造成一些影响，请见下文的注意事项。</p>
+<h2 id="好处"><a href="#好处" class="headerlink" title="好处"></a>好处</h2><ul>
+<li>节省 install 时间</li>
+<li>所有 npm 模块都会存放在全局的缓存目录下, 依赖树扁平化, 避免拷贝和重复</li>
+<li>提高模块加载效率. Node 为了查找模块, 需要调用大量的 stat 和 readdir 系统调用. pnp 通过 Yarn 获取或者模块信息, 直接定位模块</li>
+<li>不再受限于 node_modules 同名模块不同版本不能在同一目录</li>
+<li>高效协作开发，我们可以使用 <a target="_blank" rel="noopener" href="https://yarnpkg.com/features/zero-installs">Zero-Installs</a>，把.pnp.js 提交到版本控制中去，其他人 clone 该项目后不再需要执行 yarn install 操作即可直接运行，注意一下需要 ingore 的<a target="_blank" rel="noopener" href="https://yarnpkg.com/advanced/qa#which-files-should-be-gitignored">文件</a></li>
+</ul>
+<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><p>使用 <code>yarn --pnp</code>或者直接在 package.json 增加如下配置：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;installConfig&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;pnp&quot;</span>: <span class="literal">true</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="loose-模式"><a href="#loose-模式" class="headerlink" title="loose 模式"></a>loose 模式</h2><blockquote>
+<p>在 yarnrc.yml 配置 pnpMode: loose</p>
+</blockquote>
+<p>默认的 strict 模式下，PnP 会阻止不在显式依赖列表中的依赖（即没有定义在 package.json 中）。开启 loose 模式后，PnP 会利用 node-modules 的提升策略（把深层次的依赖提升到顶层安装）把这些原本会被提升的包记录在“fallback pool”，当未显式定义的依赖但在“fallback pool”清单中时不会被阻止 resolve。不过当同个包的有不同版本时，无法确定哪个版本会被提升，因此会生成 warning。</p>
+<h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><ul>
+<li>部分第三方包自己实现了 Node Resolution 策略</li>
+</ul>
+<p>有一些包可能自己实现了 resolver 来处理 require()请求（除了已结合 PnP API 规范的），这可能会和 PnP 产生冲突异常，可以在 Yarn<a target="_blank" rel="noopener" href="https://github.com/yarnpkg/yarn/issues">官方仓库</a>反馈。大多数都可以通过 loose 模式或者插件解决，但是 Flow 和 React Native 和 PnP 完全不兼容，可以在.yarnrc.yml 中配置<code>nodeLinker: node-modules</code>切换为生成 node_modules 文件夹的模式。</p>
+<ul>
+<li>script 脚本命令需要前置增加 yarn 命令</li>
+</ul>
+<p>node index.js =&gt; yarn node index.js</p>
+<ul>
+<li>vscode 需要配置 Editor SDKs</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://yarnpkg.com/advanced/editor-sdks">https://yarnpkg.com/advanced/editor-sdks</a></p>
+<ul>
+<li>当需要修改第三方包源码进行调试时</li>
+</ul>
+<p>使用 yarn unplug packageName 来将某个指定依赖拷贝到项目中的 .pnp/unplugged 目录下，之后 .pnp.js 中的 resolver 就会自动加载这个 unplug 的版本。调试完毕后，再执行 yarn unplug –clear packageName 可移除本地 .pnp/unplugged 中的对应依赖。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://yarnpkg.com/features/pnp">https://yarnpkg.com/features/pnp</a><br><a target="_blank" rel="noopener" href="https://nodejs.org/api/modules.html#modules_all_together">https://nodejs.org/api/modules.html#modules_all_together</a><br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/53135221/what-does-yarn-pnp">https://stackoverflow.com/questions/53135221/what-does-yarn-pnp</a><br><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/367871981?utm_source=qq">https://www.zhihu.com/question/367871981?utm_source=qq</a><br><a target="_blank" rel="noopener" href="https://github.com/yarnpkg/berry/issues/634">https://github.com/yarnpkg/berry/issues/634</a><br><a target="_blank" rel="noopener" href="http://loveky.github.io/2019/02/11/yarn-pnp/">http://loveky.github.io/2019/02/11/yarn-pnp/</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/24/yuque/%E5%BE%AE%E5%89%8D%E7%AB%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zhenyu">
+      <meta itemprop="description" content="个人博客，同步自我的语雀文档">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/24/yuque/%E5%BE%AE%E5%89%8D%E7%AB%AF/" class="post-title-link" itemprop="url">微前端</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-24 03:09:07" itemprop="dateCreated datePublished" datetime="2020-08-24T03:09:07+00:00">2020-08-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-07 08:20:31" itemprop="dateModified" datetime="2020-09-07T08:20:31+00:00">2020-09-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>公司内部有一个公共平台，需要集成各个项目组的相关对内业务，提供给公司员工使用。</p>
+<p>暂时取名公共平台为 Public，有三个项目组对内业务 A、B、C，使用 React 开发。</p>
+<h2 id="All-In-One"><a href="#All-In-One" class="headerlink" title="All In One"></a>All In One</h2><p>ABC 业务作为 Public 项目的子模块放在同一个项目里，做统一的版本控制和打包编译。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">├── Public</span><br><span class="line">  ├── Common</span><br><span class="line">  ├── A</span><br><span class="line">  ├── B</span><br><span class="line">  ├── C</span><br></pre></td></tr></table></figure>
+
+<p>会有如下问题：</p>
+<ol>
+<li>A 迭代发版时 B 和 C 可能并不需要。</li>
+<li>A 修改了 Common 中的组件，但因为并不了解 B 和 C 的业务，导致该组件不兼容 B 和 C 产生 bug。</li>
+<li>中途需要接入项目组 D，D 是使用 Vue 开发的。</li>
+</ol>
+<p>在长时间跨度的单体应用中，由于参与的人员、团队的增多、变迁，从一个普通应用演变成一个巨石应用，变得难以维护。</p>
+<h2 id="Micro-Frontend"><a href="#Micro-Frontend" class="headerlink" title="Micro Frontend"></a>Micro Frontend</h2><ol>
+<li>形成主应用和微应用体系，主应用作为所有微应用的载体，同时可以向微应用分发数据，并且最好是单向的，或者考虑使用回调函数的形式向微应用提供修改主应用的有限能力。</li>
+<li>微应用具备单独运行能力，同时又可接入主应用，可以通过全局遍历来判断是否处在微前端体系下，这个全局变量由主应用注入。</li>
+<li>主应用监测 URL 的变化来决定拉取对应微应用的代码入口文件进行初始化操作，微应用输出一些钩子函数向主应用提供管控自己的能力，主应用可以在各个阶段调用微应用暴露的钩子函数。主微应用之间采用这种轻接触的交流方式，可以保证双方的自治。</li>
+<li>主应用需要为每个微应用提供一个相对独立的沙盒环境，避免一系列冲突。</li>
+<li>由于主应用使用的是编译后的微应用代码（即微应用对于主应用而言就相当于一个外部模块），所以天然的具备技术栈无关性，但同时微应用的打包配置中需要做些标识性配置，以 webpack 为例，修改 output 的 library、libraryTarget、jsonpFunction 参数，其实目的就是为了在主应用运行环境中，每个微应用有自己的命名空间。</li>
+</ol>
+<h2 id="微前端框架"><a href="#微前端框架" class="headerlink" title="微前端框架"></a>微前端框架</h2><p>使用阿里开源的 <a target="_blank" rel="noopener" href="https://qiankun.umijs.org/">qiankun</a>。</p>
+<h2 id="变化"><a href="#变化" class="headerlink" title="变化"></a>变化</h2><p>在微前端体系下，原本的单体应用变成了现在的微应用，项目构成是否发生了什么变化呢？</p>
+<p>其实没有太多变化，以 React 为例，原本我们会在入口文件中调用 ReactDOM.render()将组件挂载到 container 中，并且在打包编译后以外部脚本被 HTML 文件引入；在微前端体系下，为了同时也能独立运行，只需在打包的入口文件输出钩子函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">if (window.__MICRO_FRONTEND__) &#123;</span><br><span class="line">  oldRender();</span><br><span class="line">&#125;</span><br><span class="line">function oldRender(props) &#123;</span><br><span class="line">  &#x2F;&#x2F; do something</span><br><span class="line">  ReactDOM.render(&lt;App &#x2F;&gt;, document.getElementById(&quot;root&quot;));</span><br><span class="line">&#125;</span><br><span class="line">export async function bootstrap() &#123;&#125;</span><br><span class="line">export async function mount(props) &#123;</span><br><span class="line">  oldRender(props);</span><br><span class="line">&#125;</span><br><span class="line">export async function unmount() &#123;</span><br><span class="line">  ReactDOM.unmountComponentAtNode(document.getElementById(&quot;root&quot;));</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; export other lifecycles</span><br></pre></td></tr></table></figure>
+
+<p>打包编译后（可以配置成 umd 的输出格式），这个入口文件作为模块被主应用引入。</p>
+<p>在主应用中，需要提前注册好要对接的微应用，具体流程配置、路由调度原理、沙箱构建原理等就不介绍了，可以自行查找这方面的资料。</p>
+<h2 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h2><ul>
+<li>主应用是监测 URL 的变化来决定接入对应微应用的，但是微应用也有自己的路由系统，此时如何解决路由的接管权？</li>
+</ul>
+<p>TODO</p>
+<ul>
+<li>主应用的拉取微应用代码的策略，即如何应对微应用变更？</li>
+</ul>
+<p>TODO</p>
+<ul>
+<li>每个微应用沙盒环境构建策略？</li>
+</ul>
+<p>TODO，为什么不使用 iframe，参考<a target="_blank" rel="noopener" href="https://www.yuque.com/kuitos/gky7yw/gesexv">qiankun 为什么不使用 iframe</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://github.com/single-spa/single-spa">https://github.com/single-spa/single-spa</a><br><a target="_blank" rel="noopener" href="https://qiankun.umijs.org/zh/guide">https://qiankun.umijs.org/zh/guide</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/08/24/yuque/%E7%BC%96%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zhenyu">
+      <meta itemprop="description" content="个人博客，同步自我的语雀文档">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/24/yuque/%E7%BC%96%E7%A8%8B%E4%B8%AD%E7%9A%84%E5%A5%87%E6%8A%80%E6%B7%AB%E5%B7%A7/" class="post-title-link" itemprop="url">编程中的奇技淫巧</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-24 02:44:50" itemprop="dateCreated datePublished" datetime="2020-08-24T02:44:50+00:00">2020-08-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-07 08:20:31" itemprop="dateModified" datetime="2020-09-07T08:20:31+00:00">2020-09-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="与或运算来做类型判断"><a href="#与或运算来做类型判断" class="headerlink" title="与或运算来做类型判断"></a>与或运算来做类型判断</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> A = <span class="number">0b0000000000000001</span>;</span><br><span class="line"><span class="keyword">const</span> B = <span class="number">0b0000000000000010</span>;</span><br><span class="line"><span class="keyword">const</span> C = <span class="number">0b0000000000000100</span>;</span><br><span class="line"><span class="keyword">const</span> D = <span class="number">0b0000000000001000</span>;</span><br><span class="line"><span class="keyword">const</span> E = <span class="number">0b0000000000010000</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> AB = A | B;</span><br><span class="line"><span class="keyword">const</span> CD = C | D;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> current = random();</span><br><span class="line"><span class="keyword">if</span> (current &amp; AB) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&quot;属于AB&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (current &amp; CD) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&quot;属于CD&quot;</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&quot;属于E&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> (current &gt; C) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&quot;在C阶段之后&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">random</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> pool = [A, B, C, D, E];</span><br><span class="line">  <span class="keyword">return</span> pool[<span class="built_in">Math</span>.floor(<span class="number">5</span> * <span class="built_in">Math</span>.random())];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="按位异或快速取整"><a href="#按位异或快速取整" class="headerlink" title="按位异或快速取整"></a>按位异或快速取整</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">20.69</span> | <span class="number">0</span>); <span class="comment">//20</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="逗号表达式转移-this-指向"><a href="#逗号表达式转移-this-指向" class="headerlink" title="逗号表达式转移 this 指向"></a>逗号表达式转移 this 指向</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> name = <span class="string">&quot;bar&quot;</span>;</span><br><span class="line"><span class="keyword">const</span> foo = &#123;</span><br><span class="line">  name: <span class="string">&quot;foo&quot;</span>,</span><br><span class="line">  fn() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">foo.fn(); <span class="comment">// foo</span></span><br><span class="line">(<span class="number">0</span>, foo.fn)(); <span class="comment">// bar</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="运算符快速类型转换"><a href="#运算符快速类型转换" class="headerlink" title="运算符快速类型转换"></a>运算符快速类型转换</h2><p>利用加号运算符触发 JS 的默认转换</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+<span class="keyword">new</span> <span class="built_in">Date</span>(); <span class="comment">// 1599441814711</span></span><br><span class="line"><span class="comment">// new Date().getTime(); // 1599441814711</span></span><br><span class="line"><span class="comment">// new Date().valueOf(); // 1599441814711</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Zhenyu</p>
+  <div class="site-description" itemprop="description">个人博客，同步自我的语雀文档</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhenyu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
 </html>
